@@ -6,6 +6,8 @@ Shows how to use the DataLoader class to load and work with the new CSV structur
 Run this script to see examples of all DataLoader features.
 """
 
+import pandas as pd
+
 from scripts.core.data_loader import DataLoader, load_data
 
 
@@ -110,6 +112,7 @@ def main() -> None:
     # Convenience function
     print("10. Using convenience function...")
     quick_data = load_data(data_source="demo1", merge=True)
+    assert isinstance(quick_data, pd.DataFrame)  # Type narrowing for mypy
     print(
         f"    ✓ Quick load: {len(quick_data)} rows, {len(quick_data.columns)} columns"
     )

@@ -422,9 +422,9 @@ def main() -> None:
     for i, issue in enumerate(ISSUES, 1):
         print(f"{i}. {issue['title']}")
         print(f"   Labels: {', '.join(issue['labels'])}")
-        effort = [
-            line for line in issue["body"].split("\n") if "Estimated Effort" in line
-        ]
+        body = issue["body"]
+        assert isinstance(body, str)  # Type narrowing for mypy
+        effort = [line for line in body.split("\n") if "Estimated Effort" in line]
         if effort:
             print(f"   {effort[0].strip()}")
         print()
@@ -442,8 +442,10 @@ def main() -> None:
         body_file = f".build/issue_{i}_body.md"
 
         # Save body to temp file for easier CLI usage
+        body = issue["body"]
+        assert isinstance(body, str)  # Type narrowing for mypy
         with open(body_file, "w") as f:
-            f.write(issue["body"])
+            f.write(body)
 
         print(f"# Issue {i}: {title}")
         print(
