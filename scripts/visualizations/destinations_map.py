@@ -482,11 +482,16 @@ def create_destinations_map_html(output_path: Path, df: pd.DataFrame) -> None:
         {cards_html}
 
         <div style="margin-top: 40px; padding-top: 20px; border-top: 1px solid #ddd; color: #666; font-size: 12px;">
-            <p><strong>About this map:</strong> This interactive map displays all travel destinations with their locations,
-            airport information, and regional groupings. Each destination is color-coded by region for easy identification.</p>
-            <p><strong>How to use:</strong> Hover over markers for quick information. Click legend items to show/hide specific regions.
-            Use zoom and pan controls to explore the map. Each destination card below provides complete details.</p>
-            <p><strong>Data Source:</strong> Destinations data from data/destinations/destinations.csv</p>
+            <p><strong>About this map:</strong> This interactive map displays all
+            travel destinations with their locations, airport information, and
+            regional groupings. Each destination is color-coded by region for
+            easy identification.</p>
+            <p><strong>How to use:</strong> Hover over markers for quick
+            information. Click legend items to show/hide specific regions.
+            Use zoom and pan controls to explore the map. Each destination card
+            below provides complete details.</p>
+            <p><strong>Data Source:</strong> Destinations data from
+            data/destinations/destinations.csv</p>
         </div>
     </div>
 </body>
@@ -495,7 +500,7 @@ def create_destinations_map_html(output_path: Path, df: pd.DataFrame) -> None:
 
     # Write to file
     output_path.parent.mkdir(parents=True, exist_ok=True)
-    output_path.write_text(html_content)
+    output_path.write_text(html_content, encoding="utf-8")
     logger.info(f"Destinations map saved to {output_path}")
 
 

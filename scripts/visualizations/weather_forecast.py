@@ -613,7 +613,7 @@ def create_weather_dashboard(
 
     # Write to file
     output_path.parent.mkdir(parents=True, exist_ok=True)
-    output_path.write_text(html_content)
+    output_path.write_text(html_content, encoding="utf-8")
     logger.info(f"Weather forecast dashboard saved to {output_path}")
 
 
