@@ -6,8 +6,6 @@ generation, ensuring all components work together correctly.
 
 from pathlib import Path
 
-import pytest
-
 from scripts.dashboard import (
     load_data,
     create_flight_cost_chart,
@@ -47,31 +45,31 @@ class TestFullDashboardWorkflow:
         assert time_vs_cost_file.exists(), "Time vs cost chart not created"
 
         # Verify files are non-empty with reasonable sizes
-        assert flight_costs_file.stat().st_size > 1000, (
-            "Flight costs chart file too small"
-        )
-        assert time_vs_cost_file.stat().st_size > 1000, (
-            "Time vs cost chart file too small"
-        )
+        assert (
+            flight_costs_file.stat().st_size > 1000
+        ), "Flight costs chart file too small"
+        assert (
+            time_vs_cost_file.stat().st_size > 1000
+        ), "Time vs cost chart file too small"
 
         # Verify files contain Plotly markers
         flight_costs_content = flight_costs_file.read_text(encoding="utf-8")
         time_vs_cost_content = time_vs_cost_file.read_text(encoding="utf-8")
 
-        assert "plotly" in flight_costs_content.lower(), (
-            "Flight costs chart missing Plotly content"
-        )
-        assert "plotly" in time_vs_cost_content.lower(), (
-            "Time vs cost chart missing Plotly content"
-        )
+        assert (
+            "plotly" in flight_costs_content.lower()
+        ), "Flight costs chart missing Plotly content"
+        assert (
+            "plotly" in time_vs_cost_content.lower()
+        ), "Time vs cost chart missing Plotly content"
 
         # Verify chart titles are present
-        assert "Flight Cost by Destination" in flight_costs_content, (
-            "Flight costs chart missing expected title"
-        )
-        assert "Flight Time vs Cost" in time_vs_cost_content, (
-            "Time vs cost chart missing expected title"
-        )
+        assert (
+            "Flight Cost by Destination" in flight_costs_content
+        ), "Flight costs chart missing expected title"
+        assert (
+            "Flight Time vs Cost" in time_vs_cost_content
+        ), "Time vs cost chart missing expected title"
 
     def test_workflow_with_empty_output_directory(self, tmp_path):
         """Test that workflow creates output directory if it doesn't exist."""
@@ -115,7 +113,9 @@ class TestFullDashboardWorkflow:
         create_time_vs_cost_chart(df, output_dir)
 
         # Verify DataFrame wasn't modified by chart generation
-        assert df.shape == original_shape, "DataFrame was modified during chart generation"
+        assert (
+            df.shape == original_shape
+        ), "DataFrame was modified during chart generation"
 
 
 class TestWorkflowPerformance:
@@ -139,9 +139,7 @@ class TestWorkflowPerformance:
 
         elapsed_time = time.time() - start_time
 
-        assert elapsed_time < 5.0, (
-            f"Workflow took {elapsed_time:.2f}s, expected < 5s"
-        )
+        assert elapsed_time < 5.0, f"Workflow took {elapsed_time:.2f}s, expected < 5s"
 
 
 class TestWorkflowCleanup:
@@ -171,9 +169,9 @@ class TestWorkflowCleanup:
         second_time_vs_cost = (output_dir / "flight_time_vs_cost.html").stat().st_size
 
         # Sizes should be similar (allowing for minor variations)
-        assert abs(first_flight_costs - second_flight_costs) < 1000, (
-            "Regenerated flight costs chart significantly different"
-        )
-        assert abs(first_time_vs_cost - second_time_vs_cost) < 1000, (
-            "Regenerated time vs cost chart significantly different"
-        )
+        assert (
+            abs(first_flight_costs - second_flight_costs) < 1000
+        ), "Regenerated flight costs chart significantly different"
+        assert (
+            abs(first_time_vs_cost - second_time_vs_cost) < 1000
+        ), "Regenerated time vs cost chart significantly different"
