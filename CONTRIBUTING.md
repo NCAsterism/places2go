@@ -40,7 +40,21 @@ This project follows a simple code of conduct:
    pip install -r requirements.txt
    ```
 
-4. **Run tests to verify setup**
+4. **Set up pre-commit hooks** (recommended)
+   ```bash
+   pre-commit install
+   ```
+
+   This will automatically run code formatting and linting before each commit. You can also run hooks manually:
+   ```bash
+   # Run on all files
+   pre-commit run --all-files
+
+   # Run on staged files only
+   pre-commit run
+   ```
+
+5. **Run tests to verify setup**
    ```bash
    pytest
    ```
@@ -76,16 +90,16 @@ We follow a GitFlow branching strategy:
    ```bash
    # Format code
    black scripts tests
-   
+
    # Check for issues
    flake8 scripts tests
-   
+
    # Type check with mypy
    mypy scripts/
-   
+
    # Run tests
    pytest
-   
+
    # Check coverage
    pytest --cov=scripts --cov-report=term
    ```
@@ -122,10 +136,10 @@ import pandas as pd
 
 def load_data(csv_path: Path) -> pd.DataFrame:
     """Read the destination dataset from a CSV file.
-    
+
     Args:
         csv_path: Path to the CSV file containing destination data.
-    
+
     Returns:
         A pandas DataFrame with the dataset.
     """
@@ -193,10 +207,10 @@ def test_function_name_scenario():
     """Test function_name when scenario occurs."""
     # Arrange - Set up test data
     input_data = ...
-    
+
     # Act - Execute the function
     result = function_name(input_data)
-    
+
     # Assert - Verify the result
     assert result == expected_value
 ```
