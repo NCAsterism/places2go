@@ -68,7 +68,7 @@ class TestCreateFlightCostChart:
         create_flight_cost_chart(sample_df, output_dir)
 
         output_file = output_dir / "flight_costs.html"
-        content = output_file.read_text()
+        content = output_file.read_text(encoding="utf-8")
 
         # Check for Plotly markers
         assert "plotly" in content.lower(), "HTML should contain Plotly library"
@@ -84,7 +84,7 @@ class TestCreateFlightCostChart:
         create_flight_cost_chart(sample_df, output_dir)
 
         output_file = output_dir / "flight_costs.html"
-        content = output_file.read_text()
+        content = output_file.read_text(encoding="utf-8")
 
         # Check that destination names appear in the HTML
         assert "Alicante" in content, "Destination 'Alicante' should appear in chart"
@@ -143,7 +143,7 @@ class TestCreateTimeVsCostChart:
         create_time_vs_cost_chart(sample_df, output_dir)
 
         output_file = output_dir / "flight_time_vs_cost.html"
-        content = output_file.read_text()
+        content = output_file.read_text(encoding="utf-8")
 
         # Check for Plotly markers
         assert "plotly" in content.lower(), "HTML should contain Plotly library"
@@ -157,7 +157,7 @@ class TestCreateTimeVsCostChart:
         create_time_vs_cost_chart(sample_df, output_dir)
 
         output_file = output_dir / "flight_time_vs_cost.html"
-        content = output_file.read_text()
+        content = output_file.read_text(encoding="utf-8")
 
         # Verify that the size parameter references Monthly Living Cost
         # The data should be embedded in the HTML
@@ -173,7 +173,7 @@ class TestCreateTimeVsCostChart:
         create_time_vs_cost_chart(sample_df, output_dir)
 
         output_file = output_dir / "flight_time_vs_cost.html"
-        content = output_file.read_text()
+        content = output_file.read_text(encoding="utf-8")
 
         # Check that destinations are used for coloring
         assert "Alicante" in content, "Destination 'Alicante' should appear in chart"
@@ -188,7 +188,7 @@ class TestCreateTimeVsCostChart:
         create_time_vs_cost_chart(sample_df, output_dir)
 
         output_file = output_dir / "flight_time_vs_cost.html"
-        content = output_file.read_text()
+        content = output_file.read_text(encoding="utf-8")
 
         # The hover_name parameter uses Destination, so destinations should appear
         # in the hover data
