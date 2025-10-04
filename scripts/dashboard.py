@@ -27,6 +27,7 @@ from pathlib import Path
 import pandas as pd
 import plotly.express as px
 
+<<<<<<< HEAD
 try:
     # Try relative import first (when run as module)
     from .exceptions import (
@@ -44,6 +45,8 @@ except ImportError:
         ChartGenerationError,
     )
 
+=======
+>>>>>>> origin/develop
 # Configure logging
 log_dir = Path(__file__).resolve().parents[1] / "logs"
 log_dir.mkdir(exist_ok=True)
@@ -72,6 +75,7 @@ def load_data(csv_path: Path) -> pd.DataFrame:
         MissingColumnError: If required columns are missing.
     """
     logger.info(f"Loading data from {csv_path}")
+<<<<<<< HEAD
     
     # Check if file exists
     if not csv_path.exists():
@@ -110,6 +114,9 @@ def load_data(csv_path: Path) -> pd.DataFrame:
         logger.error(f"Missing required columns: {missing_cols}")
         raise MissingColumnError(missing_cols, list(df.columns))
 
+=======
+    df = pd.read_csv(csv_path)
+>>>>>>> origin/develop
     # Ensure correct dtypes for numeric columns
     numeric_cols = [
         "Flight Cost (GBP)",
@@ -139,6 +146,7 @@ def create_flight_cost_chart(df: pd.DataFrame, output_dir: Path) -> None:
         ChartGenerationError: If chart creation or saving fails.
     """
     logger.info("Creating flight cost chart")
+<<<<<<< HEAD
     
     # Validate dataframe is not empty
     if df.empty:
@@ -178,6 +186,19 @@ def create_flight_cost_chart(df: pd.DataFrame, output_dir: Path) -> None:
         raise ChartGenerationError(
             f"Failed to save chart to file: {e}", chart_type="flight_costs"
         )
+=======
+    fig = px.bar(
+        df,
+        x="Destination",
+        y="Flight Cost (GBP)",
+        color="Airport",
+        barmode="group",
+        title="Flight Cost by Destination and Airport",
+    )
+    output_path = output_dir / "flight_costs.html"
+    fig.write_html(output_path)
+    logger.info(f"Flight cost chart saved to {output_path}")
+>>>>>>> origin/develop
 
 
 def create_time_vs_cost_chart(df: pd.DataFrame, output_dir: Path) -> None:
@@ -193,6 +214,7 @@ def create_time_vs_cost_chart(df: pd.DataFrame, output_dir: Path) -> None:
         ChartGenerationError: If chart creation or saving fails.
     """
     logger.info("Creating flight time vs cost chart")
+<<<<<<< HEAD
     
     # Validate dataframe is not empty
     if df.empty:
@@ -269,6 +291,33 @@ def main() -> None:
     except Exception as e:
         logger.error(f"Unexpected error: {e}")
         raise
+=======
+    fig = px.scatter(
+        df,
+        x="Flight Time (hrs)",
+        y="Flight Cost (GBP)",
+        size="Monthly Living Cost (GBP)",
+        color="Destination",
+        hover_name="Destination",
+        title="Flight Time vs Cost (Bubble size = Monthly Living Cost)",
+    )
+    output_path = output_dir / "flight_time_vs_cost.html"
+    fig.write_html(output_path)
+    logger.info(f"Flight time vs cost chart saved to {output_path}")
+
+
+def main() -> None:
+    logger.info("Starting dashboard generation")
+    project_root = Path(__file__).resolve().parents[1]
+    data_path = project_root / "data" / "dummy_data.csv"
+    output_dir = project_root / "output"
+    output_dir.mkdir(exist_ok=True)
+
+    df = load_data(data_path)
+    create_flight_cost_chart(df, output_dir)
+    create_time_vs_cost_chart(df, output_dir)
+    logger.info("Dashboard generation completed successfully")
+>>>>>>> origin/develop
 
 
 if __name__ == "__main__":

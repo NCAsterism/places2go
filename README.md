@@ -39,6 +39,58 @@ destination_dashboard/
 * **Testability.**  The project is configured to use `pytest` for unit tests.  Dummy data and mocks will be used to test the behavior of the data‑retrieval modules without making external API calls.
 * **Extensible architecture.**  The repository is structured so that adding new data sources or visualizations only requires adding new modules and corresponding tests.
 
+## Logging
+
+The dashboard uses Python's built-in `logging` module to provide better debugging and monitoring capabilities. Logs are written to both the console and a log file.
+
+### Log Configuration
+
+Logs are automatically configured when running the dashboard script:
+- **Log Level:** INFO (change to DEBUG for more detailed output)
+- **Log Format:** `%(asctime)s - %(name)s - %(levelname)s - %(message)s`
+- **Log File:** `logs/dashboard.log` (created automatically)
+- **Console Output:** All log messages are also printed to the console
+
+### Log Levels
+
+- **INFO:** Normal operation messages (e.g., "Loading data", "Creating chart")
+- **DEBUG:** Detailed diagnostic information (e.g., DataFrame shapes, column details)
+- **WARNING:** Unexpected situations that don't prevent execution
+- **ERROR:** Error conditions that need attention
+
+### Example Usage
+
+```python
+import logging
+from pathlib import Path
+
+# Configure logging
+log_dir = Path(__file__).resolve().parents[1] / 'logs'
+log_dir.mkdir(exist_ok=True)
+
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+    handlers=[
+        logging.FileHandler(log_dir / 'dashboard.log'),
+        logging.StreamHandler()
+    ]
+)
+
+logger = logging.getLogger(__name__)
+
+# Use logging instead of print
+logger.info("Loading data from CSV")
+logger.debug(f"DataFrame shape: {df.shape}")
+logger.error(f"Failed to create chart: {error}")
+```
+
+### Viewing Logs
+
+- **Console:** Logs appear in the terminal when running the script
+- **File:** Check `logs/dashboard.log` for persistent log history
+- **Note:** Log files are excluded from git via `.gitignore`
+
 ## Branching strategy
 
 We recommend a simplified version of GitFlow to organize collaborative work.  This structure aligns with the workflows used in many of your existing projects and makes it easy to manage concurrent feature development.

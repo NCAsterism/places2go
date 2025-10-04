@@ -51,6 +51,10 @@ output/*.png
 output/*.jpg
 output/*.pdf
 
+# Logs
+logs/
+*.log
+
 # Jupyter Notebooks
 .ipynb_checkpoints
 
