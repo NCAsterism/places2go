@@ -577,7 +577,7 @@ def create_flight_dashboard(
 
     # Save HTML file
     output_path.parent.mkdir(parents=True, exist_ok=True)
-    output_path.write_text(html_content)
+    output_path.write_text(html_content, encoding="utf-8")
     logger.info(f"Dashboard saved to {output_path}")
 
 
