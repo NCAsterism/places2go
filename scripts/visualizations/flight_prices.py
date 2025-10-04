@@ -184,7 +184,7 @@ def create_price_distribution_boxplot(
                 name=dest_name,
                 marker_color=color,
                 boxmean="sd",
-                hovertemplate="<b>%{fullData.name}</b><br>"
+                hovertemplate="<b>%{name}</b><br>"
                 + "Price: £%{y:.0f}<extra></extra>",
             )
         )
