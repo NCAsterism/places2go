@@ -42,16 +42,15 @@ ENV/
 # Testing
 .pytest_cache/
 .coverage
-htmlcov/
 .tox/
 
-# Output files
-output/*.html
-output/*.png
-output/*.jpg
-output/*.pdf
+# Build artifacts (consolidated)
+.build/
+!.build/.gitkeep
 
-# Logs
+# Legacy paths (kept for compatibility during transition)
+htmlcov/
+output/
 logs/
 *.log
 

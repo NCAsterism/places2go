@@ -1,8 +1,8 @@
 # Places2Go Development Roadmap
 
 ## Current Status: Phase 1 Complete ✅
-**Version:** 0.1.0  
-**Date:** October 4, 2025  
+**Version:** 0.1.0
+**Date:** October 4, 2025
 **Branch:** develop
 
 ### Phase 1 Achievements
@@ -17,8 +17,8 @@
 ---
 
 ## Phase 2: Enhanced Testing & Code Quality
-**Target:** Version 0.2.0  
-**Timeline:** 1-2 weeks  
+**Target:** Version 0.2.0
+**Timeline:** 1-2 weeks
 **Branch:** feature/enhanced-testing
 
 ### Objectives
@@ -61,8 +61,8 @@ Improve test coverage and code quality before building new features.
 ---
 
 ## Phase 3: Data Module Architecture
-**Target:** Version 0.3.0  
-**Timeline:** 2-3 weeks  
+**Target:** Version 0.3.0
+**Timeline:** 2-3 weeks
 **Branch:** feature/data-modules
 
 ### Objectives
@@ -114,8 +114,8 @@ Create modular data retrieval system to replace dummy data.
 ---
 
 ## Phase 4: Interactive Dashboard Framework
-**Target:** Version 0.4.0  
-**Timeline:** 2-3 weeks  
+**Target:** Version 0.4.0
+**Timeline:** 2-3 weeks
 **Branch:** feature/dashboard-framework
 
 ### Objectives
@@ -160,8 +160,8 @@ Upgrade from static HTML to interactive web dashboard.
 ---
 
 ## Phase 5: Cost of Living & Extended Metrics
-**Target:** Version 0.5.0  
-**Timeline:** 3-4 weeks  
+**Target:** Version 0.5.0
+**Timeline:** 3-4 weeks
 **Branch:** feature/cost-of-living
 
 ### Objectives
@@ -206,8 +206,8 @@ Add comprehensive cost of living data and recreational metrics.
 ---
 
 ## Phase 6: Deployment & Scaling
-**Target:** Version 1.0.0  
-**Timeline:** 2-3 weeks  
+**Target:** Version 1.0.0
+**Timeline:** 2-3 weeks
 **Branch:** release/1.0
 
 ### Objectives

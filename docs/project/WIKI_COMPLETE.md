@@ -333,9 +333,9 @@ cd ../places2go
 
 ---
 
-**Created:** October 4, 2025  
-**Author:** GitHub Copilot  
-**Project:** Places2Go Travel Dashboard  
+**Created:** October 4, 2025
+**Author:** GitHub Copilot
+**Project:** Places2Go Travel Dashboard
 **Location:** `d:\repo\places2go\`
 
 ---

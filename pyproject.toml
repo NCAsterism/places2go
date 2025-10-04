@@ -37,6 +37,12 @@ dev = [
     "flake8>=6.0.0",
 ]
 
+[tool.setuptools]
+packages = ["scripts", "scripts.core"]
+
+[tool.setuptools.package-data]
+scripts = ["py.typed"]
+
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 python_files = "test_*.py"
@@ -46,7 +52,7 @@ addopts = [
     "--verbose",
     "--cov=scripts",
     "--cov-report=term-missing",
-    "--cov-report=html",
+    "--cov-report=html:.build/coverage/htmlcov",
 ]
 
 [tool.black]

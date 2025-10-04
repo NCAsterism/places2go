@@ -1,0 +1,7 @@
+destination_id,name,country,country_code,region,latitude,longitude,timezone,airport_code,airport_name,origin_airport
+1,Alicante,Spain,ES,Costa Blanca,38.2830,-0.5581,Europe/Madrid,ALC,Alicante-Elche Airport,EXT
+2,Malaga,Spain,ES,Costa del Sol,36.7213,-4.4213,Europe/Madrid,AGP,Málaga-Costa del Sol Airport,EXT
+3,Majorca,Spain,ES,Balearic Islands,39.5696,2.6502,Europe/Madrid,PMI,Palma de Mallorca Airport,EXT
+4,Faro,Portugal,PT,Algarve,37.0194,-7.9322,Europe/Lisbon,FAO,Faro Airport,BRS
+5,Corfu,Greece,GR,Ionian Islands,39.6243,19.9217,Europe/Athens,CFU,Corfu International Airport,BRS
+6,Rhodes,Greece,GR,Dodecanese,36.4341,28.2176,Europe/Athens,RHO,Rhodes International Airport,BRS

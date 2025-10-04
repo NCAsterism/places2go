@@ -116,6 +116,8 @@ We follow a GitFlow branching strategy:
    ```
    Then open a PR on GitHub targeting the `develop` branch.
 
+   **Important:** Review our [PR Best Practices](docs/PR_BEST_PRACTICES.md) guide before creating PRs to avoid merge conflicts and ensure smooth collaboration.
+
 ## Code Style Guide
 
 ### Python Style
@@ -292,6 +294,170 @@ If adding dashboard features:
 3. Create the UI component
 4. Test on multiple screen sizes
 5. Update user documentation
+
+### Visualizations
+If adding or modifying visualization pages:
+
+#### Creating New Visualizations
+1. **Create script in `scripts/visualizations/`**
+   ```python
+   # scripts/visualizations/my_visualization.py
+   from scripts.core.data_loader import DataLoader
+   import plotly.graph_objects as go
+   from pathlib import Path
+   
+   def create_my_visualization(output_path: Path, df: pd.DataFrame) -> None:
+       """Create custom visualization."""
+       # Implementation here
+   ```
+
+2. **Use DataLoader for data access**
+   ```python
+   loader = DataLoader()
+   data = loader.load_destinations()  # or other methods
+   ```
+
+3. **Follow Plotly best practices**
+   - Use consistent color schemes across charts
+   - Include hover details for interactivity
+   - Add titles, axis labels, and legends
+   - Make responsive (autosize=True)
+   - Include loading indicators for large datasets
+
+4. **Output to `.build/visualizations/`**
+   ```python
+   project_root = Path(__file__).resolve().parents[2]
+   output_dir = project_root / ".build" / "visualizations"
+   output_path = output_dir / "my_visualization.html"
+   ```
+
+5. **Add logging for debugging**
+   ```python
+   import logging
+   logger = logging.getLogger(__name__)
+   logger.info("Creating visualization...")
+   ```
+
+6. **Write tests in `tests/test_*.py`**
+   ```python
+   def test_my_visualization_creation():
+       """Test visualization generates valid HTML."""
+       # Test implementation
+   ```
+
+7. **Document in `.build/visualizations/README.md`**
+   - Add section describing the visualization
+   - Include purpose, features, and usage
+   - Provide code examples
+   - Add screenshots if possible
+
+#### Visualization Guidelines
+- **Consistency:** Use same color palette as other visualizations
+- **Interactivity:** Enable hover, zoom, pan, legend toggle
+- **Responsive:** Test on desktop and mobile
+- **Performance:** Optimize for datasets with 1000+ records
+- **Accessibility:** Include alt text and ARIA labels
+- **Documentation:** Update both code docstrings and README
+- **Browser Testing:** Test in Chrome, Firefox, Safari, Edge
+
+#### Color Palette
+Use the standard destination colors for consistency:
+```python
+DESTINATION_COLORS = {
+    'Bangkok': '#FF6B6B',
+    'Tokyo': '#4ECDC4',
+    'Barcelona': '#45B7D1',
+    'Prague': '#FFA07A',
+    'Lisbon': '#98D8C8',
+    'Marrakech': '#F7DC6F'
+}
+```
+
+#### Example Visualization Script Structure
+```python
+#!/usr/bin/env python3
+"""
+Visualization description and purpose.
+"""
+
+import logging
+import pandas as pd
+import plotly.graph_objects as go
+from pathlib import Path
+from scripts.core.data_loader import DataLoader
+
+logger = logging.getLogger(__name__)
+
+def create_chart(df: pd.DataFrame) -> go.Figure:
+    """Create chart from data."""
+    fig = go.Figure()
+    # Chart creation logic
+    return fig
+
+def create_visualization(output_path: Path, df: pd.DataFrame) -> None:
+    """Generate complete HTML file."""
+    chart = create_chart(df)
+    chart_html = chart.to_html(include_plotlyjs='cdn')
+    
+    html_content = f"""
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>My Visualization - Places2Go</title>
+    </head>
+    <body>
+        {chart_html}
+    </body>
+    </html>
+    """
+    
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    output_path.write_text(html_content)
+    logger.info(f"Visualization saved to {output_path}")
+
+def main() -> None:
+    """Main entry point."""
+    logger.info("Starting visualization generation")
+    loader = DataLoader()
+    df = loader.load_destinations()
+    
+    project_root = Path(__file__).resolve().parents[2]
+    output_path = project_root / ".build" / "visualizations" / "my_viz.html"
+    
+    create_visualization(output_path, df)
+    logger.info("Visualization generation completed")
+
+if __name__ == "__main__":
+    main()
+```
+
+#### Testing Visualizations
+```python
+# tests/test_my_visualization.py
+import pytest
+from pathlib import Path
+from scripts.visualizations.my_visualization import create_visualization
+from scripts.core.data_loader import DataLoader
+
+def test_visualization_generates_html(tmp_path):
+    """Test that visualization creates HTML file."""
+    loader = DataLoader()
+    df = loader.load_destinations()
+    output_path = tmp_path / "test.html"
+    
+    create_visualization(output_path, df)
+    
+    assert output_path.exists()
+    assert output_path.stat().st_size > 0
+    
+    content = output_path.read_text()
+    assert "<!DOCTYPE html>" in content
+    assert "plotly" in content.lower()
+```
+
+For more details, see [.build/visualizations/README.md](.build/visualizations/README.md).
 
 ### API Keys and Secrets
 - Never commit API keys or secrets
