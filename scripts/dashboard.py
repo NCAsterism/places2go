@@ -21,11 +21,27 @@ To run the script:
 Dependencies: ``pandas`` and ``plotly``.  Install them via pip if needed.
 """
 
-import os
 from pathlib import Path
 
 import pandas as pd
 import plotly.express as px
+
+try:
+    # Try relative import first (when run as module)
+    from .exceptions import (
+        DataLoadError,
+        DataValidationError,
+        MissingColumnError,
+        ChartGenerationError,
+    )
+except ImportError:
+    # Fall back to direct import (when run as script)
+    from exceptions import (
+        DataLoadError,
+        DataValidationError,
+        MissingColumnError,
+        ChartGenerationError,
+    )
 
 
 def load_data(csv_path: Path) -> pd.DataFrame:
@@ -36,8 +52,45 @@ def load_data(csv_path: Path) -> pd.DataFrame:
 
     Returns:
         A pandas DataFrame with the dataset.
+
+    Raises:
+        DataLoadError: If the CSV file cannot be read.
+        DataValidationError: If the loaded dataframe is empty.
+        MissingColumnError: If required columns are missing.
     """
-    df = pd.read_csv(csv_path)
+    # Check if file exists
+    if not csv_path.exists():
+        raise DataLoadError("CSV file not found", path=str(csv_path))
+
+    # Try to read the CSV file
+    try:
+        df = pd.read_csv(csv_path)
+    except Exception as e:
+        raise DataLoadError(f"Failed to read CSV file: {e}", path=str(csv_path))
+
+    # Validate the dataframe is not empty
+    if df.empty:
+        raise DataValidationError("Loaded dataframe is empty")
+
+    # Define required columns
+    required_cols = [
+        "Destination",
+        "Airport",
+        "Flight Cost (GBP)",
+        "Flight Time (hrs)",
+        "Avg Temp (°C)",
+        "UV Index",
+        "Monthly Living Cost (GBP)",
+        "Meal Cost (GBP)",
+        "Beer Cost (GBP)",
+        "Weed Cost (GBP per gram)",
+    ]
+
+    # Check for missing columns
+    missing_cols = [col for col in required_cols if col not in df.columns]
+    if missing_cols:
+        raise MissingColumnError(missing_cols, list(df.columns))
+
     # Ensure correct dtypes for numeric columns
     numeric_cols = [
         "Flight Cost (GBP)",
@@ -59,18 +112,46 @@ def create_flight_cost_chart(df: pd.DataFrame, output_dir: Path) -> None:
     Args:
         df: The DataFrame containing destination data.
         output_dir: Directory where the HTML file will be saved.
+
+    Raises:
+        DataValidationError: If the dataframe is empty.
+        MissingColumnError: If required columns are missing.
+        ChartGenerationError: If chart creation or saving fails.
     """
-    fig = px.bar(
-        df,
-        x="Destination",
-        y="Flight Cost (GBP)",
-        color="Airport",
-        barmode="group",
-        title="Flight Cost by Destination and Airport",
-    )
-    output_path = output_dir / "flight_costs.html"
-    fig.write_html(output_path)
-    print(f"Flight cost chart saved to {output_path}")
+    # Validate dataframe is not empty
+    if df.empty:
+        raise DataValidationError("Cannot create chart from empty dataframe")
+
+    # Check required columns
+    required_cols = ["Destination", "Flight Cost (GBP)", "Airport"]
+    missing_cols = [col for col in required_cols if col not in df.columns]
+    if missing_cols:
+        raise MissingColumnError(missing_cols, list(df.columns))
+
+    # Try to create the chart
+    try:
+        fig = px.bar(
+            df,
+            x="Destination",
+            y="Flight Cost (GBP)",
+            color="Airport",
+            barmode="group",
+            title="Flight Cost by Destination and Airport",
+        )
+    except Exception as e:
+        raise ChartGenerationError(
+            f"Failed to create bar chart: {e}", chart_type="flight_costs"
+        )
+
+    # Try to save the chart
+    try:
+        output_path = output_dir / "flight_costs.html"
+        fig.write_html(output_path)
+        print(f"Flight cost chart saved to {output_path}")
+    except Exception as e:
+        raise ChartGenerationError(
+            f"Failed to save chart to file: {e}", chart_type="flight_costs"
+        )
 
 
 def create_time_vs_cost_chart(df: pd.DataFrame, output_dir: Path) -> None:
@@ -79,30 +160,81 @@ def create_time_vs_cost_chart(df: pd.DataFrame, output_dir: Path) -> None:
     Args:
         df: The DataFrame containing destination data.
         output_dir: Directory where the HTML file will be saved.
+
+    Raises:
+        DataValidationError: If the dataframe is empty.
+        MissingColumnError: If required columns are missing.
+        ChartGenerationError: If chart creation or saving fails.
     """
-    fig = px.scatter(
-        df,
-        x="Flight Time (hrs)",
-        y="Flight Cost (GBP)",
-        size="Monthly Living Cost (GBP)",
-        color="Destination",
-        hover_name="Destination",
-        title="Flight Time vs Cost (Bubble size = Monthly Living Cost)",
-    )
-    output_path = output_dir / "flight_time_vs_cost.html"
-    fig.write_html(output_path)
-    print(f"Flight time vs cost chart saved to {output_path}")
+    # Validate dataframe is not empty
+    if df.empty:
+        raise DataValidationError("Cannot create chart from empty dataframe")
+
+    # Check required columns
+    required_cols = [
+        "Flight Time (hrs)",
+        "Flight Cost (GBP)",
+        "Monthly Living Cost (GBP)",
+        "Destination",
+    ]
+    missing_cols = [col for col in required_cols if col not in df.columns]
+    if missing_cols:
+        raise MissingColumnError(missing_cols, list(df.columns))
+
+    # Try to create the chart
+    try:
+        fig = px.scatter(
+            df,
+            x="Flight Time (hrs)",
+            y="Flight Cost (GBP)",
+            size="Monthly Living Cost (GBP)",
+            color="Destination",
+            hover_name="Destination",
+            title="Flight Time vs Cost (Bubble size = Monthly Living Cost)",
+        )
+    except Exception as e:
+        raise ChartGenerationError(
+            f"Failed to create scatter plot: {e}", chart_type="flight_time_vs_cost"
+        )
+
+    # Try to save the chart
+    try:
+        output_path = output_dir / "flight_time_vs_cost.html"
+        fig.write_html(output_path)
+        print(f"Flight time vs cost chart saved to {output_path}")
+    except Exception as e:
+        raise ChartGenerationError(
+            f"Failed to save chart to file: {e}", chart_type="flight_time_vs_cost"
+        )
 
 
 def main():
-    project_root = Path(__file__).resolve().parents[1]
-    data_path = project_root / "data" / "dummy_data.csv"
-    output_dir = project_root / "output"
-    output_dir.mkdir(exist_ok=True)
+    """Main function to run the dashboard generation process.
 
-    df = load_data(data_path)
-    create_flight_cost_chart(df, output_dir)
-    create_time_vs_cost_chart(df, output_dir)
+    This function orchestrates the data loading and chart generation workflow,
+    with appropriate error handling for various failure scenarios.
+    """
+    try:
+        project_root = Path(__file__).resolve().parents[1]
+        data_path = project_root / "data" / "dummy_data.csv"
+        output_dir = project_root / "output"
+        output_dir.mkdir(exist_ok=True)
+
+        df = load_data(data_path)
+        create_flight_cost_chart(df, output_dir)
+        create_time_vs_cost_chart(df, output_dir)
+    except DataLoadError as e:
+        print(f"Error loading data: {e}")
+        raise
+    except DataValidationError as e:
+        print(f"Error validating data: {e}")
+        raise
+    except ChartGenerationError as e:
+        print(f"Error generating chart: {e}")
+        raise
+    except Exception as e:
+        print(f"Unexpected error: {e}")
+        raise
 
 
 if __name__ == "__main__":
