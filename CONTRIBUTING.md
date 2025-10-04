@@ -80,6 +80,9 @@ We follow a GitFlow branching strategy:
    # Check for issues
    flake8 scripts tests
    
+   # Type check with mypy
+   mypy scripts/
+   
    # Run tests
    pytest
    
@@ -107,6 +110,32 @@ We follow a GitFlow branching strategy:
 - Use meaningful variable and function names
 - Add type hints to function signatures
 - Write docstrings for all functions and classes
+- Code passes mypy static type checking (when configured)
+
+### Type Hints
+All functions should include type annotations for parameters and return values:
+
+```python
+from pathlib import Path
+from typing import Optional
+import pandas as pd
+
+def load_data(csv_path: Path) -> pd.DataFrame:
+    """Read the destination dataset from a CSV file.
+    
+    Args:
+        csv_path: Path to the CSV file containing destination data.
+    
+    Returns:
+        A pandas DataFrame with the dataset.
+    """
+    # ... implementation
+```
+
+Run mypy to check for type errors:
+```bash
+mypy scripts/
+```
 
 ### Example Function
 ```python
@@ -193,6 +222,7 @@ pytest tests/test_data.py::test_load_data_types
    - Run all tests and ensure they pass
    - Format code with Black
    - Check for linting errors with flake8
+   - Run mypy type checking and fix any errors
    - Update documentation if needed
    - Rebase on latest `develop` if needed
 
