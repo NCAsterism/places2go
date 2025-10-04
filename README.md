@@ -23,14 +23,36 @@ While the PoC uses dummy data for demonstration purposes, the project is structu
 ## Repository structure
 
 ```
-destination_dashboard/
-├── data/                # Static or cached data.  Contains the dummy dataset for the PoC.
-├── docs/                # Documentation and design notes (branching strategy, task breakdown, etc.).
-├── scripts/             # Python scripts used for data processing and visualization.
-├── output/              # Generated outputs (HTML charts for the PoC).
-├── tests/               # Unit tests and integration tests.
-└── README.md            # Project overview and setup instructions.
+places2go/
+├── .build/              # Build artifacts (gitignored)
+│   ├── output/          # Generated HTML charts
+│   ├── logs/            # Application logs
+│   └── coverage/        # Test coverage reports
+├── data/                # Data files
+│   └── dummy_data.csv   # Sample dataset (to be split into multiple CSVs)
+├── docs/                # Documentation (organized by category)
+│   ├── architecture/    # System design and data models
+│   ├── development/     # Development guides
+│   ├── processes/       # Workflows and best practices
+│   └── project/         # Project planning and roadmaps
+├── scripts/             # Python application code
+│   ├── core/            # Core modules (planned)
+│   ├── dashboard.py     # Main dashboard script
+│   └── exceptions.py    # Custom exception classes
+├── tests/               # Test suite
+│   ├── test_charts.py   # Chart generation tests
+│   ├── test_data.py     # Data loading tests
+│   └── test_integration.py  # Integration tests
+├── wiki/                # GitHub Wiki content
+├── .github/             # GitHub configuration (workflows, issue templates)
+├── .pre-commit-config.yaml  # Pre-commit hooks configuration
+├── pyproject.toml       # Project configuration
+├── requirements.txt     # Python dependencies
+├── CONTRIBUTING.md      # Contribution guidelines
+└── README.md            # This file
 ```
+
+For detailed documentation, see [docs/README.md](docs/README.md).
 
 ## Design goals
 
@@ -48,7 +70,7 @@ The dashboard uses Python's built-in `logging` module to provide better debuggin
 Logs are automatically configured when running the dashboard script:
 - **Log Level:** INFO (change to DEBUG for more detailed output)
 - **Log Format:** `%(asctime)s - %(name)s - %(levelname)s - %(message)s`
-- **Log File:** `logs/dashboard.log` (created automatically)
+- **Log File:** `.build/logs/dashboard.log` (created automatically)
 - **Console Output:** All log messages are also printed to the console
 
 ### Log Levels

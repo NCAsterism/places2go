@@ -4,7 +4,7 @@ dashboard.py
 
 This script demonstrates how to load a dataset of travel destinations and produce
 interactive charts using Plotly.  It reads data from ``data/dummy_data.csv`` and
-generates two HTML files in the ``output/`` directory:
+generates two HTML files in the ``.build/output/`` directory:
 
 * ``flight_costs.html`` — a bar chart showing the cost of flights by destination
   with bars grouped by departure airport (Exeter or Bristol).
@@ -28,8 +28,8 @@ import pandas as pd
 import plotly.express as px
 
 # Configure logging
-log_dir = Path(__file__).resolve().parents[1] / "logs"
-log_dir.mkdir(exist_ok=True)
+log_dir = Path(__file__).resolve().parents[1] / ".build" / "logs"
+log_dir.mkdir(parents=True, exist_ok=True)
 
 logging.basicConfig(
     level=logging.INFO,
@@ -114,8 +114,8 @@ def main() -> None:
     logger.info("Starting dashboard generation")
     project_root = Path(__file__).resolve().parents[1]
     data_path = project_root / "data" / "dummy_data.csv"
-    output_dir = project_root / "output"
-    output_dir.mkdir(exist_ok=True)
+    output_dir = project_root / ".build" / "output"
+    output_dir.mkdir(parents=True, exist_ok=True)
 
     df = load_data(data_path)
     create_flight_cost_chart(df, output_dir)

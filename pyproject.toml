@@ -46,7 +46,7 @@ addopts = [
     "--verbose",
     "--cov=scripts",
     "--cov-report=term-missing",
-    "--cov-report=html",
+    "--cov-report=html:.build/coverage/htmlcov",
 ]
 
 [tool.black]
