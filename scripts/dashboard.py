@@ -21,11 +21,23 @@ To run the script:
 Dependencies: ``pandas`` and ``plotly``.  Install them via pip if needed.
 """
 
-import os
+import logging
 from pathlib import Path
 
 import pandas as pd
 import plotly.express as px
+
+# Configure logging
+log_dir = Path(__file__).resolve().parents[1] / "logs"
+log_dir.mkdir(exist_ok=True)
+
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+    handlers=[logging.FileHandler(log_dir / "dashboard.log"), logging.StreamHandler()],
+)
+
+logger = logging.getLogger(__name__)
 
 
 def load_data(csv_path: Path) -> pd.DataFrame:
@@ -37,6 +49,7 @@ def load_data(csv_path: Path) -> pd.DataFrame:
     Returns:
         A pandas DataFrame with the dataset.
     """
+    logger.info(f"Loading data from {csv_path}")
     df = pd.read_csv(csv_path)
     # Ensure correct dtypes for numeric columns
     numeric_cols = [
@@ -50,6 +63,7 @@ def load_data(csv_path: Path) -> pd.DataFrame:
         "Weed Cost (GBP per gram)",
     ]
     df[numeric_cols] = df[numeric_cols].apply(pd.to_numeric, errors="coerce")
+    logger.debug(f"DataFrame loaded with shape: {df.shape}")
     return df
 
 
@@ -60,6 +74,7 @@ def create_flight_cost_chart(df: pd.DataFrame, output_dir: Path) -> None:
         df: The DataFrame containing destination data.
         output_dir: Directory where the HTML file will be saved.
     """
+    logger.info("Creating flight cost chart")
     fig = px.bar(
         df,
         x="Destination",
@@ -70,7 +85,7 @@ def create_flight_cost_chart(df: pd.DataFrame, output_dir: Path) -> None:
     )
     output_path = output_dir / "flight_costs.html"
     fig.write_html(output_path)
-    print(f"Flight cost chart saved to {output_path}")
+    logger.info(f"Flight cost chart saved to {output_path}")
 
 
 def create_time_vs_cost_chart(df: pd.DataFrame, output_dir: Path) -> None:
@@ -80,6 +95,7 @@ def create_time_vs_cost_chart(df: pd.DataFrame, output_dir: Path) -> None:
         df: The DataFrame containing destination data.
         output_dir: Directory where the HTML file will be saved.
     """
+    logger.info("Creating flight time vs cost chart")
     fig = px.scatter(
         df,
         x="Flight Time (hrs)",
@@ -91,10 +107,11 @@ def create_time_vs_cost_chart(df: pd.DataFrame, output_dir: Path) -> None:
     )
     output_path = output_dir / "flight_time_vs_cost.html"
     fig.write_html(output_path)
-    print(f"Flight time vs cost chart saved to {output_path}")
+    logger.info(f"Flight time vs cost chart saved to {output_path}")
 
 
 def main():
+    logger.info("Starting dashboard generation")
     project_root = Path(__file__).resolve().parents[1]
     data_path = project_root / "data" / "dummy_data.csv"
     output_dir = project_root / "output"
@@ -103,6 +120,7 @@ def main():
     df = load_data(data_path)
     create_flight_cost_chart(df, output_dir)
     create_time_vs_cost_chart(df, output_dir)
+    logger.info("Dashboard generation completed successfully")
 
 
 if __name__ == "__main__":
