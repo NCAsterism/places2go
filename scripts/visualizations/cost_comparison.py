@@ -22,7 +22,6 @@ from pathlib import Path
 
 import pandas as pd
 import plotly.graph_objects as go
-import plotly.express as px
 
 # Add parent directory to path for imports
 sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
@@ -55,41 +54,45 @@ DESTINATION_COLORS = {
 }
 
 
-def create_total_cost_chart(df: pd.DataFrame, destinations_df: pd.DataFrame) -> go.Figure:
+def create_total_cost_chart(
+    df: pd.DataFrame, destinations_df: pd.DataFrame
+) -> go.Figure:
     """
     Create horizontal bar chart comparing total monthly costs by destination.
-    
+
     Args:
         df: Cost of living DataFrame
         destinations_df: Destinations DataFrame
-        
+
     Returns:
         Plotly Figure object
     """
     logger.info("Creating total cost comparison chart")
-    
+
     # Merge with destinations to get names
-    merged = df.merge(destinations_df[['destination_id', 'name']], on='destination_id')
-    
+    merged = df.merge(destinations_df[["destination_id", "name"]], on="destination_id")
+
     # Sort by monthly living cost
-    merged = merged.sort_values('monthly_living_cost', ascending=True)
-    
+    merged = merged.sort_values("monthly_living_cost", ascending=True)
+
     # Create colors list
-    colors = [DESTINATION_COLORS.get(name, "#1f77b4") for name in merged['name']]
-    
+    colors = [DESTINATION_COLORS.get(name, "#1f77b4") for name in merged["name"]]
+
     fig = go.Figure()
-    fig.add_trace(go.Bar(
-        y=merged['name'],
-        x=merged['monthly_living_cost'],
-        orientation='h',
-        marker=dict(color=colors),
-        text=merged['monthly_living_cost'].apply(lambda x: f"£{x:.0f}"),
-        textposition='outside',
-        hovertemplate='<b>%{y}</b><br>' +
-                      'Monthly Cost: £%{x:.2f}<br>' +
-                      '<extra></extra>'
-    ))
-    
+    fig.add_trace(
+        go.Bar(
+            y=merged["name"],
+            x=merged["monthly_living_cost"],
+            orientation="h",
+            marker=dict(color=colors),
+            text=merged["monthly_living_cost"].apply(lambda x: f"£{x:.0f}"),
+            textposition="outside",
+            hovertemplate="<b>%{y}</b><br>"
+            + "Monthly Cost: £%{x:.2f}<br>"
+            + "<extra></extra>",
+        )
+    )
+
     fig.update_layout(
         title="Total Monthly Living Cost by Destination",
         xaxis_title="Monthly Cost (£ GBP)",
@@ -99,183 +102,183 @@ def create_total_cost_chart(df: pd.DataFrame, destinations_df: pd.DataFrame) -> 
         showlegend=False,
         margin=dict(l=100, r=100, t=60, b=60),
     )
-    
+
     return fig
 
 
-def create_cost_breakdown_chart(df: pd.DataFrame, destinations_df: pd.DataFrame) -> go.Figure:
+def create_cost_breakdown_chart(
+    df: pd.DataFrame, destinations_df: pd.DataFrame
+) -> go.Figure:
     """
     Create stacked bar chart showing cost breakdown by category.
-    
+
     Args:
         df: Cost of living DataFrame
         destinations_df: Destinations DataFrame
-        
+
     Returns:
         Plotly Figure object
     """
     logger.info("Creating cost breakdown stacked chart")
-    
+
     # Merge with destinations to get names
-    merged = df.merge(destinations_df[['destination_id', 'name']], on='destination_id')
-    
+    merged = df.merge(destinations_df[["destination_id", "name"]], on="destination_id")
+
     # Sort by monthly living cost
-    merged = merged.sort_values('monthly_living_cost', ascending=False)
-    
+    merged = merged.sort_values("monthly_living_cost", ascending=False)
+
     # Define cost categories for breakdown
     categories = {
-        'Rent (Center)': 'rent_1br_center',
-        'Food': 'monthly_food',
-        'Transport': 'monthly_transport',
-        'Utilities': 'utilities',
-        'Internet': 'internet',
+        "Rent (Center)": "rent_1br_center",
+        "Food": "monthly_food",
+        "Transport": "monthly_transport",
+        "Utilities": "utilities",
+        "Internet": "internet",
     }
-    
+
     fig = go.Figure()
-    
+
     # Add traces for each category
     for label, column in categories.items():
-        fig.add_trace(go.Bar(
-            name=label,
-            x=merged['name'],
-            y=merged[column],
-            text=merged[column].apply(lambda x: f"£{x:.0f}"),
-            textposition='inside',
-            hovertemplate='<b>%{x}</b><br>' +
-                          f'{label}: £%{{y:.2f}}<br>' +
-                          '<extra></extra>'
-        ))
-    
+        fig.add_trace(
+            go.Bar(
+                name=label,
+                x=merged["name"],
+                y=merged[column],
+                text=merged[column].apply(lambda x: f"£{x:.0f}"),
+                textposition="inside",
+                hovertemplate="<b>%{x}</b><br>"
+                + f"{label}: £%{{y:.2f}}<br>"
+                + "<extra></extra>",
+            )
+        )
+
     fig.update_layout(
         title="Cost Breakdown by Category",
         xaxis_title="Destination",
         yaxis_title="Monthly Cost (£ GBP)",
-        barmode='stack',
+        barmode="stack",
         height=500,
         template="plotly_white",
-        legend=dict(
-            orientation="h",
-            yanchor="bottom",
-            y=1.02,
-            xanchor="right",
-            x=1
-        ),
+        legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1),
         margin=dict(l=60, r=60, t=100, b=60),
     )
-    
+
     return fig
 
 
-def create_category_comparison_chart(df: pd.DataFrame, destinations_df: pd.DataFrame) -> go.Figure:
+def create_category_comparison_chart(
+    df: pd.DataFrame, destinations_df: pd.DataFrame
+) -> go.Figure:
     """
     Create grouped bar chart for specific category comparisons.
-    
+
     Args:
         df: Cost of living DataFrame
         destinations_df: Destinations DataFrame
-        
+
     Returns:
         Plotly Figure object
     """
     logger.info("Creating category comparison chart")
-    
+
     # Merge with destinations to get names
-    merged = df.merge(destinations_df[['destination_id', 'name']], on='destination_id')
-    
+    merged = df.merge(destinations_df[["destination_id", "name"]], on="destination_id")
+
     # Sort by name for consistency
-    merged = merged.sort_values('name')
-    
+    merged = merged.sort_values("name")
+
     # Categories to compare
     categories = {
-        'Meal (Inexpensive)': 'meal_inexpensive',
-        'Meal (Mid-range)': 'meal_mid_range',
-        'Beer (Domestic)': 'beer_domestic',
+        "Meal (Inexpensive)": "meal_inexpensive",
+        "Meal (Mid-range)": "meal_mid_range",
+        "Beer (Domestic)": "beer_domestic",
     }
-    
+
     fig = go.Figure()
-    
+
     # Add traces for each category
     for label, column in categories.items():
-        fig.add_trace(go.Bar(
-            name=label,
-            x=merged['name'],
-            y=merged[column],
-            text=merged[column].apply(lambda x: f"£{x:.1f}"),
-            textposition='outside',
-            hovertemplate='<b>%{x}</b><br>' +
-                          f'{label}: £%{{y:.2f}}<br>' +
-                          '<extra></extra>'
-        ))
-    
+        fig.add_trace(
+            go.Bar(
+                name=label,
+                x=merged["name"],
+                y=merged[column],
+                text=merged[column].apply(lambda x: f"£{x:.1f}"),
+                textposition="outside",
+                hovertemplate="<b>%{x}</b><br>"
+                + f"{label}: £%{{y:.2f}}<br>"
+                + "<extra></extra>",
+            )
+        )
+
     fig.update_layout(
         title="Dining & Leisure Cost Comparison",
         xaxis_title="Destination",
         yaxis_title="Cost (£ GBP)",
-        barmode='group',
+        barmode="group",
         height=450,
         template="plotly_white",
-        legend=dict(
-            orientation="h",
-            yanchor="bottom",
-            y=1.02,
-            xanchor="right",
-            x=1
-        ),
+        legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1),
         margin=dict(l=60, r=60, t=100, b=60),
     )
-    
+
     return fig
 
 
-def create_cost_distribution_chart(df: pd.DataFrame, destinations_df: pd.DataFrame) -> go.Figure:
+def create_cost_distribution_chart(
+    df: pd.DataFrame, destinations_df: pd.DataFrame
+) -> go.Figure:
     """
     Create box plot showing cost distribution and outliers.
-    
+
     Args:
         df: Cost of living DataFrame
         destinations_df: Destinations DataFrame
-        
+
     Returns:
         Plotly Figure object
     """
     logger.info("Creating cost distribution box plot")
-    
+
     # Merge with destinations to get names
-    merged = df.merge(destinations_df[['destination_id', 'name']], on='destination_id')
-    
+    merged = df.merge(destinations_df[["destination_id", "name"]], on="destination_id")
+
     # Prepare data for box plot - stack all cost categories
     cost_categories = [
-        'rent_1br_center',
-        'rent_1br_outside',
-        'monthly_food',
-        'monthly_transport',
-        'utilities',
-        'internet',
+        "rent_1br_center",
+        "rent_1br_outside",
+        "monthly_food",
+        "monthly_transport",
+        "utilities",
+        "internet",
     ]
-    
+
     category_labels = {
-        'rent_1br_center': 'Rent (Center)',
-        'rent_1br_outside': 'Rent (Outside)',
-        'monthly_food': 'Food',
-        'monthly_transport': 'Transport',
-        'utilities': 'Utilities',
-        'internet': 'Internet',
+        "rent_1br_center": "Rent (Center)",
+        "rent_1br_outside": "Rent (Outside)",
+        "monthly_food": "Food",
+        "monthly_transport": "Transport",
+        "utilities": "Utilities",
+        "internet": "Internet",
     }
-    
+
     fig = go.Figure()
-    
+
     for category in cost_categories:
-        fig.add_trace(go.Box(
-            y=merged[category],
-            name=category_labels[category],
-            boxmean='sd',
-            hovertemplate='<b>%{fullData.name}</b><br>' +
-                          'Median: £%{median:.2f}<br>' +
-                          'Q1: £%{q1:.2f}<br>' +
-                          'Q3: £%{q3:.2f}<br>' +
-                          '<extra></extra>'
-        ))
-    
+        fig.add_trace(
+            go.Box(
+                y=merged[category],
+                name=category_labels[category],
+                boxmean="sd",
+                hovertemplate="<b>%{fullData.name}</b><br>"
+                + "Median: £%{median:.2f}<br>"
+                + "Q1: £%{q1:.2f}<br>"
+                + "Q3: £%{q3:.2f}<br>"
+                + "<extra></extra>",
+            )
+        )
+
     fig.update_layout(
         title="Cost Distribution by Category",
         yaxis_title="Monthly Cost (£ GBP)",
@@ -284,7 +287,7 @@ def create_cost_distribution_chart(df: pd.DataFrame, destinations_df: pd.DataFra
         showlegend=True,
         margin=dict(l=60, r=60, t=60, b=60),
     )
-    
+
     return fig
 
 
@@ -293,40 +296,52 @@ def create_cost_dashboard(
 ) -> None:
     """
     Create complete cost comparison dashboard HTML file.
-    
+
     Args:
         output_path: Path to save HTML file
         df: Cost of living DataFrame
         destinations_df: Destinations DataFrame
     """
     logger.info("Creating cost comparison dashboard")
-    
+
     # Get data date for display
-    data_date = df['data_date'].iloc[0] if not df.empty else 'N/A'
-    data_source = df['data_source'].iloc[0] if not df.empty else 'N/A'
-    
+    data_date = df["data_date"].iloc[0] if not df.empty else "N/A"
+    data_source = df["data_source"].iloc[0] if not df.empty else "N/A"
+
     # Calculate summary statistics
-    avg_cost = df['monthly_living_cost'].mean()
-    min_cost = df['monthly_living_cost'].min()
-    max_cost = df['monthly_living_cost'].max()
-    min_dest = destinations_df[destinations_df['destination_id'] == 
-                                df[df['monthly_living_cost'] == min_cost]['destination_id'].iloc[0]]['name'].iloc[0]
-    max_dest = destinations_df[destinations_df['destination_id'] == 
-                                df[df['monthly_living_cost'] == max_cost]['destination_id'].iloc[0]]['name'].iloc[0]
-    
+    avg_cost = df["monthly_living_cost"].mean()
+    min_cost = df["monthly_living_cost"].min()
+    max_cost = df["monthly_living_cost"].max()
+    min_dest = destinations_df[
+        destinations_df["destination_id"]
+        == df[df["monthly_living_cost"] == min_cost]["destination_id"].iloc[0]
+    ]["name"].iloc[0]
+    max_dest = destinations_df[
+        destinations_df["destination_id"]
+        == df[df["monthly_living_cost"] == max_cost]["destination_id"].iloc[0]
+    ]["name"].iloc[0]
+
     # Create all charts
     total_chart = create_total_cost_chart(df, destinations_df)
     breakdown_chart = create_cost_breakdown_chart(df, destinations_df)
     category_chart = create_category_comparison_chart(df, destinations_df)
     distribution_chart = create_cost_distribution_chart(df, destinations_df)
-    
+
     # Convert charts to HTML
     # Include plotly.js inline in the first chart
-    total_html = total_chart.to_html(include_plotlyjs='require', div_id="total_chart", config={'responsive': True})
-    breakdown_html = breakdown_chart.to_html(include_plotlyjs=False, div_id="breakdown_chart", config={'responsive': True})
-    category_html = category_chart.to_html(include_plotlyjs=False, div_id="category_chart", config={'responsive': True})
-    distribution_html = distribution_chart.to_html(include_plotlyjs=False, div_id="distribution_chart", config={'responsive': True})
-    
+    total_html = total_chart.to_html(
+        include_plotlyjs="require", div_id="total_chart", config={"responsive": True}
+    )
+    breakdown_html = breakdown_chart.to_html(
+        include_plotlyjs=False, div_id="breakdown_chart", config={"responsive": True}
+    )
+    category_html = category_chart.to_html(
+        include_plotlyjs=False, div_id="category_chart", config={"responsive": True}
+    )
+    distribution_html = distribution_chart.to_html(
+        include_plotlyjs=False, div_id="distribution_chart", config={"responsive": True}
+    )
+
     # Create complete HTML document
     html_content = f"""
 <!DOCTYPE html>
@@ -410,12 +425,12 @@ def create_cost_dashboard(
 <body>
     <div class="container">
         <h1>💰 Cost of Living Comparison</h1>
-        
+
         <div class="info-box">
-            <strong>Data Information:</strong> Cost of living data as of {data_date} | 
+            <strong>Data Information:</strong> Cost of living data as of {data_date} |
             Source: {data_source} | Currency: £ GBP
         </div>
-        
+
         <div class="stats">
             <div class="stat-card">
                 <div class="stat-label">Average Cost</div>
@@ -434,15 +449,15 @@ def create_cost_dashboard(
                 <div class="stat-value">£{max_cost - min_cost:.0f}</div>
             </div>
         </div>
-        
+
         <div class="chart-full">
             {total_html}
         </div>
-        
+
         <div class="chart-full">
             {breakdown_html}
         </div>
-        
+
         <div class="chart-grid">
             <div>
                 {category_html}
@@ -451,49 +466,51 @@ def create_cost_dashboard(
                 {distribution_html}
             </div>
         </div>
-        
+
         <footer>
-            <p><strong>About this dashboard:</strong> This interactive cost of living comparison dashboard displays 
-            comprehensive cost breakdowns across all destinations. Hover over charts for detailed information. 
+            <p><strong>About this dashboard:</strong> This interactive cost of living comparison dashboard displays
+            comprehensive cost breakdowns across all destinations. Hover over charts for detailed information.
             Click legend items to toggle visibility of specific categories.</p>
-            <p><strong>Cost Categories:</strong> Monthly living cost includes rent (1BR center), food, transport, 
+            <p><strong>Cost Categories:</strong> Monthly living cost includes rent (1BR center), food, transport,
             utilities, and internet. Additional metrics show dining and leisure costs for lifestyle comparison.</p>
         </footer>
     </div>
 </body>
 </html>
     """
-    
+
     # Write HTML file
     output_path.parent.mkdir(parents=True, exist_ok=True)
-    output_path.write_text(html_content, encoding='utf-8')
+    output_path.write_text(html_content, encoding="utf-8")
     logger.info(f"Dashboard saved to {output_path}")
 
 
 def main() -> None:
     """Main entry point for cost comparison visualization."""
     logger.info("Starting cost comparison visualization generation")
-    
+
     # Initialize data loader
     loader = DataLoader()
-    
+
     # Load data
     logger.info("Loading cost of living data")
-    costs_df = loader.load_costs(data_source='demo1')
+    costs_df = loader.load_costs(data_source="demo1")
     destinations_df = loader.load_destinations()
-    
+
     if costs_df.empty:
         logger.error("No cost data found")
         return
-    
-    logger.info(f"Loaded {len(costs_df)} cost records for {len(costs_df['destination_id'].unique())} destinations")
-    
+
+    logger.info(
+        f"Loaded {len(costs_df)} cost records for {len(costs_df['destination_id'].unique())} destinations"
+    )
+
     # Create output directory and generate dashboard
     output_dir = Path(__file__).resolve().parents[2] / ".build" / "visualizations"
     output_path = output_dir / "cost_comparison.html"
-    
+
     create_cost_dashboard(output_path, costs_df, destinations_df)
-    
+
     logger.info("Cost comparison visualization completed successfully")
     logger.info(f"View dashboard at: {output_path}")
 
