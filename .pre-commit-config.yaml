@@ -1,0 +1,53 @@
+# Pre-commit hooks configuration
+# See https://pre-commit.com for more information
+#
+# This configuration uses local/system hooks to avoid network dependencies during installation
+# All tools must be installed via requirements.txt
+
+repos:
+  # Python code formatting with Black
+  - repo: local
+    hooks:
+      - id: black
+        name: Black Code Formatter
+        entry: black
+        language: system
+        types: [python]
+        args: ['--line-length=88']
+
+  # Python linting with Flake8
+  - repo: local
+    hooks:
+      - id: flake8
+        name: Flake8 Linter
+        entry: flake8
+        language: system
+        types: [python]
+        args: ['--max-line-length=127', '--max-complexity=10', '--select=E9,F63,F7,F82,E501,W503']
+
+  # Remove trailing whitespace
+  - repo: local
+    hooks:
+      - id: trailing-whitespace
+        name: Trim Trailing Whitespace
+        entry: bash -c 'for file in "$@"; do sed -i "s/[[:space:]]*$//" "$file"; done'
+        language: system
+        types: [text]
+
+  # Check YAML validity
+  - repo: local
+    hooks:
+      - id: check-yaml
+        name: Check YAML
+        entry: python -c "import sys, yaml; [yaml.safe_load(open(f)) for f in sys.argv[1:]]"
+        language: system
+        types: [yaml]
+
+  # Check for large files
+  - repo: local
+    hooks:
+      - id: check-added-large-files
+        name: Check for Large Files
+        entry: bash -c 'for file in "$@"; do size=$(stat -c%s "$file" 2>/dev/null || stat -f%z "$file" 2>/dev/null); if [ $size -gt 512000 ]; then echo "Error - $file is larger than 500kB"; exit 1; fi; done; exit 0'
+        language: system
+        pass_filenames: true

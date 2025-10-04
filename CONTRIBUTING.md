@@ -45,6 +45,26 @@ This project follows a simple code of conduct:
    pytest
    ```
 
+5. **Install pre-commit hooks**
+   ```bash
+   # Install pre-commit
+   pip install pre-commit
+
+   # Install git hooks
+   pre-commit install
+
+   # (Optional) Run on all files to verify setup
+   pre-commit run --all-files
+   ```
+
+   Pre-commit hooks will automatically run before each commit to:
+   - Format code with Black
+   - Check code quality with Flake8
+   - Remove trailing whitespace
+   - Validate YAML files
+   - Prevent large files from being committed
+   - Check for merge conflicts
+
 ## Development Workflow
 
 We follow a GitFlow branching strategy:
@@ -74,18 +94,24 @@ We follow a GitFlow branching strategy:
 
 3. **Run quality checks**
    ```bash
+   # Run pre-commit hooks on all files (recommended)
+   pre-commit run --all-files
+
+   # Or run individual checks:
    # Format code
    black scripts tests
-   
+
    # Check for issues
    flake8 scripts tests
-   
+
    # Run tests
    pytest
-   
+
    # Check coverage
    pytest --cov=scripts --cov-report=term
    ```
+
+   **Note:** If you have pre-commit hooks installed, Black and Flake8 will run automatically on commit.
 
 4. **Commit your changes**
    ```bash
@@ -164,10 +190,10 @@ def test_function_name_scenario():
     """Test function_name when scenario occurs."""
     # Arrange - Set up test data
     input_data = ...
-    
+
     # Act - Execute the function
     result = function_name(input_data)
-    
+
     # Assert - Verify the result
     assert result == expected_value
 ```
@@ -191,8 +217,7 @@ pytest tests/test_data.py::test_load_data_types
 
 1. **Before submitting:**
    - Run all tests and ensure they pass
-   - Format code with Black
-   - Check for linting errors with flake8
+   - Run `pre-commit run --all-files` (or ensure hooks passed on commit)
    - Update documentation if needed
    - Rebase on latest `develop` if needed
 

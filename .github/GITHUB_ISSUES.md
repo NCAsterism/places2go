@@ -7,8 +7,8 @@ This document contains detailed GitHub issues that can be created and assigned t
 ## Phase 2: Enhanced Testing & Code Quality (v0.2.0)
 
 ### Issue #1: Add Tests for Chart Generation Functions
-**Labels:** `testing`, `phase-2`, `high-priority`  
-**Assignee:** GitHub Agent  
+**Labels:** `testing`, `phase-2`, `high-priority`
+**Assignee:** GitHub Agent
 **Estimated Effort:** 4 hours
 
 **Description:**
@@ -47,9 +47,9 @@ def test_create_flight_cost_chart_creates_file(tmp_path, sample_df):
     """Test that chart function creates HTML file."""
     output_dir = tmp_path / "output"
     output_dir.mkdir()
-    
+
     create_flight_cost_chart(sample_df, output_dir)
-    
+
     assert (output_dir / "flight_costs.html").exists()
 ```
 
@@ -60,8 +60,8 @@ def test_create_flight_cost_chart_creates_file(tmp_path, sample_df):
 ---
 
 ### Issue #2: Add Integration Test for Full Dashboard Workflow
-**Labels:** `testing`, `phase-2`, `integration`, `high-priority`  
-**Assignee:** GitHub Agent  
+**Labels:** `testing`, `phase-2`, `integration`, `high-priority`
+**Assignee:** GitHub Agent
 **Estimated Effort:** 2 hours
 
 **Description:**
@@ -94,12 +94,12 @@ def test_full_dashboard_workflow(tmp_path):
     data_path = project_root / "data" / "dummy_data.csv"
     output_dir = tmp_path / "output"
     output_dir.mkdir()
-    
+
     # Execute full workflow
     df = load_data(data_path)
     create_flight_cost_chart(df, output_dir)
     create_time_vs_cost_chart(df, output_dir)
-    
+
     # Verify
     assert (output_dir / "flight_costs.html").exists()
     assert (output_dir / "flight_time_vs_cost.html").exists()
@@ -109,8 +109,8 @@ def test_full_dashboard_workflow(tmp_path):
 ---
 
 ### Issue #3: Add Type Hints to All Functions in dashboard.py
-**Labels:** `code-quality`, `phase-2`, `medium-priority`  
-**Assignee:** GitHub Agent  
+**Labels:** `code-quality`, `phase-2`, `medium-priority`
+**Assignee:** GitHub Agent
 **Estimated Effort:** 2 hours
 
 **Description:**
@@ -140,10 +140,10 @@ import plotly.express as px
 
 def load_data(csv_path: Path) -> pd.DataFrame:
     """Read the destination dataset from a CSV file.
-    
+
     Args:
         csv_path: Path to the CSV file containing destination data.
-    
+
     Returns:
         A pandas DataFrame with the dataset.
     """
@@ -157,8 +157,8 @@ def load_data(csv_path: Path) -> pd.DataFrame:
 ---
 
 ### Issue #4: Configure mypy for Static Type Checking
-**Labels:** `code-quality`, `phase-2`, `tooling`, `medium-priority`  
-**Assignee:** GitHub Agent  
+**Labels:** `code-quality`, `phase-2`, `tooling`, `medium-priority`
+**Assignee:** GitHub Agent
 **Estimated Effort:** 1 hour
 
 **Description:**
@@ -206,8 +206,8 @@ exclude = [
 ---
 
 ### Issue #5: Add Logging Framework Throughout Dashboard
-**Labels:** `code-quality`, `phase-2`, `high-priority`  
-**Assignee:** GitHub Agent  
+**Labels:** `code-quality`, `phase-2`, `high-priority`
+**Assignee:** GitHub Agent
 **Estimated Effort:** 3 hours
 
 **Description:**
@@ -261,8 +261,8 @@ logger.error(f"Failed to create chart: {error}")
 ---
 
 ### Issue #6: Add Custom Exceptions for Domain Errors
-**Labels:** `code-quality`, `phase-2`, `error-handling`, `medium-priority`  
-**Assignee:** GitHub Agent  
+**Labels:** `code-quality`, `phase-2`, `error-handling`, `medium-priority`
+**Assignee:** GitHub Agent
 **Estimated Effort:** 2 hours
 
 **Description:**
@@ -303,7 +303,7 @@ class DataLoadError(DashboardError):
 
 class DataValidationError(DashboardError):
     """Raised when data fails validation checks."""
-    
+
     def __init__(self, missing_columns: list[str]):
         self.missing_columns = missing_columns
         super().__init__(
@@ -318,8 +318,8 @@ class ChartGenerationError(DashboardError):
 ---
 
 ### Issue #7: Add Data Validation with Error Handling
-**Labels:** `code-quality`, `phase-2`, `high-priority`, `error-handling`  
-**Assignee:** GitHub Agent  
+**Labels:** `code-quality`, `phase-2`, `high-priority`, `error-handling`
+**Assignee:** GitHub Agent
 **Estimated Effort:** 3 hours
 
 **Description:**
@@ -349,10 +349,10 @@ from scripts.exceptions import DataValidationError, MissingColumnError
 
 def validate_dataframe(df: pd.DataFrame) -> None:
     """Validate DataFrame meets requirements.
-    
+
     Args:
         df: DataFrame to validate
-        
+
     Raises:
         DataValidationError: If validation fails
         MissingColumnError: If required columns missing
@@ -361,14 +361,14 @@ def validate_dataframe(df: pd.DataFrame) -> None:
         'Destination', 'Airport', 'Flight Cost (GBP)',
         'Flight Time (hrs)', 'Avg Temp (°C)'
     ]
-    
+
     missing = [col for col in required_columns if col not in df.columns]
     if missing:
         raise MissingColumnError(missing)
-    
+
     if df.empty:
         raise DataValidationError("DataFrame is empty")
-    
+
     # Validate positive costs
     cost_col = 'Flight Cost (GBP)'
     if (df[cost_col] <= 0).any():
@@ -378,8 +378,8 @@ def validate_dataframe(df: pd.DataFrame) -> None:
 ---
 
 ### Issue #8: Add Pre-commit Hooks for Code Quality
-**Labels:** `tooling`, `phase-2`, `developer-experience`, `medium-priority`  
-**Assignee:** GitHub Agent  
+**Labels:** `tooling`, `phase-2`, `developer-experience`, `medium-priority`
+**Assignee:** GitHub Agent
 **Estimated Effort:** 2 hours
 
 **Description:**
@@ -414,13 +414,13 @@ repos:
     hooks:
       - id: black
         language_version: python3.11
-        
+
   - repo: https://github.com/PyCQA/flake8
     rev: 7.0.0
     hooks:
       - id: flake8
         args: ['--max-line-length=88', '--extend-ignore=E203']
-        
+
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v4.5.0
     hooks:
@@ -447,8 +447,8 @@ pre-commit run --all-files
 ## Phase 3: Data Module Architecture (v0.3.0)
 
 ### Issue #9: Create Data Module Directory Structure
-**Labels:** `architecture`, `phase-3`, `high-priority`  
-**Assignee:** GitHub Agent  
+**Labels:** `architecture`, `phase-3`, `high-priority`
+**Assignee:** GitHub Agent
 **Estimated Effort:** 1 hour
 
 **Description:**
@@ -492,8 +492,8 @@ src/
 ---
 
 ### Issue #10: Implement Abstract DataSource Base Class
-**Labels:** `architecture`, `phase-3`, `high-priority`  
-**Assignee:** GitHub Agent  
+**Labels:** `architecture`, `phase-3`, `high-priority`
+**Assignee:** GitHub Agent
 **Estimated Effort:** 3 hours
 
 **Description:**
@@ -527,72 +527,72 @@ import pandas as pd
 
 class DataSource(ABC):
     """Abstract base class for all data sources.
-    
+
     All data sources must implement fetch(), validate(), and caching methods.
     This ensures consistent interface across different data providers.
     """
-    
+
     def __init__(self, cache_ttl: timedelta = timedelta(hours=24)):
         """Initialize data source.
-        
+
         Args:
             cache_ttl: Time-to-live for cached data
         """
         self.cache_ttl = cache_ttl
         self._cache: Optional[pd.DataFrame] = None
         self._cache_time: Optional[datetime] = None
-    
+
     @abstractmethod
     def fetch(self, **kwargs) -> pd.DataFrame:
         """Fetch data from source.
-        
+
         Returns:
             DataFrame with fetched data
-            
+
         Raises:
             DataLoadError: If fetch fails
         """
         pass
-    
+
     @abstractmethod
     def validate(self, df: pd.DataFrame) -> bool:
         """Validate data quality.
-        
+
         Args:
             df: DataFrame to validate
-            
+
         Returns:
             True if valid, False otherwise
-            
+
         Raises:
             DataValidationError: If critical validation fails
         """
         pass
-    
+
     def get_data(self, use_cache: bool = True, **kwargs) -> pd.DataFrame:
         """Get data, using cache if available and valid.
-        
+
         Args:
             use_cache: Whether to use cached data if available
             **kwargs: Arguments passed to fetch()
-            
+
         Returns:
             DataFrame with data
         """
         if use_cache and self._is_cache_valid():
             return self._cache.copy()
-        
+
         df = self.fetch(**kwargs)
         self.validate(df)
         self._update_cache(df)
         return df
-    
+
     def _is_cache_valid(self) -> bool:
         """Check if cache is still valid."""
         if self._cache is None or self._cache_time is None:
             return False
         return datetime.now() - self._cache_time < self.cache_ttl
-    
+
     def _update_cache(self, df: pd.DataFrame) -> None:
         """Update cache with new data."""
         self._cache = df.copy()
@@ -602,8 +602,8 @@ class DataSource(ABC):
 ---
 
 ### Issue #11: Implement Pydantic Models for Data Validation
-**Labels:** `architecture`, `phase-3`, `data-modeling`, `high-priority`  
-**Assignee:** GitHub Agent  
+**Labels:** `architecture`, `phase-3`, `data-modeling`, `high-priority`
+**Assignee:** GitHub Agent
 **Estimated Effort:** 4 hours
 
 **Description:**
@@ -637,27 +637,27 @@ from datetime import datetime
 
 class FlightInfo(BaseModel):
     """Flight information for a destination."""
-    
+
     origin_airport: str = Field(..., description="Origin airport code (e.g., 'EXT')")
     destination: str = Field(..., description="Destination city name")
     cost_gbp: float = Field(..., gt=0, description="Flight cost in GBP")
     duration_hours: float = Field(..., gt=0, description="Flight duration in hours")
     checked_at: datetime = Field(default_factory=datetime.now)
-    
+
     @validator('origin_airport')
     def validate_airport_code(cls, v):
         """Ensure airport code is uppercase and 3 characters."""
         if len(v) != 3:
             raise ValueError('Airport code must be 3 characters')
         return v.upper()
-    
+
     @validator('cost_gbp')
     def validate_reasonable_cost(cls, v):
         """Ensure cost is within reasonable range."""
         if v > 10000:
             raise ValueError('Flight cost seems unreasonably high')
         return v
-    
+
     class Config:
         json_schema_extra = {
             "example": {
@@ -670,7 +670,7 @@ class FlightInfo(BaseModel):
 
 class WeatherInfo(BaseModel):
     """Weather information for a destination."""
-    
+
     destination: str
     temperature_celsius: float = Field(..., ge=-50, le=60)
     uv_index: int = Field(..., ge=0, le=11)
@@ -679,21 +679,21 @@ class WeatherInfo(BaseModel):
 
 class CostInfo(BaseModel):
     """Cost of living information."""
-    
+
     destination: str
     monthly_living_gbp: float = Field(..., gt=0)
     meal_cost_gbp: float = Field(..., gt=0)
     beer_cost_gbp: float = Field(..., gt=0)
     transport_monthly_gbp: Optional[float] = Field(None, gt=0)
-    
+
 class Destination(BaseModel):
     """Complete destination information."""
-    
+
     name: str
     flight: FlightInfo
     weather: WeatherInfo
     costs: CostInfo
-    
+
     def total_monthly_cost(self) -> float:
         """Calculate estimated total monthly cost including flight amortization."""
         # Amortize flight cost over 3 months
@@ -704,8 +704,8 @@ class Destination(BaseModel):
 ---
 
 ### Issue #12: Refactor CSV Loading into CSVDataSource Class
-**Labels:** `refactoring`, `phase-3`, `high-priority`  
-**Assignee:** GitHub Agent  
+**Labels:** `refactoring`, `phase-3`, `high-priority`
+**Assignee:** GitHub Agent
 **Estimated Effort:** 3 hours
 
 **Description:**
@@ -740,31 +740,31 @@ from scripts.exceptions import DataLoadError, DataValidationError
 
 class CSVDataSource(DataSource):
     """Data source for CSV files."""
-    
+
     def __init__(self, csv_path: Path, **kwargs):
         """Initialize CSV data source.
-        
+
         Args:
             csv_path: Path to CSV file
         """
         super().__init__(**kwargs)
         self.csv_path = Path(csv_path)
-        
+
         if not self.csv_path.exists():
             raise DataLoadError(f"CSV file not found: {csv_path}")
-    
+
     def fetch(self, **kwargs) -> pd.DataFrame:
         """Load data from CSV file.
-        
+
         Returns:
             DataFrame with CSV data
-            
+
         Raises:
             DataLoadError: If CSV cannot be loaded
         """
         try:
             df = pd.read_csv(self.csv_path)
-            
+
             # Convert numeric columns
             numeric_cols = [
                 'Flight Cost (GBP)', 'Flight Time (hrs)',
@@ -775,21 +775,21 @@ class CSVDataSource(DataSource):
             df[numeric_cols] = df[numeric_cols].apply(
                 pd.to_numeric, errors='coerce'
             )
-            
+
             return df
-            
+
         except Exception as e:
             raise DataLoadError(f"Failed to load CSV: {e}")
-    
+
     def validate(self, df: pd.DataFrame) -> bool:
         """Validate CSV data quality.
-        
+
         Args:
             df: DataFrame to validate
-            
+
         Returns:
             True if valid
-            
+
         Raises:
             DataValidationError: If validation fails
         """
@@ -797,23 +797,23 @@ class CSVDataSource(DataSource):
             'Destination', 'Airport', 'Flight Cost (GBP)',
             'Flight Time (hrs)', 'Avg Temp (°C)', 'UV Index'
         }
-        
+
         missing = required_columns - set(df.columns)
         if missing:
             raise DataValidationError(
                 f"Missing required columns: {missing}"
             )
-        
+
         if df.empty:
             raise DataValidationError("DataFrame is empty")
-        
+
         # Check for null values in critical columns
         critical_nulls = df[list(required_columns)].isnull().sum()
         if critical_nulls.any():
             raise DataValidationError(
                 f"Null values in critical columns: {critical_nulls[critical_nulls > 0]}"
             )
-        
+
         return True
 
 # Usage in dashboard.py
@@ -822,11 +822,11 @@ from src.data.sources.csv_source import CSVDataSource
 def main():
     project_root = Path(__file__).resolve().parents[1]
     data_path = project_root / 'data' / 'dummy_data.csv'
-    
+
     # Use new data source
     csv_source = CSVDataSource(data_path)
     df = csv_source.get_data()
-    
+
     # Rest of dashboard logic...
 ```
 

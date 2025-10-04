@@ -60,9 +60,9 @@ def test_create_flight_cost_chart_creates_file(tmp_path, sample_df):
     \"\"\"Test that chart function creates HTML file.\"\"\"
     output_dir = tmp_path / "output"
     output_dir.mkdir()
-    
+
     create_flight_cost_chart(sample_df, output_dir)
-    
+
     assert (output_dir / "flight_costs.html").exists()
 ```
 
@@ -109,12 +109,12 @@ def test_full_dashboard_workflow(tmp_path):
     data_path = project_root / "data" / "dummy_data.csv"
     output_dir = tmp_path / "output"
     output_dir.mkdir()
-    
+
     # Execute full workflow
     df = load_data(data_path)
     create_flight_cost_chart(df, output_dir)
     create_time_vs_cost_chart(df, output_dir)
-    
+
     # Verify
     assert (output_dir / "flight_costs.html").exists()
     assert (output_dir / "flight_time_vs_cost.html").exists()
@@ -157,10 +157,10 @@ import plotly.express as px
 
 def load_data(csv_path: Path) -> pd.DataFrame:
     \"\"\"Read the destination dataset from a CSV file.
-    
+
     Args:
         csv_path: Path to the CSV file containing destination data.
-    
+
     Returns:
         A pandas DataFrame with the dataset.
     \"\"\"
@@ -395,10 +395,7 @@ def check_gh_cli():
     """Check if GitHub CLI is installed and authenticated."""
     try:
         result = subprocess.run(
-            ["gh", "auth", "status"],
-            capture_output=True,
-            text=True,
-            check=True
+            ["gh", "auth", "status"], capture_output=True, text=True, check=True
         )
         print("✓ GitHub CLI is authenticated")
         return True
@@ -413,25 +410,25 @@ def check_gh_cli():
 def create_issue(issue):
     """Create a single GitHub issue."""
     print(f"\nCreating Issue #{issue['number']}: {issue['title']}...")
-    
+
     # Build the command
     cmd = [
-        "gh", "issue", "create",
-        "--title", issue["title"],
-        "--body", issue["body"],
-        "--label", ",".join(issue["labels"]),
+        "gh",
+        "issue",
+        "create",
+        "--title",
+        issue["title"],
+        "--body",
+        issue["body"],
+        "--label",
+        ",".join(issue["labels"]),
     ]
-    
+
     if "milestone" in issue:
         cmd.extend(["--milestone", issue["milestone"]])
-    
+
     try:
-        result = subprocess.run(
-            cmd,
-            capture_output=True,
-            text=True,
-            check=True
-        )
+        result = subprocess.run(cmd, capture_output=True, text=True, check=True)
         print(f"✓ Created: {result.stdout.strip()}")
         return True
     except subprocess.CalledProcessError as e:
@@ -444,29 +441,29 @@ def main():
     print("=" * 60)
     print("GitHub Issues Creator for Places2Go")
     print("=" * 60)
-    
+
     # Check prerequisites
     if not check_gh_cli():
         sys.exit(1)
-    
+
     print(f"\nReady to create {len(ISSUES)} issues for Phase 2")
     response = input("\nProceed? (y/n): ")
-    
-    if response.lower() != 'y':
+
+    if response.lower() != "y":
         print("Cancelled.")
         sys.exit(0)
-    
+
     # Create issues
     success_count = 0
     for issue in ISSUES:
         if create_issue(issue):
             success_count += 1
-    
+
     # Summary
     print("\n" + "=" * 60)
     print(f"Summary: {success_count}/{len(ISSUES)} issues created successfully")
     print("=" * 60)
-    
+
     if success_count == len(ISSUES):
         print("\n✓ All issues created! View them with: gh issue list")
     else:
