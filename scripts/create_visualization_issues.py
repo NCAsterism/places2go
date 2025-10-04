@@ -27,7 +27,8 @@ Create an interactive HTML page to visualize destination locations on a map with
 ## Data Source
 - File: `data/destinations/destinations.csv`
 - DataLoader: `loader.load_destinations()`
-- Fields: destination_id, name, country, country_code, region, latitude, longitude, timezone, airport_code, airport_name, origin_airport
+- Fields: destination_id, name, country, country_code, region, latitude,
+  longitude, timezone, airport_code, airport_name, origin_airport
 
 ## Technical Requirements
 - Use Plotly for interactive map (mapbox or scatter_geo)
@@ -71,7 +72,10 @@ Create an interactive HTML page to compare cost of living across destinations wi
 ## Data Source
 - File: `data/destinations/cost_of_living.csv`
 - DataLoader: `loader.load_costs(data_source='demo1')`
-- Fields: destination_id, data_date, currency, monthly_living_cost, rent_1br_center, rent_1br_outside, monthly_food, monthly_transport, utilities, internet, meal_inexpensive, meal_mid_range, beer_domestic, weed_cost_per_gram, data_source
+- Fields: destination_id, data_date, currency, monthly_living_cost,
+  rent_1br_center, rent_1br_outside, monthly_food, monthly_transport,
+  utilities, internet, meal_inexpensive, meal_mid_range, beer_domestic,
+  weed_cost_per_gram, data_source
 
 ## Technical Requirements
 - Use Plotly for interactive bar charts
@@ -122,7 +126,9 @@ Create an interactive HTML page showing flight price trends over time with filte
 ## Data Source
 - File: `data/flights/flight_prices.csv`
 - DataLoader: `loader.load_flights(data_source='demo1')`
-- Fields: flight_id, destination_id, origin_airport, search_date, departure_date, return_date, price, currency, flight_duration_hours, distance_km, airline, direct_flight, data_source
+- Fields: flight_id, destination_id, origin_airport, search_date,
+  departure_date, return_date, price, currency, flight_duration_hours,
+  distance_km, airline, direct_flight, data_source
 
 ## Technical Requirements
 - Use Plotly for time-series line charts
@@ -179,7 +185,9 @@ Create an interactive HTML page displaying weather forecasts with multiple chart
 ## Data Source
 - File: `data/weather/weather_data.csv`
 - DataLoader: `loader.load_weather(data_source='demo1', forecast_only=True)`
-- Fields: weather_id, destination_id, date, temp_high_c, temp_low_c, temp_avg_c, rainfall_mm, humidity_percent, sunshine_hours, wind_speed_kmh, conditions, uv_index, forecast_flag, data_source
+- Fields: weather_id, destination_id, date, temp_high_c, temp_low_c,
+  temp_avg_c, rainfall_mm, humidity_percent, sunshine_hours,
+  wind_speed_kmh, conditions, uv_index, forecast_flag, data_source
 
 ## Technical Requirements
 - Use Plotly for interactive charts
@@ -390,7 +398,7 @@ For each page (destinations map, costs, flights, weather, overlay):
 ]
 
 
-def main():
+def main() -> None:
     """Generate GitHub issue creation script."""
     print("=" * 70)
     print("Visualization Issues Generator")
@@ -414,9 +422,9 @@ def main():
     for i, issue in enumerate(ISSUES, 1):
         print(f"{i}. {issue['title']}")
         print(f"   Labels: {', '.join(issue['labels'])}")
-        effort = [
-            line for line in issue["body"].split("\n") if "Estimated Effort" in line
-        ]
+        body = issue["body"]
+        assert isinstance(body, str)  # Type narrowing for mypy
+        effort = [line for line in body.split("\n") if "Estimated Effort" in line]
         if effort:
             print(f"   {effort[0].strip()}")
         print()
@@ -434,8 +442,10 @@ def main():
         body_file = f".build/issue_{i}_body.md"
 
         # Save body to temp file for easier CLI usage
+        body = issue["body"]
+        assert isinstance(body, str)  # Type narrowing for mypy
         with open(body_file, "w") as f:
-            f.write(issue["body"])
+            f.write(body)
 
         print(f"# Issue {i}: {title}")
         print(
