@@ -116,6 +116,8 @@ We follow a GitFlow branching strategy:
    ```
    Then open a PR on GitHub targeting the `develop` branch.
 
+   **Important:** Review our [PR Best Practices](docs/PR_BEST_PRACTICES.md) guide before creating PRs to avoid merge conflicts and ensure smooth collaboration.
+
 ## Code Style Guide
 
 ### Python Style
