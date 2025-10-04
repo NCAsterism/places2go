@@ -74,7 +74,8 @@ def create_interactive_map(df: pd.DataFrame) -> go.Figure:
             f"Country: {row['country']}<br>"
             f"Region: {row['region']}<br>"
             f"Airport: {row['airport_name']} ({row['airport_code']})<br>"
-            f"Coordinates: {row['latitude']:.4f}°N, {row['longitude']:.4f}°E<br>"
+            f"Coordinates: {row['latitude']:.4f}°N, "
+            f"{abs(row['longitude']):.4f}°{'E' if row['longitude'] >= 0 else 'W'}<br>"
             f"Timezone: {row['timezone']}<br>"
             f"Origin: {row['origin_airport']}"
         )
