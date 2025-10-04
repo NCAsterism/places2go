@@ -1,7 +1,0 @@
-2025-10-04 22:22:13,077 - __main__ - INFO - Starting dashboard generation
-2025-10-04 22:22:13,079 - __main__ - INFO - Loading data from D:\repo\places2go\data\dummy_data.csv
-2025-10-04 22:22:13,292 - __main__ - INFO - Creating flight cost chart
-2025-10-04 22:22:14,370 - __main__ - INFO - Flight cost chart saved to D:\repo\places2go\output\flight_costs.html
-2025-10-04 22:22:14,370 - __main__ - INFO - Creating flight time vs cost chart
-2025-10-04 22:22:14,501 - __main__ - INFO - Flight time vs cost chart saved to D:\repo\places2go\output\flight_time_vs_cost.html
-2025-10-04 22:22:14,502 - __main__ - INFO - Dashboard generation completed successfully

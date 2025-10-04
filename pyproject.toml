@@ -37,11 +37,6 @@ dev = [
     "flake8>=6.0.0",
 ]
 
-[tool.setuptools.packages.find]
-where = ["."]
-include = ["scripts*", "tests*"]
-exclude = ["data*", "logs*", "output*", "wiki*", "htmlcov*"]
-
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 python_files = "test_*.py"
