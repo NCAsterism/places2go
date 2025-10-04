@@ -94,7 +94,7 @@ def create_time_vs_cost_chart(df: pd.DataFrame, output_dir: Path) -> None:
     print(f"Flight time vs cost chart saved to {output_path}")
 
 
-def main():
+def main() -> None:
     project_root = Path(__file__).resolve().parents[1]
     data_path = project_root / "data" / "dummy_data.csv"
     output_dir = project_root / "output"
