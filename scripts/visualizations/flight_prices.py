@@ -434,7 +434,7 @@ def create_flight_dashboard(
     <script src="https://cdn.plot.ly/plotly-2.26.0.min.js"></script>
     <style>
         body {{
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;  # noqa: E501
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
             margin: 0;
             padding: 20px;
             background: #f5f5f5;
