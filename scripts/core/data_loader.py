@@ -9,7 +9,7 @@ dedicated files with proper no        if forecast_only:
 
 import pandas as pd
 from pathlib import Path
-from typing import Optional, List, Dict
+from typing import Optional, List, Dict, Union
 
 
 class DataLoader:
@@ -490,7 +490,7 @@ class DataLoader:
 
         return result
 
-    def clear_cache(self):
+    def clear_cache(self) -> None:
         """Clear all cached DataFrames to force reload on next access."""
         self.destinations_df = None
         self.costs_df = None
@@ -499,7 +499,9 @@ class DataLoader:
 
 
 # Convenience function for quick loading
-def load_data(data_source: Optional[str] = None, merge: bool = True) -> DataLoader:
+def load_data(
+    data_source: Optional[str] = None, merge: bool = True
+) -> Union[DataLoader, pd.DataFrame]:
     """
     Convenience function to create a DataLoader and optionally load all data.
 

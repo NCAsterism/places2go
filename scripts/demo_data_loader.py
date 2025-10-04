@@ -9,7 +9,7 @@ Run this script to see examples of all DataLoader features.
 from scripts.core.data_loader import DataLoader, load_data
 
 
-def main():
+def main() -> None:
     """Demonstrate DataLoader features."""
     print("=" * 70)
     print("DataLoader Demonstration")
