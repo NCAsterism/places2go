@@ -232,7 +232,7 @@ def create_airline_comparison_chart(
                 x=airline_data["name"],
                 y=airline_data["price"],
                 name=airline,
-                hovertemplate="<b>%{fullData.name}</b><br>"
+                hovertemplate="<b>%{name}</b><br>"
                 + "%{x}<br>"
                 + "Avg Price: £%{y:.0f}<extra></extra>",
             )
