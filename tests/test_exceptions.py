@@ -85,7 +85,7 @@ class TestMissingColumnError:
             "Weed Cost (GBP per gram)\n"
             "Barcelona,Exeter,2.5,18.0,7,2500,15.0,5.0,10.0"
         )
-        csv_path.write_text(csv_data)
+        csv_path.write_text(csv_data, encoding="utf-8")
 
         with pytest.raises(MissingColumnError) as exc_info:
             load_data(csv_path)
