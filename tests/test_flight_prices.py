@@ -157,27 +157,21 @@ class TestAirlineComparisonChart:
 
     def test_creates_figure(self, sample_flights_df, sample_destinations_df):
         """Test that airline comparison chart creates a figure."""
-        fig = create_airline_comparison_chart(
-            sample_flights_df, sample_destinations_df
-        )
+        fig = create_airline_comparison_chart(sample_flights_df, sample_destinations_df)
 
         assert fig is not None
         assert len(fig.data) > 0
 
     def test_includes_airlines(self, sample_flights_df, sample_destinations_df):
         """Test that chart includes airlines."""
-        fig = create_airline_comparison_chart(
-            sample_flights_df, sample_destinations_df
-        )
+        fig = create_airline_comparison_chart(sample_flights_df, sample_destinations_df)
 
         # Should have traces for airlines
         assert len(fig.data) >= 2
 
     def test_has_correct_layout(self, sample_flights_df, sample_destinations_df):
         """Test that chart has proper layout settings."""
-        fig = create_airline_comparison_chart(
-            sample_flights_df, sample_destinations_df
-        )
+        fig = create_airline_comparison_chart(sample_flights_df, sample_destinations_df)
 
         assert "Average Price by Airline" in fig.layout.title.text
         assert fig.layout.xaxis.title.text == "Destination"
@@ -189,27 +183,21 @@ class TestDurationVsCostScatter:
 
     def test_creates_figure(self, sample_flights_df, sample_destinations_df):
         """Test that duration vs cost scatter creates a figure."""
-        fig = create_duration_vs_cost_scatter(
-            sample_flights_df, sample_destinations_df
-        )
+        fig = create_duration_vs_cost_scatter(sample_flights_df, sample_destinations_df)
 
         assert fig is not None
         assert len(fig.data) > 0
 
     def test_includes_destinations(self, sample_flights_df, sample_destinations_df):
         """Test that scatter plot includes destinations."""
-        fig = create_duration_vs_cost_scatter(
-            sample_flights_df, sample_destinations_df
-        )
+        fig = create_duration_vs_cost_scatter(sample_flights_df, sample_destinations_df)
 
         # Should have one trace per destination
         assert len(fig.data) == 2
 
     def test_has_correct_layout(self, sample_flights_df, sample_destinations_df):
         """Test that scatter plot has proper layout settings."""
-        fig = create_duration_vs_cost_scatter(
-            sample_flights_df, sample_destinations_df
-        )
+        fig = create_duration_vs_cost_scatter(sample_flights_df, sample_destinations_df)
 
         assert "Flight Duration vs Cost" in fig.layout.title.text
         assert fig.layout.xaxis.title.text == "Duration (hours)"
