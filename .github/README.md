@@ -1,19 +1,109 @@
-# GitHub Issues Setup - Ready for Automation
+# GitHub Configuration & Automation
 
 ## Overview
-This directory contains everything needed to create and manage GitHub issues for the Places2Go project. Issues are organized by phase and can be created manually or automatically using the provided scripts.
+This directory contains GitHub configuration files, issue templates, and workflow automation for the Places2Go project. It includes CI/CD workflows, issue templates, and editor configuration to ensure consistent development practices.
 
-## Files
+## Directory Structure
 
-### Issue Templates
-Located in `.github/ISSUE_TEMPLATE/`:
-- `feature_request.md` - Template for new feature requests
-- `bug_report.md` - Template for bug reports
-- `test_task.md` - Template for testing tasks
+```
+.github/
+├── workflows/
+│   └── ci.yml                  # Continuous Integration workflow
+├── ISSUE_TEMPLATE/
+│   ├── feature_request.md      # Feature request template
+│   ├── bug_report.md           # Bug report template
+│   └── test_task.md            # Testing task template
+├── GITHUB_ISSUES.md            # Detailed issue descriptions
+└── README.md                   # This file
+```
 
-### Issue Definitions
-- `GITHUB_ISSUES.md` - Detailed issue descriptions for Phases 2-3
-- `create_issues.py` - Python script to auto-create Phase 2 issues
+## Configuration Files
+
+### `.editorconfig` (Project Root)
+Ensures consistent coding styles across different editors and IDEs.
+
+**Key Features:**
+- Auto-trim trailing whitespace (prevents pre-commit hook failures)
+- UTF-8 encoding by default
+- Consistent indentation (4 spaces for Python, 2 for YAML/JSON)
+- LF line endings (Unix-style)
+- Final newline insertion
+
+**Language-Specific Rules:**
+- Python: 4 spaces, max line length 127
+- YAML/JSON: 2 spaces
+- Markdown: Preserves trailing spaces (for line breaks)
+- Shell/PowerShell: Configured appropriately
+
+**Benefits:**
+- Prevents trailing whitespace before pre-commit even runs
+- No more "files were modified by this hook" messages
+- Works with VS Code, PyCharm, Sublime, etc.
+- Zero configuration needed for contributors
+
+### `.pre-commit-config.yaml` (Project Root)
+Git hooks for code quality and consistency.
+
+**Hooks:**
+1. **Black** - Python code formatter (line length: 88)
+2. **Flake8** - Python linter (max line length: 127)
+3. **trailing-whitespace** - Remove trailing whitespace
+4. **end-of-file-fixer** - Ensure files end with newline
+5. **check-yaml** - Validate YAML syntax
+6. **check-added-large-files** - Prevent files >500KB
+7. **check-merge-conflict** - Detect merge conflict markers
+
+**Usage:**
+```bash
+# Install pre-commit hooks
+pre-commit install
+
+# Run manually
+pre-commit run --all-files
+```
+
+### `.github/workflows/ci.yml`
+Continuous Integration workflow for automated testing and quality checks.
+
+**Trigger Events:**
+- `push` to main/develop branches
+- `pull_request` to main/develop branches
+- `pull_request_target` for automated contributors (Copilot, bots)
+
+**Why pull_request_target?**
+- GitHub requires manual approval for workflows from first-time contributors
+- `pull_request_target` allows trusted automated contributors (like Copilot) to run CI without approval
+- Safer than disabling workflow approval entirely
+- Copilot is part of GitHub ecosystem and trusted
+
+**Permissions:**
+```yaml
+permissions:
+  contents: read        # Read repository contents
+  pull-requests: write  # Comment on PRs
+  checks: write         # Write check results
+```
+
+**Test Matrix:**
+- Python 3.9, 3.10, 3.11, 3.12
+- Ubuntu latest
+- Parallel execution for faster feedback
+
+**Steps:**
+1. Checkout code
+2. Setup Python environment
+3. Install dependencies (with editable install)
+4. Lint with Flake8
+5. Check formatting with Black
+6. Type check with mypy
+7. Run tests with pytest (coverage)
+8. Upload coverage to Codecov
+
+**Benefits:**
+- No more manual workflow approvals for Copilot PRs
+- Fast feedback (4 Python versions in parallel)
+- Comprehensive quality checks
+- Automated coverage reporting
 
 ## Phase 2 Issues (v0.2.0) - 8 Issues Ready
 
@@ -265,6 +355,79 @@ A: Yes, add more .md files to `.github/ISSUE_TEMPLATE/`.
 
 **Q: How do I track progress?**
 A: Use GitHub Projects board or run `gh issue list --milestone "v0.2.0"`.
+
+**Q: Why do I keep getting trailing whitespace failures?**
+A: Make sure your editor supports EditorConfig, or install the plugin. The `.editorconfig` file will automatically trim whitespace.
+
+**Q: Why do I need to approve workflows for PRs?**
+A: For security, GitHub requires approval for workflows from first-time contributors. We've configured `pull_request_target` for trusted bots like Copilot.
+
+**Q: How do I fix "files were modified by this hook" errors?**
+A: The `.editorconfig` file should prevent these. If you still see them, stage the auto-fixed files and commit again: `git add -u && git commit --amend --no-edit`
+
+## Troubleshooting
+
+### Trailing Whitespace Issues
+
+**Problem:** Pre-commit hook keeps failing with "files were modified by this hook"
+
+**Solutions:**
+1. **Install EditorConfig plugin in your editor:**
+   - VS Code: [EditorConfig for VS Code](https://marketplace.visualstudio.com/items?itemName=EditorConfig.EditorConfig)
+   - PyCharm: Built-in support (enable in Settings → Editor → Code Style)
+   - Sublime: Package Control → Install "EditorConfig"
+
+2. **Configure VS Code to trim whitespace:**
+   ```json
+   // settings.json
+   {
+     "files.trimTrailingWhitespace": true,
+     "files.insertFinalNewline": true
+   }
+   ```
+
+3. **Run pre-commit manually before committing:**
+   ```bash
+   pre-commit run --all-files
+   git add -u
+   git commit -m "your message"
+   ```
+
+### Workflow Approval Required
+
+**Problem:** "Workflow requires approval to run on this pull request"
+
+**Root Cause:** GitHub security feature for first-time contributors
+
+**Solutions:**
+1. **For repository owner/collaborators:** Click "Approve and run" (one-time per contributor)
+2. **For automated contributors (Copilot):** Already configured with `pull_request_target` - should auto-run
+3. **For future contributors:** Add them as collaborators to skip approval
+
+### CI Failures
+
+**Problem:** CI tests failing on GitHub but passing locally
+
+**Common Causes:**
+1. **Package not installed:** CI runs `pip install -e .` - make sure your local environment matches
+2. **Python version mismatch:** CI tests Python 3.9-3.12 - test locally with `tox` or multiple Python versions
+3. **Formatting differences:** Run `black scripts tests` locally before pushing
+4. **Type errors:** Run `mypy scripts/` locally to catch type issues
+
+**Debug Steps:**
+```bash
+# Match CI environment locally
+python -m venv .venv
+source .venv/bin/activate  # or .venv\Scripts\activate on Windows
+pip install -r requirements.txt
+pip install -e .
+
+# Run all CI checks locally
+flake8 scripts tests --max-line-length=127
+black --check scripts tests
+mypy scripts/
+pytest --cov=scripts
+```
 
 ---
 
