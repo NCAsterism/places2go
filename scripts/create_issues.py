@@ -17,6 +17,7 @@ Prerequisites:
 import subprocess
 import sys
 from pathlib import Path
+from typing import Dict, Any
 
 # Issue definitions
 ISSUES = [
@@ -391,14 +392,11 @@ pre-commit run --all-files
 ]
 
 
-def check_gh_cli():
+def check_gh_cli() -> bool:
     """Check if GitHub CLI is installed and authenticated."""
     try:
         result = subprocess.run(
-            ["gh", "auth", "status"],
-            capture_output=True,
-            text=True,
-            check=True
+            ["gh", "auth", "status"], capture_output=True, text=True, check=True
         )
         print("✓ GitHub CLI is authenticated")
         return True
@@ -410,28 +408,28 @@ def check_gh_cli():
         return False
 
 
-def create_issue(issue):
+def create_issue(issue: Dict[str, Any]) -> bool:
     """Create a single GitHub issue."""
     print(f"\nCreating Issue #{issue['number']}: {issue['title']}...")
-    
+
     # Build the command
     cmd = [
-        "gh", "issue", "create",
-        "--title", issue["title"],
-        "--body", issue["body"],
-        "--label", ",".join(issue["labels"]),
+        "gh",
+        "issue",
+        "create",
+        "--title",
+        issue["title"],
+        "--body",
+        issue["body"],
+        "--label",
+        ",".join(issue["labels"]),
     ]
-    
+
     if "milestone" in issue:
         cmd.extend(["--milestone", issue["milestone"]])
-    
+
     try:
-        result = subprocess.run(
-            cmd,
-            capture_output=True,
-            text=True,
-            check=True
-        )
+        result = subprocess.run(cmd, capture_output=True, text=True, check=True)
         print(f"✓ Created: {result.stdout.strip()}")
         return True
     except subprocess.CalledProcessError as e:
@@ -439,34 +437,34 @@ def create_issue(issue):
         return False
 
 
-def main():
+def main() -> None:
     """Main function to create all issues."""
     print("=" * 60)
     print("GitHub Issues Creator for Places2Go")
     print("=" * 60)
-    
+
     # Check prerequisites
     if not check_gh_cli():
         sys.exit(1)
-    
+
     print(f"\nReady to create {len(ISSUES)} issues for Phase 2")
     response = input("\nProceed? (y/n): ")
-    
-    if response.lower() != 'y':
+
+    if response.lower() != "y":
         print("Cancelled.")
         sys.exit(0)
-    
+
     # Create issues
     success_count = 0
     for issue in ISSUES:
         if create_issue(issue):
             success_count += 1
-    
+
     # Summary
     print("\n" + "=" * 60)
     print(f"Summary: {success_count}/{len(ISSUES)} issues created successfully")
     print("=" * 60)
-    
+
     if success_count == len(ISSUES):
         print("\n✓ All issues created! View them with: gh issue list")
     else:
