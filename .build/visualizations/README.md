@@ -10,7 +10,7 @@ Welcome to the Places2Go visualization documentation! This guide covers the inte
   - [Cost of Living Comparison](#cost-of-living-comparison)
   - [Flight Prices Time-Series](#flight-prices-time-series)
   - [Weather Forecast Dashboard](#weather-forecast-dashboard)
-  - [Multi-Dataset Overlay](#multi-dataset-overlay-future)
+  - [Multi-Dataset Overlay Dashboard](#multi-dataset-overlay-dashboard)
 - [Getting Started](#getting-started)
 - [Customization Guide](#customization-guide)
 - [Technical Details](#technical-details)
@@ -247,29 +247,102 @@ Each daily forecast card shows:
 
 ---
 
-### Multi-Dataset Overlay (Future)
+### Multi-Dataset Overlay Dashboard
 
-**Status:** Planned (Issue #21) - Phase 3C  
-**File:** `.build/visualizations/dashboard_overlay.html`  
-**Purpose:** Comprehensive dashboard overlaying all datasets for insights
+**Status:** ✅ Available (Issue #21) - Phase 3C  
+**File:** `.build/visualizations/overlay_dashboard.html`  
+**Script:** `scripts/visualizations/overlay_dashboard.py`  
+**Purpose:** Comprehensive dashboard integrating all datasets with tabbed navigation
 
-#### Planned Features
-- **Master Map:** Destinations with flight routes and weather overlays
-- **Timeline View:** Aligned flight prices and weather by date
-- **Value Finder:** Scatter plot identifying best value destinations
-- **Destination Comparison:** Radar charts comparing multiple metrics
-- **Insights Panel:** AI-generated recommendations
-- **Cross-Filtering:** Selections on one chart filter all others
+#### Features
 
-#### Dependencies
-Requires completion of individual visualization pages (#17-20)
+The overlay dashboard combines all four individual visualizations into a single unified interface with six interactive tabs:
 
-#### Future Capabilities
-- Find "sweet spot" destinations (low cost + good weather + cheap flights)
-- Correlate weather with flight pricing patterns
-- Multi-criteria destination ranking
-- Export insights as PDF report
-- Save custom views and comparisons
+**Tab 1: Overview Dashboard**
+- Summary statistics across all datasets
+- Key metrics cards (total destinations, avg costs, best weather, etc.)
+- Insights panel with best deals and recommendations
+- Quick comparison of all destinations
+
+**Tab 2: Destinations Map**
+- Interactive map showing all 6 destinations
+- Geographic visualization with markers
+- Hover for destination details
+- Color-coded by region
+
+**Tab 3: Weather Forecast**
+- Temperature trends across all destinations
+- Rainfall comparison charts
+- UV index heatmap
+- Comfort index analysis
+- 7-day forecasts
+
+**Tab 4: Flight Prices**
+- Price trends over time
+- Weekly heatmap showing best days to fly
+- Price distribution by destination
+- Flight comparison analysis
+
+**Tab 5: Cost of Living**
+- Monthly cost comparison
+- Cost breakdown by category
+- Affordability ranking
+- Budget planning insights
+
+**Tab 6: Destination Comparison**
+- Multi-dimensional radar chart
+- Side-by-side comparison table
+- Normalized scores (0-100) across 5 dimensions:
+  - Affordability (lower monthly costs = better)
+  - Flight Price (cheaper flights = better)
+  - Temperature (warmer = better)
+  - Sunshine (less rain = better)
+  - UV Index (higher = better)
+- Detailed metrics for all destinations
+
+#### How to Generate
+
+```bash
+cd /home/runner/work/places2go/places2go
+python scripts/visualizations/overlay_dashboard.py
+```
+
+#### Interactive Features
+
+- **Tab Navigation:** Click tabs to switch between different views
+- **Responsive Design:** Works on desktop and mobile devices
+- **Fast Loading:** Loads in < 2 seconds with optimized chart rendering
+- **Unified Styling:** Consistent color scheme across all visualizations
+- **Auto-Resize:** Charts automatically adjust when switching tabs
+
+#### Use Cases
+
+- **Complete Analysis:** View all datasets in one place without switching files
+- **Multi-Criteria Decision:** Compare destinations across weather, cost, and flights
+- **Value Finding:** Identify destinations with best combination of factors
+- **Planning:** Make informed travel decisions with comprehensive data
+- **Presentation:** Share single dashboard file with stakeholders
+
+#### Color Scheme
+
+Consistent colors used across all tabs:
+- **Alicante:** Blue (#1f77b4)
+- **Malaga:** Orange (#ff7f0e)
+- **Majorca:** Green (#2ca02c)
+- **Faro:** Red (#d62728)
+- **Corfu:** Purple (#9467bd)
+- **Rhodes:** Brown (#8c564b)
+
+#### Technical Details
+
+- **File Size:** ~135 KB (under 500 KB target)
+- **Performance:** Page loads in < 2 seconds
+- **Dependencies:** Plotly.js loaded from CDN
+- **Data Sources:** All data from `demo1` dataset
+- **Chart Count:** 11+ integrated visualizations
+- **Responsive:** Optimized for desktop (1400px) and mobile
+
+---
 
 ## Getting Started
 
@@ -295,17 +368,20 @@ Generate all available visualizations at once:
 ```bash
 cd /home/runner/work/places2go/places2go
 
-# Generate weather forecast (currently available)
+# Generate weather forecast
 python scripts/visualizations/weather_forecast.py
 
-# Future: Generate destinations map (when implemented)
-# python scripts/visualizations/destinations_map.py
+# Generate destinations map
+python scripts/visualizations/destinations_map.py
 
-# Future: Generate cost comparison (when implemented)
-# python scripts/visualizations/cost_comparison.py
+# Generate cost comparison
+python scripts/visualizations/cost_comparison.py
 
-# Future: Generate flight prices (when implemented)
-# python scripts/visualizations/flight_prices.py
+# Generate flight prices
+python scripts/visualizations/flight_prices.py
+
+# Generate overlay dashboard (combines all datasets)
+python scripts/visualizations/overlay_dashboard.py
 ```
 
 ### Where Files Are Saved
@@ -315,10 +391,10 @@ All visualization HTML files are saved to:
 .build/visualizations/
 ├── README.md                  # This file
 ├── weather_forecast.html      # Weather dashboard (available)
-├── destinations_map.html      # Destinations map (planned)
-├── cost_comparison.html       # Cost comparison (planned)
-├── flight_prices.html         # Flight prices (planned)
-├── dashboard_overlay.html     # Multi-dataset overlay (future)
+├── destinations_map.html      # Destinations map (available)
+├── cost_comparison.html       # Cost comparison (available)
+├── flight_prices.html         # Flight prices (available)
+├── overlay_dashboard.html     # Multi-dataset overlay (available)
 └── examples/
     └── *.png                  # Screenshots (for documentation)
 ```

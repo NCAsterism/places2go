@@ -41,6 +41,60 @@ python scripts/visualizations/cost_comparison.py
 
 **Data Source:** `DataLoader.load_costs(data_source='demo1')`
 
+### 3. Flight Prices Time-Series
+**Script:** `flight_prices.py`  
+**Output:** `.build/visualizations/flight_prices.html`
+
+Interactive flight prices dashboard displaying:
+- Price trends over departure dates
+- Weekly calendar heatmap
+- Price distribution box plots
+- Airline comparison
+- Duration vs cost analysis
+
+**Usage:**
+```bash
+python scripts/visualizations/flight_prices.py
+```
+
+**Data Source:** `DataLoader.load_flights(data_source='demo1')`
+
+### 4. Destinations Map
+**Script:** `destinations_map.py`  
+**Output:** `.build/visualizations/destinations_map.html`
+
+Interactive map dashboard displaying:
+- Geographic visualization of all destinations
+- Color-coded by region
+- Summary statistics
+- Destination detail cards
+
+**Usage:**
+```bash
+python scripts/visualizations/destinations_map.py
+```
+
+**Data Source:** `DataLoader.load_destinations()`
+
+### 5. Multi-Dataset Overlay Dashboard
+**Script:** `overlay_dashboard.py`  
+**Output:** `.build/visualizations/overlay_dashboard.html`
+
+Comprehensive dashboard integrating all visualizations with tabbed navigation:
+- **Tab 1:** Overview with summary statistics and insights
+- **Tab 2:** Destinations map
+- **Tab 3:** Weather forecasts
+- **Tab 4:** Flight prices
+- **Tab 5:** Cost of living
+- **Tab 6:** Destination comparison with radar chart
+
+**Usage:**
+```bash
+python scripts/visualizations/overlay_dashboard.py
+```
+
+**Data Sources:** All datasets via DataLoader (destinations, costs, flights, weather)
+
 ## Development
 
 ### Adding New Visualizations
