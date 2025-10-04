@@ -296,7 +296,7 @@ def create_duration_vs_cost_scatter(
                     ],
                 ),
                 customdata=dest_data[["airline", "direct_flight"]],
-                hovertemplate="<b>%{fullData.name}</b><br>"
+                hovertemplate="<b>%{name}</b><br>"
                 + "Duration: %{x:.1f}h<br>"
                 + "Price: £%{y:.0f}<br>"
                 + "Airline: %{customdata[0]}<br>"
