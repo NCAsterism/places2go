@@ -59,7 +59,7 @@ def check_workflow_configuration(filepath: Path) -> List[Tuple[bool, str]]:
             results.append((False, "✗ Workflow missing name"))
 
         # Check triggers (YAML can use True/False/on/off as keys)
-        has_triggers = "on" in workflow or True in workflow
+        has_triggers = ("on" in workflow) or (True in workflow)  # Only check for "on" or boolean True as keys
         if has_triggers:
             results.append((True, "✓ Workflow has triggers"))
         else:
