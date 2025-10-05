@@ -20,7 +20,6 @@ Output: `.build/visualizations/overlay_dashboard.html`
 import logging
 import sys
 from pathlib import Path
-from typing import Dict, List
 
 import pandas as pd
 import plotly.graph_objects as go
@@ -181,10 +180,15 @@ def create_overview_summary(
         <div class="insights-panel">
             <h3>💡 Key Insights</h3>
             <ul>
-                <li><strong>Best Flight Deal:</strong> {best_flight['name']} on {best_flight['departure_date']} for £{best_flight['price']:.0f}</li>
-                <li><strong>Weather Winner:</strong> {best_weather} has the warmest average temperature at {best_weather_temp:.1f}°C</li>
-                <li><strong>Budget Champion:</strong> {cheapest_dest['name']} offers the lowest monthly living costs at £{cheapest_dest['monthly_living_cost']:.0f}</li>
-                <li><strong>Value Analysis:</strong> Compare destinations across all metrics in the Comparison tab</li>
+                <li><strong>Best Flight Deal:</strong> {best_flight['name']} on
+                {best_flight['departure_date']} for £{best_flight['price']:.0f}</li>
+                <li><strong>Weather Winner:</strong> {best_weather} has the warmest
+                average temperature at {best_weather_temp:.1f}°C</li>
+                <li><strong>Budget Champion:</strong> {cheapest_dest['name']} offers
+                the lowest monthly living costs at
+                £{cheapest_dest['monthly_living_cost']:.0f}</li>
+                <li><strong>Value Analysis:</strong> Compare destinations across all
+                metrics in the Comparison tab</li>
             </ul>
         </div>
     </div>
@@ -228,16 +232,10 @@ def create_comparison_radar_chart(
         # Calculate normalized scores (0-100 scale)
         # For cost and flight price: lower is better (invert)
         monthly_cost = (
-            dest_costs["monthly_living_cost"].mean()
-            if not dest_costs.empty
-            else 1000
+            dest_costs["monthly_living_cost"].mean() if not dest_costs.empty else 1000
         )
-        flight_price = (
-            dest_flights["price"].mean() if not dest_flights.empty else 200
-        )
-        avg_temp = (
-            dest_weather["temp_avg_c"].mean() if not dest_weather.empty else 20
-        )
+        flight_price = dest_flights["price"].mean() if not dest_flights.empty else 200
+        avg_temp = dest_weather["temp_avg_c"].mean() if not dest_weather.empty else 20
         sunshine = 100 - (
             dest_weather["rainfall_mm"].mean() if not dest_weather.empty else 10
         )
@@ -352,9 +350,7 @@ def create_comparison_table(
             else "N/A"
         )
         flight_price = (
-            f"£{dest_flights['price'].mean():.0f}"
-            if not dest_flights.empty
-            else "N/A"
+            f"£{dest_flights['price'].mean():.0f}" if not dest_flights.empty else "N/A"
         )
         avg_temp = (
             f"{dest_weather['temp_avg_c'].mean():.1f}°C"
@@ -802,7 +798,8 @@ def create_overlay_dashboard(output_path: Path) -> None:
                     {map_html}
                 </div>
                 <div class="info-box">
-                    <strong>💡 Tip:</strong> Click on markers to view destination details. Use zoom and pan controls to explore the map.
+                    <strong>💡 Tip:</strong> Click on markers to view destination
+                    details. Use zoom and pan controls to explore the map.
                 </div>
             </div>
         </div>
@@ -812,7 +809,7 @@ def create_overlay_dashboard(output_path: Path) -> None:
             <div class="content-panel">
                 <h2>🌤️ Weather Forecast Dashboard</h2>
                 <p>7-day weather forecasts for all destinations including temperature, rainfall, and UV index.</p>
-                
+
                 <h3>Temperature Trends</h3>
                 <div class="chart-full">
                     {temp_html}
@@ -835,7 +832,8 @@ def create_overlay_dashboard(output_path: Path) -> None:
                 </div>
 
                 <div class="info-box">
-                    <strong>💡 Insights:</strong> Compare weather patterns across destinations. Hover over charts for detailed daily forecasts.
+                    <strong>💡 Insights:</strong> Compare weather patterns across
+                    destinations. Hover over charts for detailed daily forecasts.
                 </div>
             </div>
         </div>
@@ -845,7 +843,7 @@ def create_overlay_dashboard(output_path: Path) -> None:
             <div class="content-panel">
                 <h2>✈️ Flight Prices Dashboard</h2>
                 <p>Flight price trends, distributions, and patterns across departure dates.</p>
-                
+
                 <h3>Price Trends Over Time</h3>
                 <div class="chart-full">
                     {price_trends_html}
@@ -862,7 +860,9 @@ def create_overlay_dashboard(output_path: Path) -> None:
                 </div>
 
                 <div class="info-box">
-                    <strong>💡 Insights:</strong> Identify best days to fly and compare prices across destinations. Look for patterns in the heatmap.
+                    <strong>💡 Insights:</strong> Identify best days to fly and
+                    compare prices across destinations. Look for patterns in the
+                    heatmap.
                 </div>
             </div>
         </div>
@@ -872,7 +872,7 @@ def create_overlay_dashboard(output_path: Path) -> None:
             <div class="content-panel">
                 <h2>💰 Cost of Living Dashboard</h2>
                 <p>Monthly living costs and cost breakdowns for each destination.</p>
-                
+
                 <h3>Total Monthly Cost Comparison</h3>
                 <div class="chart-full">
                     {total_cost_html}
@@ -884,7 +884,8 @@ def create_overlay_dashboard(output_path: Path) -> None:
                 </div>
 
                 <div class="info-box">
-                    <strong>💡 Insights:</strong> Compare affordability across destinations. Consider both fixed and variable costs.
+                    <strong>💡 Insights:</strong> Compare affordability across
+                    destinations. Consider both fixed and variable costs.
                 </div>
             </div>
         </div>
@@ -894,7 +895,7 @@ def create_overlay_dashboard(output_path: Path) -> None:
             <div class="content-panel">
                 <h2>📊 Destination Comparison</h2>
                 <p>Side-by-side comparison of all destinations across multiple dimensions.</p>
-                
+
                 <h3>Multi-Dimensional Comparison</h3>
                 <div class="chart-full">
                     {radar_html}
@@ -903,7 +904,7 @@ def create_overlay_dashboard(output_path: Path) -> None:
                 {comparison_table_html}
 
                 <div class="info-box">
-                    <strong>💡 How to use:</strong> The radar chart shows normalized scores (0-100) across five key dimensions. 
+                    <strong>💡 How to use:</strong> The radar chart shows normalized scores (0-100) across five key dimensions.
                     Higher values are better for all metrics. Use the table for detailed numerical comparisons.
                 </div>
             </div>
@@ -957,7 +958,9 @@ def main() -> None:
 
     try:
         project_root = Path(__file__).resolve().parents[2]
-        output_path = project_root / ".build" / "visualizations" / "overlay_dashboard.html"
+        output_path = (
+            project_root / ".build" / "visualizations" / "overlay_dashboard.html"
+        )
 
         create_overlay_dashboard(output_path)
 
