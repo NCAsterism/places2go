@@ -6,13 +6,13 @@ This script demonstrates the key functionality of the user preferences
 module without requiring a full visualization.
 """
 
-import sys
-from pathlib import Path
 
-# Add parent directory to path for imports
-sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from scripts.core.user_preferences import (
+
+
+
+
+from .core.user_preferences import (
     UserPreferences,
     convert_currency,
     convert_temperature,
