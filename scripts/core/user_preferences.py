@@ -12,9 +12,9 @@ This module provides the data structures and conversion utilities used by
 the visualization scripts to support user-configurable settings.
 """
 
-from typing import Dict, Any, Optional, Literal
 from dataclasses import dataclass, asdict
 import json
+from typing import Dict, Any, Optional, Literal
 
 
 CurrencyType = Literal["USD", "EUR", "GBP"]
