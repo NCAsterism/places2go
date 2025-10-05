@@ -10,7 +10,7 @@ Welcome to the Places2Go visualization documentation! This guide covers the inte
   - [Cost of Living Comparison](#cost-of-living-comparison)
   - [Flight Prices Time-Series](#flight-prices-time-series)
   - [Weather Forecast Dashboard](#weather-forecast-dashboard)
-  - [Multi-Dataset Overlay Dashboard](#multi-dataset-overlay-dashboard)
+  - [Multi-Dataset Overlay](#multi-dataset-overlay-future)
 - [Getting Started](#getting-started)
 - [Customization Guide](#customization-guide)
 - [Technical Details](#technical-details)
@@ -64,8 +64,8 @@ stats = loader.get_aggregates(data_source='demo1')
 
 ### Destinations Map
 
-**Status:** Planned (Issue #17)  
-**File:** `.build/visualizations/destinations_map.html`  
+**Status:** Planned (Issue #17)
+**File:** `.build/visualizations/destinations_map.html`
 **Purpose:** Interactive map showing all travel destinations with geographic context
 
 #### Features
@@ -100,8 +100,8 @@ python scripts/visualizations/destinations_map.py
 
 ### Cost of Living Comparison
 
-**Status:** Planned (Issue #18)  
-**File:** `.build/visualizations/cost_comparison.html`  
+**Status:** Planned (Issue #18)
+**File:** `.build/visualizations/cost_comparison.html`
 **Purpose:** Compare living costs across destinations with detailed breakdowns
 
 #### Features
@@ -145,8 +145,8 @@ python scripts/visualizations/cost_comparison.py
 
 ### Flight Prices Time-Series
 
-**Status:** Planned (Issue #19)  
-**File:** `.build/visualizations/flight_prices.html`  
+**Status:** Planned (Issue #19)
+**File:** `.build/visualizations/flight_prices.html`
 **Purpose:** Analyze flight pricing trends over the 7-day forecast period
 
 #### Features
@@ -191,8 +191,8 @@ python scripts/visualizations/flight_prices.py
 
 ### Weather Forecast Dashboard
 
-**Status:** ✅ Complete (Issue #20)  
-**File:** `.build/visualizations/weather_forecast.html`  
+**Status:** ✅ Complete (Issue #20)
+**File:** `.build/visualizations/weather_forecast.html`
 **Purpose:** Display 7-day weather forecasts for all destinations with comparisons
 
 #### Features
@@ -247,102 +247,29 @@ Each daily forecast card shows:
 
 ---
 
-### Multi-Dataset Overlay Dashboard
+### Multi-Dataset Overlay (Future)
 
-**Status:** ✅ Available (Issue #21) - Phase 3C  
-**File:** `.build/visualizations/overlay_dashboard.html`  
-**Script:** `scripts/visualizations/overlay_dashboard.py`  
-**Purpose:** Comprehensive dashboard integrating all datasets with tabbed navigation
+**Status:** Planned (Issue #21) - Phase 3C
+**File:** `.build/visualizations/dashboard_overlay.html`
+**Purpose:** Comprehensive dashboard overlaying all datasets for insights
 
-#### Features
+#### Planned Features
+- **Master Map:** Destinations with flight routes and weather overlays
+- **Timeline View:** Aligned flight prices and weather by date
+- **Value Finder:** Scatter plot identifying best value destinations
+- **Destination Comparison:** Radar charts comparing multiple metrics
+- **Insights Panel:** AI-generated recommendations
+- **Cross-Filtering:** Selections on one chart filter all others
 
-The overlay dashboard combines all four individual visualizations into a single unified interface with six interactive tabs:
+#### Dependencies
+Requires completion of individual visualization pages (#17-20)
 
-**Tab 1: Overview Dashboard**
-- Summary statistics across all datasets
-- Key metrics cards (total destinations, avg costs, best weather, etc.)
-- Insights panel with best deals and recommendations
-- Quick comparison of all destinations
-
-**Tab 2: Destinations Map**
-- Interactive map showing all 6 destinations
-- Geographic visualization with markers
-- Hover for destination details
-- Color-coded by region
-
-**Tab 3: Weather Forecast**
-- Temperature trends across all destinations
-- Rainfall comparison charts
-- UV index heatmap
-- Comfort index analysis
-- 7-day forecasts
-
-**Tab 4: Flight Prices**
-- Price trends over time
-- Weekly heatmap showing best days to fly
-- Price distribution by destination
-- Flight comparison analysis
-
-**Tab 5: Cost of Living**
-- Monthly cost comparison
-- Cost breakdown by category
-- Affordability ranking
-- Budget planning insights
-
-**Tab 6: Destination Comparison**
-- Multi-dimensional radar chart
-- Side-by-side comparison table
-- Normalized scores (0-100) across 5 dimensions:
-  - Affordability (lower monthly costs = better)
-  - Flight Price (cheaper flights = better)
-  - Temperature (warmer = better)
-  - Sunshine (less rain = better)
-  - UV Index (higher = better)
-- Detailed metrics for all destinations
-
-#### How to Generate
-
-```bash
-cd /home/runner/work/places2go/places2go
-python scripts/visualizations/overlay_dashboard.py
-```
-
-#### Interactive Features
-
-- **Tab Navigation:** Click tabs to switch between different views
-- **Responsive Design:** Works on desktop and mobile devices
-- **Fast Loading:** Loads in < 2 seconds with optimized chart rendering
-- **Unified Styling:** Consistent color scheme across all visualizations
-- **Auto-Resize:** Charts automatically adjust when switching tabs
-
-#### Use Cases
-
-- **Complete Analysis:** View all datasets in one place without switching files
-- **Multi-Criteria Decision:** Compare destinations across weather, cost, and flights
-- **Value Finding:** Identify destinations with best combination of factors
-- **Planning:** Make informed travel decisions with comprehensive data
-- **Presentation:** Share single dashboard file with stakeholders
-
-#### Color Scheme
-
-Consistent colors used across all tabs:
-- **Alicante:** Blue (#1f77b4)
-- **Malaga:** Orange (#ff7f0e)
-- **Majorca:** Green (#2ca02c)
-- **Faro:** Red (#d62728)
-- **Corfu:** Purple (#9467bd)
-- **Rhodes:** Brown (#8c564b)
-
-#### Technical Details
-
-- **File Size:** ~135 KB (under 500 KB target)
-- **Performance:** Page loads in < 2 seconds
-- **Dependencies:** Plotly.js loaded from CDN
-- **Data Sources:** All data from `demo1` dataset
-- **Chart Count:** 11+ integrated visualizations
-- **Responsive:** Optimized for desktop (1400px) and mobile
-
----
+#### Future Capabilities
+- Find "sweet spot" destinations (low cost + good weather + cheap flights)
+- Correlate weather with flight pricing patterns
+- Multi-criteria destination ranking
+- Export insights as PDF report
+- Save custom views and comparisons
 
 ## Getting Started
 
@@ -368,20 +295,17 @@ Generate all available visualizations at once:
 ```bash
 cd /home/runner/work/places2go/places2go
 
-# Generate weather forecast
+# Generate weather forecast (currently available)
 python scripts/visualizations/weather_forecast.py
 
-# Generate destinations map
-python scripts/visualizations/destinations_map.py
+# Future: Generate destinations map (when implemented)
+# python scripts/visualizations/destinations_map.py
 
-# Generate cost comparison
-python scripts/visualizations/cost_comparison.py
+# Future: Generate cost comparison (when implemented)
+# python scripts/visualizations/cost_comparison.py
 
-# Generate flight prices
-python scripts/visualizations/flight_prices.py
-
-# Generate overlay dashboard (combines all datasets)
-python scripts/visualizations/overlay_dashboard.py
+# Future: Generate flight prices (when implemented)
+# python scripts/visualizations/flight_prices.py
 ```
 
 ### Where Files Are Saved
@@ -391,10 +315,10 @@ All visualization HTML files are saved to:
 .build/visualizations/
 ├── README.md                  # This file
 ├── weather_forecast.html      # Weather dashboard (available)
-├── destinations_map.html      # Destinations map (available)
-├── cost_comparison.html       # Cost comparison (available)
-├── flight_prices.html         # Flight prices (available)
-├── overlay_dashboard.html     # Multi-dataset overlay (available)
+├── destinations_map.html      # Destinations map (planned)
+├── cost_comparison.html       # Cost comparison (planned)
+├── flight_prices.html         # Flight prices (planned)
+├── dashboard_overlay.html     # Multi-dataset overlay (future)
 └── examples/
     └── *.png                  # Screenshots (for documentation)
 ```
@@ -488,30 +412,30 @@ Add a new function to the visualization script:
 def create_new_chart(df: pd.DataFrame, destinations_df: pd.DataFrame) -> go.Figure:
     """
     Create a new custom chart.
-    
+
     Args:
         df: Main data DataFrame
         destinations_df: Destinations reference data
-        
+
     Returns:
         Plotly figure object
     """
     fig = go.Figure()
-    
+
     # Add your chart logic here
     fig.add_trace(go.Bar(
         x=df['date'],
         y=df['some_metric'],
         name='Your Chart'
     ))
-    
+
     fig.update_layout(
         title='Your New Chart Title',
         xaxis_title='Date',
         yaxis_title='Metric',
         template='plotly_white'
     )
-    
+
     return fig
 ```
 
@@ -522,22 +446,22 @@ In the main dashboard creation function:
 ```python
 def create_weather_dashboard(output_path: Path, df: pd.DataFrame, destinations_df: pd.DataFrame) -> None:
     # ... existing charts ...
-    
+
     # Add your new chart
     new_chart = create_new_chart(df, destinations_df)
     new_chart_html = new_chart.to_html(include_plotlyjs=False, div_id="new_chart")
-    
+
     # Add to HTML template
     html_content = f"""
     <!DOCTYPE html>
     <html>
     <body>
         <!-- ... existing content ... -->
-        
+
         <div class="chart-full">
             {new_chart_html}
         </div>
-        
+
     </body>
     </html>
     """
@@ -590,7 +514,7 @@ weather_df = loader.load_weather(data_source='demo1', forecast_only=True)
 
 # Filter to your desired range
 weather_df = weather_df[
-    (weather_df['date'] >= '2025-10-05') & 
+    (weather_df['date'] >= '2025-10-05') &
     (weather_df['date'] <= '2025-10-11')
 ]
 ```
@@ -609,13 +533,13 @@ html_content = f"""
         background-color: #f5f5f5;         /* Background color */
         color: #333;                        /* Text color */
     }}
-    
+
     .stat-card {{
         border-radius: 8px;                 /* Rounded corners */
         box-shadow: 0 2px 8px rgba(0,0,0,0.1);  /* Shadow effect */
         padding: 20px;
     }}
-    
+
     h1 {{
         color: #2c3e50;                     /* Custom heading color */
         font-size: 32px;
@@ -792,16 +716,16 @@ fig = go.Figure(data=go.Scattergl(  # Note: Scattergl instead of Scatter
 ### Browser Compatibility
 
 #### Supported Browsers
-✅ Chrome/Chromium 90+  
-✅ Firefox 88+  
-✅ Safari 14+  
-✅ Edge 90+  
-✅ Opera 76+  
+✅ Chrome/Chromium 90+
+✅ Firefox 88+
+✅ Safari 14+
+✅ Edge 90+
+✅ Opera 76+
 
 #### Mobile Support
-✅ iOS Safari 14+  
-✅ Chrome Mobile  
-✅ Firefox Mobile  
+✅ iOS Safari 14+
+✅ Chrome Mobile
+✅ Firefox Mobile
 
 #### Features Requiring Modern Browsers
 - WebGL rendering (for high-performance charts)
@@ -827,7 +751,7 @@ Test visualizations in:
 
 #### Issue 1: "No module named 'pandas'"
 
-**Symptom:** Error when running visualization scripts  
+**Symptom:** Error when running visualization scripts
 **Cause:** Missing Python dependencies
 
 **Solution:**
@@ -837,7 +761,7 @@ pip install pandas plotly
 
 #### Issue 2: "FileNotFoundError: data/destinations/destinations.csv"
 
-**Symptom:** Script can't find CSV files  
+**Symptom:** Script can't find CSV files
 **Cause:** Running script from wrong directory or missing data files
 
 **Solution:**
@@ -855,7 +779,7 @@ python scripts/visualizations/weather_forecast.py
 
 #### Issue 3: HTML File Opens but Charts Don't Display
 
-**Symptom:** Blank page or missing charts  
+**Symptom:** Blank page or missing charts
 **Cause:** JavaScript errors or CDN loading issues
 
 **Solutions:**
@@ -866,7 +790,7 @@ python scripts/visualizations/weather_forecast.py
 
 #### Issue 4: Outdated Data Displayed
 
-**Symptom:** Old data shown in visualization  
+**Symptom:** Old data shown in visualization
 **Cause:** HTML file not regenerated after data update
 
 **Solution:**
@@ -879,10 +803,10 @@ python scripts/visualizations/weather_forecast.py
 
 #### Issue 5: Charts Not Responsive on Mobile
 
-**Symptom:** Charts too small or not fitting mobile screen  
+**Symptom:** Charts too small or not fitting mobile screen
 **Cause:** Missing responsive configuration
 
-**Solution:**  
+**Solution:**
 Add to chart layout in visualization script:
 ```python
 fig.update_layout(
@@ -898,7 +822,7 @@ Ensure HTML has viewport meta tag:
 
 #### Issue 6: "PermissionError: [Errno 13] Permission denied"
 
-**Symptom:** Can't write HTML file  
+**Symptom:** Can't write HTML file
 **Cause:** Insufficient write permissions or file locked
 
 **Solutions:**
@@ -909,10 +833,10 @@ Ensure HTML has viewport meta tag:
 
 #### Issue 7: Colors Not Matching Across Charts
 
-**Symptom:** Same destination has different colors in different charts  
+**Symptom:** Same destination has different colors in different charts
 **Cause:** Inconsistent color mapping
 
-**Solution:**  
+**Solution:**
 Define color dictionary at script level:
 ```python
 DESTINATION_COLORS = {
@@ -1152,6 +1076,6 @@ Want to contribute to visualization development? See [CONTRIBUTING.md](../../CON
 - **Documentation:** [Main README](../../README.md)
 - **Contributing:** [CONTRIBUTING.md](../../CONTRIBUTING.md)
 
-**Last Updated:** October 2024  
-**Version:** 1.0  
+**Last Updated:** October 2024
+**Version:** 1.0
 **Maintainer:** NCAsterism
