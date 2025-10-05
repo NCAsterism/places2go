@@ -38,7 +38,7 @@ dev = [
 ]
 
 [tool.setuptools]
-packages = ["scripts", "scripts.core"]
+packages = ["scripts", "scripts.core", "scripts.data"]
 
 [tool.setuptools.package-data]
 scripts = ["py.typed"]

@@ -46,6 +46,36 @@ Simply open the generated HTML files in any web browser. No server required!
 
 For detailed usage, customization guides, and technical details, see the comprehensive visualization documentation.
 
+## API Integration
+
+The project now supports real-time data integration from external APIs:
+
+- **Flight Prices**: Skyscanner/Amadeus API integration (stub implementation)
+- **Weather Forecasts**: OpenWeatherMap API (free tier: 1000 calls/day)
+- **Cost of Living**: Teleport Public API (free, no authentication)
+
+### Quick Start with APIs
+
+1. **Copy environment template:**
+   ```bash
+   cp .env.example .env
+   ```
+
+2. **Add your API keys to `.env`:**
+   ```bash
+   WEATHER_API_KEY=your_openweathermap_key
+   # Other API keys are optional
+   ```
+
+3. **Try the demo:**
+   ```bash
+   python -m scripts.demo_api_integration
+   ```
+
+**📚 Full API Documentation:** [docs/API_INTEGRATION.md](docs/API_INTEGRATION.md)
+
+For detailed API usage, caching strategy, rate limiting, and error handling, see the comprehensive API integration documentation.
+
 ## Repository structure
 
 ```
@@ -65,9 +95,11 @@ places2go/
 │   ├── processes/       # Workflows and best practices
 │   └── project/         # Project planning and roadmaps
 ├── scripts/             # Python application code
-│   ├── core/            # Core modules (planned)
+│   ├── core/            # Core modules (data loader)
+│   ├── data/            # API data fetchers (Phase 4B)
 │   ├── visualizations/  # Interactive visualization generators
 │   ├── dashboard.py     # Main dashboard script
+│   └── demo_api_integration.py  # API integration demo
 │   └── exceptions.py    # Custom exception classes
 ├── tests/               # Test suite
 │   ├── test_charts.py   # Chart generation tests
