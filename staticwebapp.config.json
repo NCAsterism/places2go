@@ -26,7 +26,7 @@
       "statusCode": 400
     },
     "401": {
-      "redirect": "/login.html",
+      "redirect": "/index.html",
       "statusCode": 302
     },
     "403": {
