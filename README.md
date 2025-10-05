@@ -6,78 +6,117 @@ While the PoC uses dummy data for demonstration purposes, the project is structu
 
 ## Quick start
 
-1. **Install dependencies.**  Navigate to the project root and install the minimal packages required for the PoC:
+### Option 1: Interactive Dashboard (Phase 4A - Recommended) ⚡
+
+1. **Install dependencies:**
+
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+2. **Run the interactive Dash application:**
+
+   ```bash
+   python app.py
+   ```
+
+3. **Open in browser:** Navigate to http://127.0.0.1:8050 to explore the interactive dashboard with:
+   - Dynamic filtering (destinations, dates, budget, weather, flights)
+   - Real-time chart updates
+   - Tab-based navigation
+   - Mobile-responsive design
+
+   **📚 Dashboard Documentation:** [dash_app/README.md](dash_app/README.md)
+
+### Option 2: Static Visualizations (Phase 3)
+
+1. **Install dependencies:**
 
    ```bash
    pip install pandas plotly
    ```
 
-2. **Run the dashboard script.**  The script loads the dummy dataset from `data/dummy_data.csv` and produces interactive HTML charts in the `output/` directory.  Execute it with:
+2. **Generate static HTML visualizations:**
 
    ```bash
-   python scripts/dashboard.py
+   python scripts/visualizations/weather_forecast.py
+   python scripts/visualizations/destinations_map.py
+   python scripts/visualizations/cost_comparison.py
+   python scripts/visualizations/flight_prices.py
    ```
 
-3. **Open the results.**  After running the script, open the files in `output/` in a web browser to explore the bar and scatter plots.
+3. **Open the results:** View generated HTML files in `.build/visualizations/` directory
 
 ## Interactive Visualizations
 
-The project includes comprehensive interactive HTML visualization pages for exploring destination data:
+### Phase 4A: Interactive Dash Dashboard ✅
 
-- **Weather Forecast Dashboard** - 7-day forecasts with temperature trends, rainfall, UV index, and comfort metrics
-- **Destinations Map** (planned) - Interactive world map with destination markers and details
-- **Cost Comparison** (planned) - Living costs comparison with category breakdowns
-- **Flight Prices** (planned) - Time-series analysis of flight pricing trends
+The interactive dashboard provides dynamic filtering and real-time chart updates:
 
-### Generate Visualizations
+- **Destinations Map** - Interactive geographic view with markers and details
+- **Weather Forecast** - Temperature trends, rainfall, UV index, and comfort metrics
+- **Cost Comparison** - Living costs comparison with category breakdowns
+- **Flight Prices** - Time-series analysis and duration vs cost scatter plots
+- **Dynamic Filters** - Multi-select destinations, date ranges, budget, weather preferences
 
-```bash
-# Generate weather forecast dashboard
-python scripts/visualizations/weather_forecast.py
+**Run:** `python app.py` → http://127.0.0.1:8050
 
-# Output: .build/visualizations/weather_forecast.html
-```
+### Phase 3: Static HTML Dashboards ✅
 
-### View Visualizations
+Comprehensive interactive HTML visualization pages (no server required):
 
-Simply open the generated HTML files in any web browser. No server required!
+- **Weather Forecast Dashboard** - 7-day forecasts with multiple chart types
+- **Destinations Map** - Interactive world map with destination markers
+- **Cost Comparison** - Living costs comparison charts
+- **Flight Prices** - Time-series flight pricing analysis
+
+**Generate:** `python scripts/visualizations/<name>.py`
+
+**View:** Open `.build/visualizations/*.html` in any browser
 
 **📚 Full Documentation:** [.build/visualizations/README.md](.build/visualizations/README.md)
-
-For detailed usage, customization guides, and technical details, see the comprehensive visualization documentation.
 
 ## Repository structure
 
 ```
 places2go/
-├── .build/              # Build artifacts (gitignored)
-│   ├── output/          # Generated HTML charts
-│   ├── logs/            # Application logs
-│   ├── coverage/        # Test coverage reports
-│   └── visualizations/  # Interactive visualization pages
-│       ├── README.md    # Visualization documentation
-│       └── *.html       # Generated visualization dashboards
-├── data/                # Data files
-│   └── dummy_data.csv   # Sample dataset (to be split into multiple CSVs)
-├── docs/                # Documentation (organized by category)
-│   ├── architecture/    # System design and data models
-│   ├── development/     # Development guides
-│   ├── processes/       # Workflows and best practices
-│   └── project/         # Project planning and roadmaps
-├── scripts/             # Python application code
-│   ├── core/            # Core modules (planned)
-│   ├── visualizations/  # Interactive visualization generators
-│   ├── dashboard.py     # Main dashboard script
-│   └── exceptions.py    # Custom exception classes
-├── tests/               # Test suite
-│   ├── test_charts.py   # Chart generation tests
-│   ├── test_data.py     # Data loading tests
-│   └── test_integration.py  # Integration tests
-├── wiki/                # GitHub Wiki content
-├── .github/             # GitHub configuration (workflows, issue templates)
+├── app.py                # 🆕 Phase 4A: Main Dash application entry point
+├── dash_app/             # 🆕 Phase 4A: Interactive dashboard package
+│   ├── components/       # Reusable UI components (filters, charts, layout)
+│   ├── callbacks/        # Interactive callback functions
+│   └── README.md         # Dashboard documentation
+├── .build/               # Build artifacts (gitignored)
+│   ├── output/           # Generated HTML charts
+│   ├── logs/             # Application logs
+│   ├── coverage/         # Test coverage reports
+│   └── visualizations/   # Interactive visualization pages
+│       ├── README.md     # Visualization documentation
+│       └── *.html        # Generated visualization dashboards
+├── data/                 # Data files
+│   ├── destinations/     # Destination master data
+│   ├── flights/          # Flight prices (time-series)
+│   ├── weather/          # Weather forecasts (time-series)
+│   └── costs/            # Cost of living data
+├── docs/                 # Documentation (organized by category)
+│   ├── architecture/     # System design and data models
+│   ├── development/      # Development guides
+│   ├── processes/        # Workflows and best practices
+│   └── project/          # Project planning and roadmaps
+├── scripts/              # Python application code
+│   ├── core/             # Core modules (DataLoader)
+│   ├── visualizations/   # Interactive visualization generators (Phase 3)
+│   ├── dashboard.py      # Legacy dashboard script (Phase 1)
+│   └── exceptions.py     # Custom exception classes
+├── tests/                # Test suite
+│   ├── test_charts.py    # Chart generation tests
+│   ├── test_data.py      # Data loading tests
+│   ├── test_dash_components.py  # 🆕 Dash component tests
+│   └── test_integration.py      # Integration tests
+├── wiki/                 # GitHub Wiki content
+├── .github/              # GitHub configuration (workflows, issue templates)
 ├── .pre-commit-config.yaml  # Pre-commit hooks configuration
-├── pyproject.toml       # Project configuration
-├── requirements.txt     # Python dependencies
+├── pyproject.toml        # Project configuration
+├── requirements.txt      # Python dependencies (now includes Dash)
 ├── CONTRIBUTING.md      # Contribution guidelines
 └── README.md            # This file
 ```
