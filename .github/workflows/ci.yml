@@ -16,6 +16,10 @@ permissions:
 
 jobs:
   test:
+    # Skip duplicate runs on pull_request_target if pull_request already ran
+    if: |
+      github.event_name != 'pull_request_target' ||
+      github.event.pull_request.head.repo.full_name != github.repository
     runs-on: ubuntu-latest
     strategy:
       matrix:
