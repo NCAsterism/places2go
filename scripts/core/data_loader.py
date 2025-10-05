@@ -3,13 +3,17 @@ DataLoader class for reading and managing destination dashboard data.
 
 This module provides a unified interface for loading data from the new CSV structure
 which separates destinations, cost of living, flight prices, and weather data into
-dedicated files with proper no        if forecast_only:
-            df = df[df['forecast_flag']]alization and time-series support.
+dedicated files with proper normalization and time-series support.
 """
 
+import logging
 import pandas as pd
 from pathlib import Path
 from typing import Optional, List, Dict, Union
+
+from .performance import PerformanceTimer, get_profiler
+
+logger = logging.getLogger(__name__)
 
 
 class DataLoader:
@@ -73,17 +77,22 @@ class DataLoader:
         Raises:
             FileNotFoundError: If destinations.csv doesn't exist
         """
+        profiler = get_profiler()
+
         if self.destinations_df is None or reload:
-            csv_path = self.data_dir / "destinations" / "destinations.csv"
-            if not csv_path.exists():
-                raise FileNotFoundError(f"Destinations file not found: {csv_path}")
+            with PerformanceTimer("load_destinations", logging.DEBUG):
+                csv_path = self.data_dir / "destinations" / "destinations.csv"
+                if not csv_path.exists():
+                    raise FileNotFoundError(f"Destinations file not found: {csv_path}")
 
-            self.destinations_df = pd.read_csv(csv_path)
+                profiler.start("read_destinations_csv")
+                self.destinations_df = pd.read_csv(csv_path)
+                profiler.end("read_destinations_csv")
 
-            # Ensure destination_id is integer
-            self.destinations_df["destination_id"] = self.destinations_df[
-                "destination_id"
-            ].astype(int)
+                # Ensure destination_id is integer
+                self.destinations_df["destination_id"] = self.destinations_df[
+                    "destination_id"
+                ].astype(int)
 
         return self.destinations_df.copy()
 
@@ -106,20 +115,27 @@ class DataLoader:
         Raises:
             FileNotFoundError: If cost_of_living.csv doesn't exist
         """
+        profiler = get_profiler()
+
         if self.costs_df is None or reload:
-            csv_path = self.data_dir / "destinations" / "cost_of_living.csv"
-            if not csv_path.exists():
-                raise FileNotFoundError(f"Cost of living file not found: {csv_path}")
+            with PerformanceTimer("load_costs", logging.DEBUG):
+                csv_path = self.data_dir / "destinations" / "cost_of_living.csv"
+                if not csv_path.exists():
+                    raise FileNotFoundError(
+                        f"Cost of living file not found: {csv_path}"
+                    )
 
-            self.costs_df = pd.read_csv(csv_path)
+                profiler.start("read_costs_csv")
+                self.costs_df = pd.read_csv(csv_path)
+                profiler.end("read_costs_csv")
 
-            # Parse dates
-            self.costs_df["data_date"] = pd.to_datetime(self.costs_df["data_date"])
+                # Parse dates
+                self.costs_df["data_date"] = pd.to_datetime(self.costs_df["data_date"])
 
-            # Ensure destination_id is integer
-            self.costs_df["destination_id"] = self.costs_df["destination_id"].astype(
-                int
-            )
+                # Ensure destination_id is integer
+                self.costs_df["destination_id"] = self.costs_df[
+                    "destination_id"
+                ].astype(int)
 
         df = self.costs_df.copy()
 
