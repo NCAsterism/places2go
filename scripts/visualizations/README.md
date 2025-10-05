@@ -5,7 +5,7 @@ This directory contains scripts that generate standalone interactive HTML visual
 ## Available Visualizations
 
 ### 1. Weather Forecast Dashboard
-**Script:** `weather_forecast.py`  
+**Script:** `weather_forecast.py`
 **Output:** `.build/visualizations/weather_forecast.html`
 
 Interactive 7-day weather forecast dashboard displaying:
@@ -24,7 +24,7 @@ python scripts/visualizations/weather_forecast.py
 **Data Source:** `DataLoader.load_weather(data_source='demo1', forecast_only=True)`
 
 ### 2. Cost of Living Comparison
-**Script:** `cost_comparison.py`  
+**Script:** `cost_comparison.py`
 **Output:** `.build/visualizations/cost_comparison.html`
 
 Interactive cost of living comparison dashboard displaying:
