@@ -6,7 +6,7 @@
   "routes": [
     {
       "route": "/",
-      "redirect": "/README.html",
+      "redirect": "/index.html",
       "statusCode": 302
     },
     {
