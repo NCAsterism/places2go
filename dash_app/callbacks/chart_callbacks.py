@@ -74,15 +74,15 @@ def register_chart_callbacks(app, loader):
         df = weather_df.copy()
         if filter_data.get("start_date") and filter_data.get("end_date"):
             df = df[
-                (df["forecast_date"] >= filter_data["start_date"]) &
-                (df["forecast_date"] <= filter_data["end_date"])
+                (df["date"] >= filter_data["start_date"]) &
+                (df["date"] <= filter_data["end_date"])
             ]
         
         # Filter by temperature
         if filter_data.get("min_temp") is not None:
-            df = df[df["temp_high"] >= filter_data["min_temp"]]
+            df = df[df["temp_high_c"] >= filter_data["min_temp"]]
         if filter_data.get("max_temp") is not None:
-            df = df[df["temp_low"] <= filter_data["max_temp"]]
+            df = df[df["temp_low_c"] <= filter_data["max_temp"]]
         
         return create_temperature_chart_component(df, destinations_df, selected_dest).figure
     
@@ -103,8 +103,8 @@ def register_chart_callbacks(app, loader):
         df = weather_df.copy()
         if filter_data.get("start_date") and filter_data.get("end_date"):
             df = df[
-                (df["forecast_date"] >= filter_data["start_date"]) &
-                (df["forecast_date"] <= filter_data["end_date"])
+                (df["date"] >= filter_data["start_date"]) &
+                (df["date"] <= filter_data["end_date"])
             ]
         
         return create_rainfall_chart_component(df, destinations_df, selected_dest).figure

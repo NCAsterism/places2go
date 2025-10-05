@@ -82,7 +82,7 @@ The app runs in debug mode by default, which enables:
 To disable debug mode for production, edit `app.py`:
 
 ```python
-app.run_server(debug=False, host="0.0.0.0", port=8050)
+app.run(debug=False, host="0.0.0.0", port=8050)
 ```
 
 ## Project Structure
