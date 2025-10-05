@@ -23,7 +23,6 @@ import pandas as pd
 import plotly.graph_objects as go
 
 # Add parent directory to path for imports
-sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
 from scripts.core.data_loader import DataLoader  # noqa: E402
 from scripts.core.preferences_panel import inject_preferences_into_html  # noqa: E402
