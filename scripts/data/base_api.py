@@ -104,9 +104,17 @@ class CacheManager:
 
         # Convert DataFrame to records format for JSON serialization
         if isinstance(data, pd.DataFrame):
+            # Convert to dict with date strings to avoid timestamp issues
+            data_dict = data.to_dict("records")
+            # Convert any datetime objects to ISO format strings
+            for record in data_dict:
+                for key_name, value in record.items():
+                    if isinstance(value, (pd.Timestamp, datetime)):
+                        record[key_name] = value.isoformat()
+
             data_to_cache = {
                 "_type": "dataframe",
-                "_data": data.to_dict("records"),
+                "_data": data_dict,
                 "_columns": list(data.columns),
             }
         else:
