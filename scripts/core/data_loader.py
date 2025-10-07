@@ -60,7 +60,23 @@ class DataLoader:
 
     @staticmethod
     def _normalize_forecast_flag(value: Union[str, bool, float, int, None]) -> bool:
-        """Convert various truthy/falsey representations to a boolean."""
+        """
+        Convert various representations to a boolean value.
+
+        Accepted representations:
+            - Boolean values: returned as-is.
+            - Strings: "true"/"false" (case-insensitive, leading/trailing whitespace ignored).
+                - "true" => True
+                - "false" => False
+            - NaN (float('nan'), pd.NA, None): returns False.
+            - All other values (including numerics like 1/0): returns False.
+
+        Args:
+            value (str, bool, float, int, None): Input value to normalize.
+
+        Returns:
+            bool: Normalized boolean value.
+        """
         if isinstance(value, bool):
             return value
 
