@@ -8,6 +8,7 @@ dedicated files with proper normalization and time-series support.
 
 import pandas as pd
 from pathlib import Path
+from numbers import Number
 from typing import Optional, List, Dict, Union
 
 
@@ -68,8 +69,9 @@ class DataLoader:
             - Strings: "true"/"false" (case-insensitive, leading/trailing whitespace ignored).
                 - "true" => True
                 - "false" => False
+                - Other numeric-like strings ("1", "0", "1.0") are coerced via float().
             - NaN (float('nan'), pd.NA, None): returns False.
-            - All other values (including numerics like 1/0): returns False.
+            - Numeric inputs (ints, floats, numpy numbers): normalized using non-zero check.
 
         Args:
             value (str, bool, float, int, None): Input value to normalize.
@@ -90,8 +92,16 @@ class DataLoader:
             if normalized == "FALSE":
                 return False
 
-        if isinstance(value, (int, float)):
-            return bool(value)
+            # Attempt to interpret other string values as numerics (e.g. "1", "0", "1.0").
+            try:
+                numeric_value = float(normalized)
+            except ValueError:
+                return False
+            else:
+                return numeric_value != 0
+
+        if isinstance(value, Number):
+            return value != 0
 
         return False
     def load_destinations(self, reload: bool = False) -> pd.DataFrame:
