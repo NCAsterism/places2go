@@ -59,6 +59,24 @@ class DataLoader:
         self.flights_df: Optional[pd.DataFrame] = None
         self.weather_df: Optional[pd.DataFrame] = None
 
+    @staticmethod
+    def _normalize_forecast_flag(value: Union[str, bool, float, int, None]) -> bool:
+        """Convert various truthy/falsey representations to a boolean."""
+        if isinstance(value, bool):
+            return value
+
+        if pd.isna(value):
+            return False
+
+        if isinstance(value, str):
+            normalized = value.strip().upper()
+            if normalized == "TRUE":
+                return True
+            if normalized == "FALSE":
+                return False
+
+        return False
+
     def load_destinations(self, reload: bool = False) -> pd.DataFrame:
         """
         Load destination master data.
@@ -260,9 +278,10 @@ class DataLoader:
                 "destination_id"
             ].astype(int)
 
-            # Parse boolean
-            self.weather_df["forecast_flag"] = self.weather_df["forecast_flag"].astype(
-                bool
+        # Normalize forecast flag values to booleans
+        if "forecast_flag" in self.weather_df.columns:
+            self.weather_df["forecast_flag"] = self.weather_df["forecast_flag"].apply(
+                self._normalize_forecast_flag
             )
 
         df = self.weather_df.copy()
