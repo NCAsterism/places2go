@@ -74,8 +74,10 @@ class DataLoader:
             if normalized == "FALSE":
                 return False
 
-        return False
+        if isinstance(value, (int, float)):
+            return bool(value)
 
+        return False
     def load_destinations(self, reload: bool = False) -> pd.DataFrame:
         """
         Load destination master data.
