@@ -3,8 +3,7 @@ DataLoader class for reading and managing destination dashboard data.
 
 This module provides a unified interface for loading data from the new CSV structure
 which separates destinations, cost of living, flight prices, and weather data into
-dedicated files with proper no        if forecast_only:
-            df = df[df['forecast_flag']]alization and time-series support.
+dedicated files with proper normalization and time-series support.
 """
 
 import pandas as pd

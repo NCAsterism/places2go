@@ -239,9 +239,7 @@ class TestDataLoader:
             {
                 "weather_id": [1, 2, 3],
                 "destination_id": [1, 1, 1],
-                "date": pd.to_datetime(
-                    ["2025-10-05", "2025-10-06", "2025-10-07"]
-                ),
+                "date": pd.to_datetime(["2025-10-05", "2025-10-06", "2025-10-07"]),
                 "temp_high_c": [26, 27, 25],
                 "temp_low_c": [18, 19, 17],
                 "temp_avg_c": [22, 23, 21],
