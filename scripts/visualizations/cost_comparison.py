@@ -318,8 +318,8 @@ def create_cost_dashboard(
     max_dest = "N/A"
 
     if not df.empty and "monthly_living_cost" in df.columns:
-        numeric_costs = pd.to_numeric(df["monthly_living_cost"], errors="coerce")
-        valid_costs = numeric_costs[np.isfinite(numeric_costs)]
+        numeric_costs = pd.to_numeric(df["monthly_living_cost"], errors="coerce", downcast="float")
+        valid_costs = numeric_costs.dropna()
 
         if not valid_costs.empty:
             avg_cost_value = float(valid_costs.mean())
