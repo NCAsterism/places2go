@@ -14,6 +14,7 @@ trim_trailing_whitespace = true
 # Markdown files (allow trailing spaces for line breaks)
 [*.md]
 trim_trailing_whitespace = false
+spelling_language = en-GB
 
 # Python files
 [*.py]
