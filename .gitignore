@@ -48,6 +48,9 @@ ENV/
 .build/
 !.build/.gitkeep
 
+# Cache
+.cache/
+
 # Legacy paths (kept for compatibility during transition)
 htmlcov/
 output/
