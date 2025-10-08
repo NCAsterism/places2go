@@ -128,6 +128,9 @@ We follow a GitFlow branching strategy:
 - Write docstrings for all functions and classes
 - Code passes mypy static type checking (when configured)
 
+### Documentation Style
+- Write copy and comments in British English (e.g., “favour”, “optimise”). Configure your editor to use an `en-GB` dictionary—our `.editorconfig` file exposes `spelling_language = en-GB` for tools that support it.
+
 ### Type Hints
 All functions should include type annotations for parameters and return values:
 

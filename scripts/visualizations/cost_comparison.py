@@ -308,18 +308,52 @@ def create_cost_dashboard(
     data_date = df["data_date"].iloc[0] if not df.empty else "N/A"
     data_source = df["data_source"].iloc[0] if not df.empty else "N/A"
 
-    # Calculate summary statistics
-    avg_cost = df["monthly_living_cost"].mean()
-    min_cost = df["monthly_living_cost"].min()
-    max_cost = df["monthly_living_cost"].max()
-    min_dest = destinations_df[
-        destinations_df["destination_id"]
-        == df[df["monthly_living_cost"] == min_cost]["destination_id"].iloc[0]
-    ]["name"].iloc[0]
-    max_dest = destinations_df[
-        destinations_df["destination_id"]
-        == df[df["monthly_living_cost"] == max_cost]["destination_id"].iloc[0]
-    ]["name"].iloc[0]
+    # Calculate summary statistics with safety checks for empty/invalid data
+    avg_cost_display = "N/A"
+    min_cost_display = "N/A"
+    max_cost_display = "N/A"
+    range_display = "N/A"
+    min_dest = "N/A"
+    max_dest = "N/A"
+
+    if not df.empty and "monthly_living_cost" in df.columns:
+        numeric_costs = pd.to_numeric(
+            df["monthly_living_cost"], errors="coerce", downcast="float"
+        )
+        valid_costs = numeric_costs.dropna()
+
+        if not valid_costs.empty:
+            avg_cost_value = float(valid_costs.mean())
+            min_cost_value = float(valid_costs.min())
+            max_cost_value = float(valid_costs.max())
+
+            avg_cost_display = f"£{avg_cost_value:.0f}/mo"
+            min_cost_display = f"£{min_cost_value:.0f}/mo"
+            max_cost_display = f"£{max_cost_value:.0f}/mo"
+            range_display = f"£{(max_cost_value - min_cost_value):.0f}"
+
+            if (
+                "destination_id" in df.columns
+                and "destination_id" in destinations_df.columns
+            ):
+                min_index = valid_costs.idxmin()
+                max_index = valid_costs.idxmax()
+
+                if pd.notna(min_index):
+                    min_dest_id = df.loc[min_index, "destination_id"]
+                    min_dest_match = destinations_df.loc[
+                        destinations_df["destination_id"] == min_dest_id, "name"
+                    ]
+                    if not min_dest_match.empty:
+                        min_dest = str(min_dest_match.iloc[0])
+
+                if pd.notna(max_index):
+                    max_dest_id = df.loc[max_index, "destination_id"]
+                    max_dest_match = destinations_df.loc[
+                        destinations_df["destination_id"] == max_dest_id, "name"
+                    ]
+                    if not max_dest_match.empty:
+                        max_dest = str(max_dest_match.iloc[0])
 
     # Create all charts
     total_chart = create_total_cost_chart(df, destinations_df)
@@ -434,19 +468,19 @@ def create_cost_dashboard(
         <div class="stats">
             <div class="stat-card">
                 <div class="stat-label">Average Cost</div>
-                <div class="stat-value">£{avg_cost:.0f}/mo</div>
+                <div class="stat-value">{avg_cost_display}</div>
             </div>
             <div class="stat-card">
                 <div class="stat-label">Most Affordable</div>
-                <div class="stat-value">{min_dest}<br><span style="font-size: 18px;">£{min_cost:.0f}/mo</span></div>
+                <div class="stat-value">{min_dest}<br><span style="font-size: 18px;">{min_cost_display}</span></div>
             </div>
             <div class="stat-card">
                 <div class="stat-label">Most Expensive</div>
-                <div class="stat-value">{max_dest}<br><span style="font-size: 18px;">£{max_cost:.0f}/mo</span></div>
+                <div class="stat-value">{max_dest}<br><span style="font-size: 18px;">{max_cost_display}</span></div>
             </div>
             <div class="stat-card">
                 <div class="stat-label">Cost Range</div>
-                <div class="stat-value">£{max_cost - min_cost:.0f}</div>
+                <div class="stat-value">{range_display}</div>
             </div>
         </div>
 
