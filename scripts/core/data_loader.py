@@ -104,6 +104,7 @@ class DataLoader:
             return value != 0
 
         return False
+
     def load_destinations(self, reload: bool = False) -> pd.DataFrame:
         """
         Load destination master data.

@@ -20,7 +20,6 @@ import logging
 import sys
 from pathlib import Path
 
-import numpy as np
 import pandas as pd
 import plotly.graph_objects as go
 
@@ -318,7 +317,9 @@ def create_cost_dashboard(
     max_dest = "N/A"
 
     if not df.empty and "monthly_living_cost" in df.columns:
-        numeric_costs = pd.to_numeric(df["monthly_living_cost"], errors="coerce", downcast="float")
+        numeric_costs = pd.to_numeric(
+            df["monthly_living_cost"], errors="coerce", downcast="float"
+        )
         valid_costs = numeric_costs.dropna()
 
         if not valid_costs.empty:
@@ -331,7 +332,10 @@ def create_cost_dashboard(
             max_cost_display = f"£{max_cost_value:.0f}/mo"
             range_display = f"£{(max_cost_value - min_cost_value):.0f}"
 
-            if "destination_id" in df.columns and "destination_id" in destinations_df.columns:
+            if (
+                "destination_id" in df.columns
+                and "destination_id" in destinations_df.columns
+            ):
                 min_index = valid_costs.idxmin()
                 max_index = valid_costs.idxmax()
 
