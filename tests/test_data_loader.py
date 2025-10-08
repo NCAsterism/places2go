@@ -132,7 +132,9 @@ class TestDataLoader:
 
         # Check data is loaded
         assert not df.empty
-        assert len(df) >= 42  # At least 6 destinations × 7 days (may have multiple airlines)
+        assert (
+            len(df) >= 42
+        )  # At least 6 destinations × 7 days (may have multiple airlines)
 
         # Check required columns
         required_cols = [
