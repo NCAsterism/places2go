@@ -7,6 +7,7 @@ import pytest
 
 from scripts.visualizations.cost_comparison import (
     create_category_comparison_chart,
+    create_cost_dashboard,
     create_cost_breakdown_chart,
     create_cost_distribution_chart,
     create_total_cost_chart,
@@ -282,3 +283,36 @@ class TestCostComparisonIntegration:
         assert "Most Affordable" in content
         assert "Most Expensive" in content
         assert "Cost Range" in content
+
+    def test_create_cost_dashboard_handles_empty_dataframe(
+        self, tmp_path, sample_destinations_df
+    ):
+        """Test that dashboard generation handles empty cost data gracefully."""
+
+        empty_df = pd.DataFrame(
+            {
+                "destination_id": pd.Series(dtype="int64"),
+                "data_date": pd.Series(dtype="datetime64[ns]"),
+                "data_source": pd.Series(dtype="object"),
+                "currency": pd.Series(dtype="object"),
+                "monthly_living_cost": pd.Series(dtype="float64"),
+                "rent_1br_center": pd.Series(dtype="float64"),
+                "rent_1br_outside": pd.Series(dtype="float64"),
+                "monthly_food": pd.Series(dtype="float64"),
+                "monthly_transport": pd.Series(dtype="float64"),
+                "utilities": pd.Series(dtype="float64"),
+                "internet": pd.Series(dtype="float64"),
+                "meal_inexpensive": pd.Series(dtype="float64"),
+                "meal_mid_range": pd.Series(dtype="float64"),
+                "beer_domestic": pd.Series(dtype="float64"),
+                "weed_cost_per_gram": pd.Series(dtype="float64"),
+            }
+        )
+
+        output_path = tmp_path / "cost_comparison_empty.html"
+
+        create_cost_dashboard(output_path, empty_df, sample_destinations_df)
+
+        assert output_path.exists()
+        content = output_path.read_text()
+        assert "N/A" in content
