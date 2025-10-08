@@ -626,7 +626,9 @@ def main() -> None:
 
     # Load data
     logger.info("Loading weather data")
-    weather_df = loader.load_weather(forecast_only=True)  # Load all forecast data, not just demo1
+    weather_df = loader.load_weather(
+        forecast_only=True
+    )  # Load all forecast data, not just demo1
     destinations_df = loader.load_destinations()
 
     logger.info(
