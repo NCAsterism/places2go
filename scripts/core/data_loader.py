@@ -3,12 +3,12 @@ DataLoader class for reading and managing destination dashboard data.
 
 This module provides a unified interface for loading data from the new CSV structure
 which separates destinations, cost of living, flight prices, and weather data into
-dedicated files with proper no        if forecast_only:
-            df = df[df['forecast_flag']]alization and time-series support.
+dedicated files with proper normalization and time-series support.
 """
 
 import pandas as pd
 from pathlib import Path
+from numbers import Number
 from typing import Optional, List, Dict, Union
 
 
@@ -59,6 +59,51 @@ class DataLoader:
         self.flights_df: Optional[pd.DataFrame] = None
         self.weather_df: Optional[pd.DataFrame] = None
 
+    @staticmethod
+    def _normalize_forecast_flag(value: Union[str, bool, float, int, None]) -> bool:
+        """
+        Convert various representations to a boolean value.
+
+        Accepted representations:
+            - Boolean values: returned as-is.
+            - Strings: "true"/"false" (case-insensitive, leading/trailing whitespace ignored).
+                - "true" => True
+                - "false" => False
+                - Other numeric-like strings ("1", "0", "1.0") are coerced via float().
+            - NaN (float('nan'), pd.NA, None): returns False.
+            - Numeric inputs (ints, floats, numpy numbers): normalized using non-zero check.
+
+        Args:
+            value (str, bool, float, int, None): Input value to normalize.
+
+        Returns:
+            bool: Normalized boolean value.
+        """
+        if isinstance(value, bool):
+            return value
+
+        if pd.isna(value):
+            return False
+
+        if isinstance(value, str):
+            normalized = value.strip().upper()
+            if normalized == "TRUE":
+                return True
+            if normalized == "FALSE":
+                return False
+
+            # Attempt to interpret other string values as numerics (e.g. "1", "0", "1.0").
+            try:
+                numeric_value = float(normalized)
+            except ValueError:
+                return False
+            else:
+                return numeric_value != 0
+
+        if isinstance(value, Number):
+            return value != 0
+
+        return False
     def load_destinations(self, reload: bool = False) -> pd.DataFrame:
         """
         Load destination master data.
@@ -260,9 +305,10 @@ class DataLoader:
                 "destination_id"
             ].astype(int)
 
-            # Parse boolean
-            self.weather_df["forecast_flag"] = self.weather_df["forecast_flag"].astype(
-                bool
+        # Normalize forecast flag values to booleans
+        if "forecast_flag" in self.weather_df.columns:
+            self.weather_df["forecast_flag"] = self.weather_df["forecast_flag"].apply(
+                self._normalize_forecast_flag
             )
 
         df = self.weather_df.copy()

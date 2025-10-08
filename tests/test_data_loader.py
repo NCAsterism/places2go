@@ -235,9 +235,32 @@ class TestDataLoader:
 
     def test_load_weather_filter_forecast_only(self, loader):
         """Test filtering weather for forecasts only."""
+        weather_data = pd.DataFrame(
+            {
+                "weather_id": [1, 2, 3],
+                "destination_id": [1, 1, 1],
+                "date": pd.to_datetime(["2025-10-05", "2025-10-06", "2025-10-07"]),
+                "temp_high_c": [26, 27, 25],
+                "temp_low_c": [18, 19, 17],
+                "temp_avg_c": [22, 23, 21],
+                "rainfall_mm": [0, 0, 1],
+                "humidity_percent": [65, 60, 70],
+                "sunshine_hours": [9.5, 10.2, 8.5],
+                "wind_speed_kmh": [12, 10, 15],
+                "conditions": ["Sunny", "Clear", "Partly Cloudy"],
+                "uv_index": [7, 7, 6],
+                "forecast_flag": ["TRUE", "FALSE", True],
+                "data_source": ["demo1", "demo1", "demo1"],
+            }
+        )
+
+        # Inject custom weather data with mixed forecast flag representations
+        loader.weather_df = weather_data
+
         df = loader.load_weather(forecast_only=True)
 
-        assert not df.empty
+        assert len(df) == 2  # Only rows marked as forecast should remain
+        assert df["forecast_flag"].dtype == bool
         assert df["forecast_flag"].all()
 
     def test_load_weather_filter_data_source(self, loader):
