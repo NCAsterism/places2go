@@ -332,19 +332,19 @@ def create_cost_dashboard(
             range_display = f"£{(max_cost_value - min_cost_value):.0f}"
 
             if "destination_id" in df.columns and "destination_id" in destinations_df.columns:
-                min_indices = valid_costs.index[valid_costs == min_cost_value]
-                max_indices = valid_costs.index[valid_costs == max_cost_value]
+                min_index = valid_costs.idxmin()
+                max_index = valid_costs.idxmax()
 
-                if len(min_indices) > 0:
-                    min_dest_id = df.loc[min_indices[0], "destination_id"]
+                if pd.notna(min_index):
+                    min_dest_id = df.loc[min_index, "destination_id"]
                     min_dest_match = destinations_df.loc[
                         destinations_df["destination_id"] == min_dest_id, "name"
                     ]
                     if not min_dest_match.empty:
                         min_dest = str(min_dest_match.iloc[0])
 
-                if len(max_indices) > 0:
-                    max_dest_id = df.loc[max_indices[0], "destination_id"]
+                if pd.notna(max_index):
+                    max_dest_id = df.loc[max_index, "destination_id"]
                     max_dest_match = destinations_df.loc[
                         destinations_df["destination_id"] == max_dest_id, "name"
                     ]
