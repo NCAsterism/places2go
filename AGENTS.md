@@ -16,6 +16,7 @@ documentation, and quality bar before you start coding.
 - Keep business logic in focused, testable functions. Favour pure, deterministic helpers over implicit globals.
 - Use descriptive names, docstrings, and type annotations for public functions and classes.
 - Follow PEP 8 conventions; the project standardises on Black (line length 88) and mypy type checking as listed in `CONTRIBUTING.md`.
+- Format code with Black before committing (use `black scripts tests` for staged work, or `black .` when in doubt) so `black --check` stays clean in CI.
 - Data wrangling belongs in `scripts/core`; visual formatting and layout tweaks stay under `scripts/visualizations`.
 - When integrating new data sources, extend the existing `DataLoader` patterns (explicit schema validation, null handling, and
 dedicated parsing helpers). Do **not** catch-and-silence import errors—fail fast when dependencies are missing.
