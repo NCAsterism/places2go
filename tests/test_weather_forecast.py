@@ -271,5 +271,5 @@ class TestWeatherForecastIntegration:
         )
         content = output_file.read_text()
 
-        # Check for data overview showing 42 records
-        assert "42 total forecast records" in content
+        # Check for data overview showing 78 records
+        assert "78 total forecast records" in content
