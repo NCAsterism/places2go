@@ -33,6 +33,7 @@ Dashboards) and add regression scenarios when fixing bugs.
   These commands appear in `CONTRIBUTING.md`; execute them locally and report results in your PR notes.
 
 ## Documentation & Communication
+- Use British English spelling in documentation, UI copy, and inline comments. Editors that honour `.editorconfig` will pick up the `spelling_language = en-GB` hint, and you can extend local spell-checkers with `en-GB` dictionaries when drafting content.
 - Update README sections or files in `docs/` when behaviour or workflows change. Architectural adjustments belong in `docs/architecture/`,
 process updates in `docs/processes/`, and contributor workflows in `docs/development/`.
 - Dashboard-facing changes should also refresh any generated artefacts or usage docs referenced from `.build/visualizations/README.md`.
