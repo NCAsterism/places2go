@@ -3,6 +3,50 @@
 Welcome! This repository powers the **Places2Go** data exploration dashboards. Use this guide to align with the existing tooling,
 documentation, and quality bar before you start coding.
 
+## Before You Start: Environment Setup
+
+**CRITICAL**: Always ensure the Python virtual environment is activated before running any commands, tests, or scripts.
+
+### Which Virtual Environment?
+
+This project has **two** virtual environment folders:
+- **`.venv`** - **USE THIS ONE** (active, current)
+- **`.venv-1`** - Legacy/backup (can be deleted)
+
+The `.venv` folder is the correct one to use. If you see `.venv-1`, it's an older environment that can be safely removed.
+
+### Activate Virtual Environment
+
+**Windows (PowerShell):**
+```powershell
+.\.venv\Scripts\Activate.ps1
+```
+
+**Windows (CMD):**
+```cmd
+.venv\Scripts\activate.bat
+```
+
+**macOS/Linux:**
+```bash
+source .venv/bin/activate
+```
+
+### Verify Environment
+After activation, your prompt should show `(.venv)` and you can verify with:
+```powershell
+python --version  # Should show Python 3.9+
+python -c "import sys; print(sys.executable)"  # Should show D:\repo\places2go\.venv\Scripts\python.exe
+```
+
+### Install/Update Package
+After activation, ensure the package is installed in editable mode:
+```powershell
+pip install -e .
+```
+
+This is required for tests to import modules correctly.
+
 ## Tech Stack & Project Layout
 - **Language**: Python 3.9+ with type hints.
 - **Core libraries**: `pandas` for data wrangling, `plotly` for interactive dashboards, and `pytest` for automated tests.
