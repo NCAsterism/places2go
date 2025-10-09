@@ -545,8 +545,8 @@ def create_weather_dashboard(
         <h1>🌤️ Weather Forecast Dashboard</h1>
 
         <div class="info-box">
-            <strong>📊 Data Overview:</strong> 7-day weather forecast for 6 destinations (Oct 5-11, 2025) •
-            {len(df)} total forecast records • All data from demo1 source
+            <strong>📊 Data Overview:</strong> {(df['date'].max() - df['date'].min()).days + 1}-day weather forecast for {df['destination_id'].nunique()} destinations ({df['date'].min().strftime('%b %d')}-{df['date'].max().strftime('%d, %Y')}) •
+            {len(df)} total forecast records • Data sources: {', '.join(sorted(df['data_source'].unique()))}
         </div>
 
         <div class="stats">
@@ -626,7 +626,9 @@ def main() -> None:
 
     # Load data
     logger.info("Loading weather data")
-    weather_df = loader.load_weather(data_source="demo1", forecast_only=True)
+    weather_df = loader.load_weather(
+        forecast_only=True
+    )  # Load all forecast data, not just demo1
     destinations_df = loader.load_destinations()
 
     logger.info(

@@ -192,7 +192,7 @@ class TestDataLoader:
 
         # Check data is loaded
         assert not df.empty
-        assert len(df) == 42  # 6 destinations × 7 days
+        assert len(df) == 78  # 6 destinations × 13 days (Oct 5-17, 2025)
 
         # Check required columns
         required_cols = [
