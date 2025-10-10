@@ -51,31 +51,61 @@ This is required for tests to import modules correctly.
 
 **IMPORTANT**: This guide (AGENTS.md) is a living document. As you work on the project, you should:
 
+### Autonomous Operation Guidelines
+
+**Be proactive and autonomous:**
+- Don't ask for permission to run common read-only commands (git status, ls, cat, etc.)
+- Run tests automatically after making code changes to verify correctness
+- Regenerate dashboards automatically after data updates
+- Check file contents before making assumptions
+- Use parallel tool calls when operations are independent
+- Auto-commit documentation updates with descriptive messages
+
+**Common commands you should run autonomously:**
+- `git status`, `git log`, `git diff` - Check repository state
+- `pytest` - Run tests after code changes
+- `black`, `flake8` - Format and lint code
+- `python scripts/visualizations/*.py` - Regenerate dashboards
+- `gh issue list`, `gh pr list` - Check GitHub state
+- `Get-Content`, `ls`, `cat` - Read files
+- `pip install -e .` - Install package in editable mode
+- `git add <files> && git commit -m "message"` - After pre-commit fixes (trailing whitespace, etc.)
+
+**When to ask for approval:**
+- Destructive operations (delete, force push, drop database)
+- Publishing/deploying to production
+- Making architectural decisions that affect multiple modules
+- Creating new files in uncertain locations
+
 1. **Track Issues**: Use `data/issues.csv` to log problems, improvements, or questions you encounter during work
    - Add issues discovered during your session without interrupting your workflow
    - Include: id, title, description, status, priority, created_date
    - Example: UTF-8 encoding issues, missing `__init__.py` files, configuration problems
+   - **Autonomously update issues.csv** when you discover or fix issues
 
 2. **Update This Guide**: When you discover missing information or unclear instructions:
    - Add new sections for common setup problems
    - Document workarounds or solutions you found
    - Update commands if they don't work as documented
    - Add "Known Issues" sections for recurring problems
+   - **Make updates immediately** - don't wait for permission
 
-3. **Quality Check Workflow**: Before committing changes, always run:
+3. **Quality Check Workflow**: Before committing changes, **automatically run**:
    ```powershell
    # Set PYTHONPATH for test imports (Windows)
    $env:PYTHONPATH = "D:\repo\places2go"
 
-   # Run tests
+   # Run tests (do this automatically after code changes)
    pytest -v --tb=short
 
-   # Format code
+   # Format code (do this automatically before commits)
    black scripts tests
 
-   # Check linting
+   # Check linting (do this automatically)
    flake8 scripts tests --max-line-length=88 --extend-ignore=E203,W503
    ```
+
+   **Run these checks autonomously** - no need to ask permission. If they pass, proceed with the commit. If they fail, fix the issues and rerun.
 
 4. **Document Your Process**: If you create a new workflow or solve a tricky problem:
    - Consider adding a process document to `docs/processes/`
@@ -89,6 +119,33 @@ This is required for tests to import modules correctly.
    - **Missing `__init__.py`**: All package directories need `__init__.py` files for imports to work
 
 **Remember**: If you spend more than 5 minutes solving a problem, document it here so the next agent (or human) doesn't have to solve it again!
+
+### Learning & Adaptation Patterns
+
+**Continuous Improvement Cycle:**
+1. **Observe** - Notice patterns in failures, workarounds, or repeated questions
+2. **Document** - Add to AGENTS.md, issues.csv, or create new process docs
+3. **Automate** - Create scripts or update settings to prevent repeated manual work
+4. **Share** - Commit documentation updates so all agents benefit
+
+**Self-Learning Triggers:**
+- Encounter the same problem twice? Document the solution.
+- Run the same command sequence 3+ times? Create a script or add to auto-approve.
+- Answer the same question twice? Add to FAQ or AGENTS.md.
+- Fix the same type of bug repeatedly? Add to test suite or linting rules.
+
+**Autonomy Checklist:**
+- ✅ Read files without asking
+- ✅ Run tests after code changes
+- ✅ Format code before commits
+- ✅ Check git status frequently
+- ✅ List GitHub issues/PRs to understand state
+- ✅ Update issues.csv when discovering issues
+- ✅ Regenerate dashboards after data changes
+- ✅ Create process documentation for new workflows
+- ❌ Don't delete files without confirmation
+- ❌ Don't force push or rewrite history without approval
+- ❌ Don't deploy to production without explicit request
 
 ## Tech Stack & Project Layout
 - **Language**: Python 3.9+ with type hints.
@@ -151,7 +208,34 @@ pip install -e .  # Install package in editable mode
 $env:PYTHONPATH = "D:\repo\places2go"  # Set Python path
 ```
 
-### Pre-commit Hooks Failing
+### Pre-commit Hooks Failing - Trailing Whitespace
+
+**Problem:** `trailing-whitespace hook failed - files were modified by this hook`
+
+**What happened:** The pre-commit hook automatically removed trailing whitespace from your files. This is NORMAL and expected behavior.
+
+**Solution - Run this automatically:**
+```powershell
+# The hook already fixed the files, just re-stage and commit
+git add <files>
+git commit -m "your message"
+```
+
+**Why this happens:**
+- Markdown and text files often have trailing spaces
+- The pre-commit hook removes them automatically
+- You just need to re-stage the cleaned files
+
+**Prevent it in the future:**
+1. Configure your editor to trim trailing whitespace on save
+2. VS Code: Add to settings.json:
+   ```json
+   "files.trimTrailingWhitespace": true
+   ```
+
+**Autonomy Note:** When you see this error, automatically re-stage and re-commit without asking permission. It's a routine cleanup operation.
+
+### Black Formatting Failures
 ```powershell
 black scripts tests  # Auto-format code
 git add <files>      # Re-stage after formatting
