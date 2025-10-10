@@ -143,6 +143,46 @@ logger.error(f"Failed to create chart: {error}")
 - **File:** Check `logs/dashboard.log` for persistent log history
 - **Note:** Log files are excluded from git via `.gitignore`
 
+## Deployment
+
+Places2Go is deployed to Azure Static Web Apps with automated CI/CD pipelines.
+
+### Production Deployment
+
+**Live URL:** https://places2go.azurestaticapps.net (when configured)
+
+The application is automatically deployed when changes are merged to the `main` branch:
+
+1. **Automated Testing** - Runs linting, type checking, and test suite
+2. **Build Visualizations** - Generates all HTML dashboards
+3. **Deploy to Azure** - Uploads to Azure Static Web Apps
+4. **Health Checks** - Validates deployment success
+
+### Preview Environments
+
+Pull requests to `main` automatically create preview environments for testing before production deployment.
+
+### Quick Setup
+
+1. **Azure Account** - Sign up at https://portal.azure.com (free tier available)
+2. **Create Static Web App** - Follow the guide in [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md)
+3. **Add GitHub Secret** - `AZURE_STATIC_WEB_APPS_API_TOKEN`
+4. **Push to Main** - Automatic deployment
+
+### Documentation
+
+- 📚 [Complete Deployment Guide](docs/DEPLOYMENT.md) - Full setup instructions
+- 🔄 [Rollback Procedures](docs/ROLLBACK.md) - Emergency rollback guide
+- 📊 [Monitoring Setup](docs/MONITORING.md) - Analytics and alerting
+- ⚙️ [Azure Configuration](AZURE_DEPLOYMENT.md) - Technical configuration
+
+### Success Metrics
+
+- ✅ Zero-downtime deployments
+- ✅ < 5 minute deploy time
+- ✅ 99.9% uptime target
+- ✅ Automated rollback on failures
+
 ## Branching strategy
 
 We recommend a simplified version of GitFlow to organize collaborative work.  This structure aligns with the workflows used in many of your existing projects and makes it easy to manage concurrent feature development.
