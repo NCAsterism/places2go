@@ -1,9 +1,12 @@
-id,title,description,status,priority,created_date,assigned_to,labels
-1,Fix UTF-8 encoding in test files,Update test files to use encoding='utf-8' when reading HTML files to fix 10 failing tests on Windows,open,high,2025-10-08,,bug;testing
-2,Fix editable install for tests,Tests require PYTHONPATH to be set manually. Editable install should handle this automatically.,open,medium,2025-10-08,,testing;configuration
-3,Add missing __init__.py to visualizations,scripts/visualizations/ was missing __init__.py preventing module imports,completed,high,2025-10-08,,bug;quick-fix
-4,Update pyproject.toml packages list,Added scripts.visualizations to packages list in pyproject.toml,completed,high,2025-10-08,,configuration;quick-fix
-5,Remove .venv-1 folder,Old virtual environment folder from Oct 4 can be safely deleted. Use .venv instead.,open,low,2025-10-08,,cleanup;documentation
-6,Add environment setup to AGENTS.md,Document which virtual environment to use and how to verify it's activated correctly,completed,high,2025-10-08,,documentation
-7,Tidy outstanding branches,Delete old branches that have been merged or are no longer needed,open,low,2025-10-08,,cleanup;git
-8,Add self-improvement section to AGENTS.md,Add feedback loop instructions and troubleshooting guide to help agents learn and improve documentation,completed,high,2025-10-08,,documentation;improvement
+id,title,description,status,priority,created_date,assigned_to,labels,github_issue
+1,Fix UTF-8 encoding in test files,Update test files to use encoding='utf-8' when reading HTML files to fix 10 failing tests on Windows,open,high,2025-10-08,,bug;testing,
+2,Fix editable install for tests,Tests require PYTHONPATH to be set manually. Editable install should handle this automatically.,open,medium,2025-10-08,,testing;configuration,
+3,Add missing __init__.py to visualizations,scripts/visualizations/ was missing __init__.py preventing module imports,completed,high,2025-10-08,,bug;quick-fix,
+4,Update pyproject.toml packages list,Added scripts.visualizations to packages list in pyproject.toml,completed,high,2025-10-08,,configuration;quick-fix,
+5,Remove .venv-1 folder,Old virtual environment folder from Oct 4 can be safely deleted. Use .venv instead.,open,low,2025-10-08,,cleanup;documentation,
+6,Add environment setup to AGENTS.md,Document which virtual environment to use and how to verify it's activated correctly,completed,high,2025-10-08,,documentation,
+7,Tidy outstanding branches,Delete old branches that have been merged or are no longer needed,open,low,2025-10-08,,cleanup;git,
+8,Add self-improvement section to AGENTS.md,Add feedback loop instructions and troubleshooting guide to help agents learn and improve documentation,completed,high,2025-10-08,,documentation;improvement,
+9,Research and gather real flight price data,Created as GitHub issue #46 with 6 sub-tasks (#51-#56) for each destination,completed,high,2025-10-08,,data-collection;flights;parent-issue,#46
+10,Research and gather real weather forecast data,Created as GitHub issue #47 with 6 sub-tasks (#57-#62) for each destination,completed,high,2025-10-08,,data-collection;weather;parent-issue,#47
+11,Research and gather real cost of living data,Created as GitHub issue #50 with 6 sub-tasks (#63-#68) for each destination,completed,high,2025-10-08,,data-collection;costs;parent-issue,#50
