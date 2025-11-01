@@ -7,13 +7,11 @@ documentation, and quality bar before you start coding.
 
 **CRITICAL**: Always ensure the Python virtual environment is activated before running any commands, tests, or scripts.
 
-### Which Virtual Environment?
+### Virtual Environment
 
-This project has **two** virtual environment folders:
-- **`.venv`** - **USE THIS ONE** (active, current)
-- **`.venv-1`** - Legacy/backup (can be deleted)
+This project uses a single virtual environment: **`.venv`**
 
-The `.venv` folder is the correct one to use. If you see `.venv-1`, it's an older environment that can be safely removed.
+All development dependencies (pytest, black, flake8, mypy, pre-commit) are installed in this environment along with the core runtime packages.
 
 ### Activate Virtual Environment
 
@@ -247,10 +245,6 @@ git commit -m "your message"
 black scripts tests  # Auto-format code
 git add <files>      # Re-stage after formatting
 ```
-
-### Multiple Virtual Environments
-- Use **`.venv`** (active)
-- Ignore **`.venv-1`** (legacy, can delete)
 
 ### Package Configuration Issues
 - Check `pyproject.toml` has all subpackages listed
