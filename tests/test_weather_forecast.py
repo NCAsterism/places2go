@@ -257,8 +257,8 @@ class TestWeatherForecastIntegration:
         assert "Weather Conditions Distribution" in content
         assert "Comfort Index" in content
 
-    def test_html_contains_all_42_records(self):
-        """Test that HTML displays all 42 weather records."""
+    def test_html_contains_all_forecast_records(self):
+        """Test that HTML displays all forecast records."""
         from scripts.visualizations.weather_forecast import main
 
         main()
@@ -271,5 +271,5 @@ class TestWeatherForecastIntegration:
         )
         content = output_file.read_text()
 
-        # Check for data overview showing 78 records
-        assert "78 total forecast records" in content
+        # Check for data overview showing 108 records (6 dests × 13 days + Benidorm × 30 days)
+        assert "108 total forecast records" in content
