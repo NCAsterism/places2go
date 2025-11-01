@@ -79,6 +79,23 @@ This is required for tests to import modules correctly.
 
 **Full command reference:** See [docs/processes/common_operations.md](docs/processes/common_operations.md)
 
+### MCP Tools Available in GitHub Copilot
+
+**GitHub Copilot provides MCP (Model Context Protocol) tools** - these are shortcuts for common operations. See [docs/research/MCP_TOOL_EVALUATION.md](docs/research/MCP_TOOL_EVALUATION.md) for detailed testing and evaluation.
+
+**Recommended MCP Tools:**
+- **GitHub Issue Search**: `doSearch` - Quick lookup of GitHub Issues (useful for this project's 21+ data collection tasks)
+- **Copilot Coding Agent**: `copilotCodingAgent` - Assign issues to async agent (creates PRs automatically)
+- **Pylance Refactoring**: Auto-fix imports, apply all fixes - see evaluation doc for patterns
+
+**When to use MCP vs manual commands:**
+- ✅ Use MCP for GitHub Issue searches (10+ second time savings)
+- ✅ Use `copilotCodingAgent` for data collection tasks (async work, auto PR creation)
+- ❌ Don't use for local CSV files (MCP GitHub tools only work with GitHub Issues)
+- ⚠️ Test new MCP tools before relying on them (document findings in evaluation doc)
+
+**Latest AI agent patterns:** See [docs/research/LATEST_AI_AGENT_BEST_PRACTICES_2025.md](docs/research/LATEST_AI_AGENT_BEST_PRACTICES_2025.md) for industry standards (AGENTS.md convention, safety guardrails, performance metrics).
+
 1. **Track Issues**: Use `data/issues.csv` to log problems, improvements, or questions you encounter during work
    - Add issues discovered during your session without interrupting your workflow
    - Include: id, title, description, status, priority, created_date
