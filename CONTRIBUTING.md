@@ -59,6 +59,8 @@ This project follows a simple code of conduct:
    pytest
    ```
 
+**For detailed command reference and troubleshooting**, see [docs/processes/common_operations.md](docs/processes/common_operations.md).
+
 ## Development Workflow
 
 We follow a GitFlow branching strategy:
@@ -129,7 +131,14 @@ We follow a GitFlow branching strategy:
 - Code passes mypy static type checking (when configured)
 
 ### Documentation Style
-- Write copy and comments in British English (e.g., “favour”, “optimise”). Configure your editor to use an `en-GB` dictionary—our `.editorconfig` file exposes `spelling_language = en-GB` for tools that support it.
+- **User-facing content must use British English** (e.g., "favour", "optimise") for:
+  - Documentation files (`.md`, `.rst`)
+  - Docstrings (function/class documentation)
+  - UI text and error messages
+  - User-visible output
+- **Inline code comments may use either British or American English** to reduce contributor friction
+- Configure your editor to use an `en-GB` dictionary—our `.editorconfig` file exposes `spelling_language = en-GB` for tools that support it
+- See [docs/processes/common_operations.md#documentation-updates](docs/processes/common_operations.md#documentation-updates) for documentation maintenance procedures
 
 ### Type Hints
 All functions should include type annotations for parameters and return values:
@@ -221,6 +230,9 @@ def test_function_name_scenario():
 ```
 
 ### Running Tests
+See [docs/processes/common_operations.md#testing--quality-checks](docs/processes/common_operations.md#testing--quality-checks) for comprehensive testing guidance.
+
+Quick reference:
 ```bash
 # Run all tests
 pytest
@@ -237,6 +249,8 @@ pytest tests/test_data.py::test_load_data_types
 
 ## Pull Request Process
 
+See [docs/processes/PR_BEST_PRACTICES.md](docs/processes/PR_BEST_PRACTICES.md) for comprehensive pull request guidelines.
+
 1. **Before submitting:**
    - Run all tests and ensure they pass
    - Format code with Black
@@ -244,6 +258,7 @@ pytest tests/test_data.py::test_load_data_types
    - Run mypy type checking and fix any errors
    - Update documentation if needed
    - Rebase on latest `develop` if needed
+   - See [docs/processes/common_operations.md#quality-gate-workflow](docs/processes/common_operations.md#quality-gate-workflow) for automated quality checks
 
 2. **PR Description should include:**
    - Clear description of changes
@@ -308,7 +323,7 @@ If adding or modifying visualization pages:
    from scripts.core.data_loader import DataLoader
    import plotly.graph_objects as go
    from pathlib import Path
-   
+
    def create_my_visualization(output_path: Path, df: pd.DataFrame) -> None:
        """Create custom visualization."""
        # Implementation here
@@ -401,7 +416,7 @@ def create_visualization(output_path: Path, df: pd.DataFrame) -> None:
     """Generate complete HTML file."""
     chart = create_chart(df)
     chart_html = chart.to_html(include_plotlyjs='cdn')
-    
+
     html_content = f"""
     <!DOCTYPE html>
     <html>
@@ -415,7 +430,7 @@ def create_visualization(output_path: Path, df: pd.DataFrame) -> None:
     </body>
     </html>
     """
-    
+
     output_path.parent.mkdir(parents=True, exist_ok=True)
     output_path.write_text(html_content)
     logger.info(f"Visualization saved to {output_path}")
@@ -425,10 +440,10 @@ def main() -> None:
     logger.info("Starting visualization generation")
     loader = DataLoader()
     df = loader.load_destinations()
-    
+
     project_root = Path(__file__).resolve().parents[2]
     output_path = project_root / ".build" / "visualizations" / "my_viz.html"
-    
+
     create_visualization(output_path, df)
     logger.info("Visualization generation completed")
 
@@ -449,12 +464,12 @@ def test_visualization_generates_html(tmp_path):
     loader = DataLoader()
     df = loader.load_destinations()
     output_path = tmp_path / "test.html"
-    
+
     create_visualization(output_path, df)
-    
+
     assert output_path.exists()
     assert output_path.stat().st_size > 0
-    
+
     content = output_path.read_text()
     assert "<!DOCTYPE html>" in content
     assert "plotly" in content.lower()

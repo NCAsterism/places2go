@@ -77,6 +77,8 @@ This is required for tests to import modules correctly.
 - Making architectural decisions that affect multiple modules
 - Creating new files in uncertain locations
 
+**Full command reference:** See [docs/processes/common_operations.md](docs/processes/common_operations.md)
+
 1. **Track Issues**: Use `data/issues.csv` to log problems, improvements, or questions you encounter during work
    - Add issues discovered during your session without interrupting your workflow
    - Include: id, title, description, status, priority, created_date
@@ -90,33 +92,21 @@ This is required for tests to import modules correctly.
    - Add "Known Issues" sections for recurring problems
    - **Make updates immediately** - don't wait for permission
 
-3. **Quality Check Workflow**: Before committing changes, **automatically run**:
-   ```powershell
-   # Set PYTHONPATH for test imports (Windows)
-   $env:PYTHONPATH = "D:\repo\places2go"
-
-   # Run tests (do this automatically after code changes)
-   pytest -v --tb=short
-
-   # Format code (do this automatically before commits)
-   black scripts tests
-
-   # Check linting (do this automatically)
-   flake8 scripts tests --max-line-length=88 --extend-ignore=E203,W503
-   ```
-
-   **Run these checks autonomously** - no need to ask permission. If they pass, proceed with the commit. If they fail, fix the issues and rerun.
+3. **Quality Check Workflow**: Before committing changes, **automatically run** the quality gate script. See [docs/processes/common_operations.md#quality-gate-workflow](docs/processes/common_operations.md#quality-gate-workflow) for:
+   - Automated quality check commands
+   - Manual checklist if scripts unavailable
+   - How to handle check failures
 
 4. **Document Your Process**: If you create a new workflow or solve a tricky problem:
    - Consider adding a process document to `docs/processes/`
    - Reference it from this guide or README.md
    - See `docs/processes/MERGE_TO_MAIN.md` as an example
 
-5. **Known Issues & Workarounds**:
-   - **Module Import Errors**: If tests fail with `ModuleNotFoundError`, ensure `pip install -e .` has been run
-   - **PYTHONPATH Required**: Tests need `$env:PYTHONPATH = "D:\repo\places2go"` set on Windows
-   - **UTF-8 Encoding**: 10 tests fail on Windows when reading HTML files (tracked in issues.csv #1)
-   - **Missing `__init__.py`**: All package directories need `__init__.py` files for imports to work
+5. **Known Issues & Workarounds** - See [docs/processes/common_operations.md#troubleshooting-common-issues](docs/processes/common_operations.md#troubleshooting-common-issues) for:
+   - Module import errors
+   - PYTHONPATH configuration
+   - UTF-8 encoding issues
+   - Missing `__init__.py` files
 
 **Remember**: If you spend more than 5 minutes solving a problem, document it here so the next agent (or human) doesn't have to solve it again!
 
