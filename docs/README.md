@@ -33,7 +33,7 @@ Development processes, workflows, and best practices
 - [PR_BEST_PRACTICES.md](processes/PR_BEST_PRACTICES.md) - Pull request guidelines and conflict prevention
 - [branching.md](processes/branching.md) - Git branching strategy
 
-### 🛠️ [development/](development/)
+### 🔬 [research/](research/)`nLatest AI agent patterns, MCP tool evaluations, and industry best practices`n`n- [LATEST_AI_AGENT_BEST_PRACTICES_2025.md](research/LATEST_AI_AGENT_BEST_PRACTICES_2025.md) - **2025 AI agent development standards and patterns**`n- [MCP_TOOL_EVALUATION.md](research/MCP_TOOL_EVALUATION.md) - **MCP tool testing and approval tracking**`n`n### 🛠️ [development/](development/)
 Development setup, testing, and debugging guides
 
 *Coming soon:*
