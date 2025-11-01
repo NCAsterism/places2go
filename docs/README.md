@@ -8,6 +8,8 @@ Welcome to the Places2Go documentation! This directory contains all project docu
 Project planning, roadmaps, and milestone documentation
 
 - [ROADMAP.md](project/ROADMAP.md) - Overall project roadmap and future plans
+- [PHASE4_ROADMAP.md](project/PHASE4_ROADMAP.md) - Phase 4 detailed planning
+- [PHASE4_TIMELINE_RECOMMENDATIONS.md](project/PHASE4_TIMELINE_RECOMMENDATIONS.md) - **Database persistence timeline analysis**
 - [PHASE1_COMPLETE.md](project/PHASE1_COMPLETE.md) - Phase 1 completion summary
 - [PHASE2_COMPLETE.md](project/PHASE2_COMPLETE.md) - Phase 2 completion summary
 - [PHASE3_PLAN.md](project/PHASE3_PLAN.md) - Phase 3 implementation plan
@@ -27,6 +29,7 @@ System design, data models, and technical architecture
 ### 🔄 [processes/](processes/)
 Development processes, workflows, and best practices
 
+- [common_operations.md](processes/common_operations.md) - **Command reference and procedural workflows**
 - [PR_BEST_PRACTICES.md](processes/PR_BEST_PRACTICES.md) - Pull request guidelines and conflict prevention
 - [branching.md](processes/branching.md) - Git branching strategy
 
@@ -46,6 +49,8 @@ Development setup, testing, and debugging guides
 - [LICENSE](../LICENSE) - License information
 
 ### For Developers
+- [Common Operations](processes/common_operations.md) - **Command reference guide**
+- [Agent Guide](../AGENTS.md) - Behavioral guidelines for AI agents
 - [Development Setup](development/) - Setup guides (when available)
 - [PR Best Practices](processes/PR_BEST_PRACTICES.md) - Before creating PRs
 - [Git Branching](processes/branching.md) - Branching strategy
@@ -103,7 +108,7 @@ When making changes:
 
 ---
 
-**Last Updated:** October 4, 2025
+**Last Updated:** November 1, 2025
 **Maintained by:** Project contributors
 
 *For questions about documentation, create an issue with the `documentation` label.*
