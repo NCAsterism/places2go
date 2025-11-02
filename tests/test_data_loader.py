@@ -330,7 +330,7 @@ class TestDataLoader:
         df = loader.get_aggregates(data_source="demo1")
 
         assert not df.empty
-        assert len(df) == 7  # All 7 destinations, but only demo1 data aggregated
+        assert len(df) == 7  # All 7 destinations included; aggregates computed only from demo1 data where available (e.g., Benidorm will have no aggregated demo1 data)
 
     def test_get_available_data_sources(self, loader):
         """Test getting list of available data sources."""
