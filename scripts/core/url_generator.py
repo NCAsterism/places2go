@@ -45,6 +45,8 @@ def generate_skyscanner_url(
     dep_str = departure_date.strftime("%y%m%d")
 
     # Construct URL path - handle NaT/None for return_date
+    # Note: Although typed as Optional[date], we often receive pandas Timestamp
+    # objects from DataFrames which can be NaT, so we check with pd.isna()
     if return_date is not None and not pd.isna(return_date):
         ret_str = return_date.strftime("%y%m%d")
         path = f"{origin}/{destination}/{dep_str}/{ret_str}/"
@@ -84,6 +86,7 @@ def generate_google_flights_url(
     """
     dep_str = departure_date.strftime("%Y-%m-%d")
 
+    # Handle NaT/None for return_date (pandas Timestamp can be NaT)
     if return_date is not None and not pd.isna(return_date):
         ret_str = return_date.strftime("%Y-%m-%d")
         query = f"Flights from {origin_airport} to {destination_airport} on {dep_str} returning {ret_str}"

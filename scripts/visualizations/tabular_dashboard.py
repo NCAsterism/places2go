@@ -8,6 +8,7 @@ and key metrics (weather, flights, costs) as rows.
 import logging
 from pathlib import Path
 from datetime import datetime
+import pandas as pd
 
 from scripts.core.data_loader import DataLoader
 from scripts.core.url_generator import generate_flight_search_url
@@ -307,8 +308,7 @@ def create_tabular_dashboard(
                 # Get the flight with the minimum price for URL generation
                 min_flight = day_flights[day_flights["price"] == min_price].iloc[0]
                 
-                # Get return date, handling NaT
-                import pandas as pd
+                # Get return date, handling NaT (pandas datetime)
                 return_date = None
                 if "return_date" in min_flight and not pd.isna(min_flight["return_date"]):
                     return_date = min_flight["return_date"]
