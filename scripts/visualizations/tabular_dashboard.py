@@ -134,23 +134,94 @@ def create_tabular_dashboard(
             font-weight: bold;
             text-align: left;
         }}
-        .temp-high {{
-            background-color: #ffe6e6;
+        /* Temperature gradient: cold (blue) to hot (red) */
+        .temp-cold {{
+            background-color: #bbdefb;
+            color: #01579b;
         }}
-        .temp-low {{
-            background-color: #e6f3ff;
+        .temp-cool {{
+            background-color: #e3f2fd;
+            color: #0277bd;
         }}
-        .rainfall {{
-            background-color: #e8f4f8;
+        .temp-mild {{
+            background-color: #fff9c4;
+            color: #f57f17;
+        }}
+        .temp-warm {{
+            background-color: #ffcc80;
+            color: #e65100;
+        }}
+        .temp-hot {{
+            background-color: #ef9a9a;
+            color: #b71c1c;
+        }}
+        /* Rainfall gradient: dry (light) to heavy (dark blue) */
+        .rain-none {{
+            background-color: #ffffff;
+            color: #666666;
+        }}
+        .rain-light {{
+            background-color: #e1f5fe;
+            color: #01579b;
+        }}
+        .rain-moderate {{
+            background-color: #81d4fa;
+            color: #01579b;
+        }}
+        .rain-heavy {{
+            background-color: #039be5;
+            color: #ffffff;
+        }}
+        .rain-very-heavy {{
+            background-color: #0277bd;
+            color: #ffffff;
         }}
         .cost {{
             background-color: #fff9e6;
         }}
-        .flight-price {{
-            background-color: #e8f5e9;
+        /* Flight price gradient: cheap (green) to expensive (red) */
+        .flight-cheap {{
+            background-color: #c8e6c9;
+            color: #1b5e20;
+        }}
+        .flight-reasonable {{
+            background-color: #fff9c4;
+            color: #f57f17;
+        }}
+        .flight-moderate {{
+            background-color: #ffcc80;
+            color: #e65100;
+        }}
+        .flight-expensive {{
+            background-color: #ef9a9a;
+            color: #b71c1c;
+        }}
+        .flight-very-expensive {{
+            background-color: #d32f2f;
+            color: #ffffff;
         }}
         .weekend {{
             background-color: #f0f0f0;
+        }}
+        .uv-low {{
+            background-color: #c8e6c9;
+            color: #1b5e20;
+        }}
+        .uv-moderate {{
+            background-color: #fff9c4;
+            color: #f57f17;
+        }}
+        .uv-high {{
+            background-color: #ffcc80;
+            color: #e65100;
+        }}
+        .uv-very-high {{
+            background-color: #ef9a9a;
+            color: #b71c1c;
+        }}
+        .uv-extreme {{
+            background-color: #ce93d8;
+            color: #4a148c;
         }}
         .summary {{
             margin-top: 20px;
@@ -206,7 +277,18 @@ def create_tabular_dashboard(
         day_weather = weather_df[weather_df["date"] == date]
         if not day_weather.empty:
             temp = day_weather.iloc[0]["temp_high_c"]
-            html += f'                    <td class="temp-high">{temp:.1f}</td>\n'
+            # Temperature gradient: <10 cold, 10-15 cool, 15-20 mild, 20-25 warm, >25 hot
+            if temp < 10:
+                temp_class = "temp-cold"
+            elif temp < 15:
+                temp_class = "temp-cool"
+            elif temp < 20:
+                temp_class = "temp-mild"
+            elif temp < 25:
+                temp_class = "temp-warm"
+            else:
+                temp_class = "temp-hot"
+            html += f'                    <td class="{temp_class}">{temp:.1f}</td>\n'
         else:
             html += "                    <td>-</td>\n"
     html += "                </tr>\n"
@@ -217,7 +299,18 @@ def create_tabular_dashboard(
         day_weather = weather_df[weather_df["date"] == date]
         if not day_weather.empty:
             temp = day_weather.iloc[0]["temp_low_c"]
-            html += f'                    <td class="temp-low">{temp:.1f}</td>\n'
+            # Temperature gradient: <5 cold, 5-10 cool, 10-15 mild, 15-20 warm, >20 hot
+            if temp < 5:
+                temp_class = "temp-cold"
+            elif temp < 10:
+                temp_class = "temp-cool"
+            elif temp < 15:
+                temp_class = "temp-mild"
+            elif temp < 20:
+                temp_class = "temp-warm"
+            else:
+                temp_class = "temp-hot"
+            html += f'                    <td class="{temp_class}">{temp:.1f}</td>\n'
         else:
             html += "                    <td>-</td>\n"
     html += "                </tr>\n"
@@ -228,7 +321,18 @@ def create_tabular_dashboard(
         day_weather = weather_df[weather_df["date"] == date]
         if not day_weather.empty:
             rain = day_weather.iloc[0]["rainfall_mm"]
-            html += f'                    <td class="rainfall">{rain:.1f}</td>\n'
+            # Rainfall gradient: 0 none, 0-2 light, 2-5 moderate, 5-10 heavy, >10 very heavy
+            if rain == 0:
+                rain_class = "rain-none"
+            elif rain < 2:
+                rain_class = "rain-light"
+            elif rain < 5:
+                rain_class = "rain-moderate"
+            elif rain < 10:
+                rain_class = "rain-heavy"
+            else:
+                rain_class = "rain-very-heavy"
+            html += f'                    <td class="{rain_class}">{rain:.1f}</td>\n'
         else:
             html += "                    <td>-</td>\n"
     html += "                </tr>\n"
@@ -266,6 +370,28 @@ def create_tabular_dashboard(
             html += "                    <td>-</td>\n"
     html += "                </tr>\n"
 
+    # UV Index
+    html += '                <tr>\n                    <td class="row-header">UV Index</td>\n'
+    for date in dates:
+        day_weather = weather_df[weather_df["date"] == date]
+        if not day_weather.empty:
+            uv = day_weather.iloc[0]["uv_index"]
+            # Determine UV class based on level
+            if uv <= 2:
+                uv_class = "uv-low"
+            elif uv <= 5:
+                uv_class = "uv-moderate"
+            elif uv <= 7:
+                uv_class = "uv-high"
+            elif uv <= 10:
+                uv_class = "uv-very-high"
+            else:
+                uv_class = "uv-extreme"
+            html += f'                    <td class="{uv_class}">{uv:.0f}</td>\n'
+        else:
+            html += "                    <td>-</td>\n"
+    html += "                </tr>\n"
+
     # Sunrise/Sunset placeholders
     html += '                <tr>\n                    <td class="row-header">Sunrise</td>\n'
     for date in dates:
@@ -283,15 +409,55 @@ def create_tabular_dashboard(
     if not flights_df.empty and "departure_date" in flights_df.columns:
         html += """                <!-- Flight Prices Section -->
                 <tr>
-                    <td class="section-header" colspan="999">FLIGHTS FROM EXETER (£)</td>
+                    <td class="section-header" colspan="999">FLIGHTS (£)</td>
                 </tr>
 """
+        # Exeter flights
         html += '                <tr>\n                    <td class="row-header">Cost from Exeter (£)</td>\n'
         for date in dates:
-            day_flights = flights_df[flights_df["departure_date"] == date]
+            day_flights = flights_df[
+                (flights_df["departure_date"] == date)
+                & (flights_df["origin_airport"] == "EXT")
+            ]
             if not day_flights.empty:
                 min_price = day_flights["price"].min()
-                html += f'                    <td class="flight-price">{min_price:.0f}</td>\n'
+                # Flight price gradient: <35 cheap, 35-45 reasonable, 45-55 moderate, 55-70 expensive, >70 very expensive
+                if min_price < 35:
+                    price_class = "flight-cheap"
+                elif min_price < 45:
+                    price_class = "flight-reasonable"
+                elif min_price < 55:
+                    price_class = "flight-moderate"
+                elif min_price < 70:
+                    price_class = "flight-expensive"
+                else:
+                    price_class = "flight-very-expensive"
+                html += f'                    <td class="{price_class}">{min_price:.0f}</td>\n'
+            else:
+                html += "                    <td>-</td>\n"
+        html += "                </tr>\n"
+
+        # Bristol flights
+        html += '                <tr>\n                    <td class="row-header">Cost from Bristol (£)</td>\n'
+        for date in dates:
+            day_flights = flights_df[
+                (flights_df["departure_date"] == date)
+                & (flights_df["origin_airport"] == "BRS")
+            ]
+            if not day_flights.empty:
+                min_price = day_flights["price"].min()
+                # Flight price gradient: <35 cheap, 35-45 reasonable, 45-55 moderate, 55-70 expensive, >70 very expensive
+                if min_price < 35:
+                    price_class = "flight-cheap"
+                elif min_price < 45:
+                    price_class = "flight-reasonable"
+                elif min_price < 55:
+                    price_class = "flight-moderate"
+                elif min_price < 70:
+                    price_class = "flight-expensive"
+                else:
+                    price_class = "flight-very-expensive"
+                html += f'                    <td class="{price_class}">{min_price:.0f}</td>\n'
             else:
                 html += "                    <td>-</td>\n"
         html += "                </tr>\n"
