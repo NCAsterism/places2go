@@ -10,6 +10,7 @@ from pathlib import Path
 from datetime import datetime
 
 from scripts.core.data_loader import DataLoader
+from scripts.core.url_generator import generate_flight_search_url
 
 # Configure logging
 logging.basicConfig(
@@ -36,6 +37,8 @@ def create_tabular_dashboard(
         raise ValueError(f"Destination {destination_name} not found")
 
     dest_id = dest.iloc[0]["destination_id"]
+    dest_airport = dest.iloc[0]["airport_code"]
+    origin_airport = dest.iloc[0]["origin_airport"]
 
     # Load data
     weather_df = loader.load_weather()
@@ -148,6 +151,16 @@ def create_tabular_dashboard(
         }}
         .flight-price {{
             background-color: #e8f5e9;
+        }}
+        .flight-price a {{
+            color: #2e7d32;
+            text-decoration: none;
+            font-weight: 600;
+            border-bottom: 1px dashed #4caf50;
+        }}
+        .flight-price a:hover {{
+            color: #1b5e20;
+            border-bottom: 1px solid #1b5e20;
         }}
         .weekend {{
             background-color: #f0f0f0;
@@ -291,7 +304,25 @@ def create_tabular_dashboard(
             day_flights = flights_df[flights_df["departure_date"] == date]
             if not day_flights.empty:
                 min_price = day_flights["price"].min()
-                html += f'                    <td class="flight-price">{min_price:.0f}</td>\n'
+                # Get the flight with the minimum price for URL generation
+                min_flight = day_flights[day_flights["price"] == min_price].iloc[0]
+                
+                # Get return date, handling NaT
+                import pandas as pd
+                return_date = None
+                if "return_date" in min_flight and not pd.isna(min_flight["return_date"]):
+                    return_date = min_flight["return_date"]
+                
+                # Generate search URL
+                flight_url = generate_flight_search_url(
+                    origin_airport=origin_airport,
+                    destination_airport=dest_airport,
+                    departure_date=min_flight["departure_date"],
+                    return_date=return_date,
+                    source=min_flight.get("data_source", "skyscanner"),
+                )
+                
+                html += f'                    <td class="flight-price"><a href="{flight_url}" target="_blank" title="Search flights on Skyscanner">£{min_price:.0f}</a></td>\n'
             else:
                 html += "                    <td>-</td>\n"
         html += "                </tr>\n"
