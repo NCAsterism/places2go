@@ -44,13 +44,15 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 # Color palette for destinations (matching map colors)
+# Modern, accessible color palette (colorblind-friendly, travel-themed)
 DESTINATION_COLORS = {
-    "Alicante": "#1f77b4",
-    "Malaga": "#ff7f0e",
-    "Majorca": "#2ca02c",
-    "Faro": "#d62728",
-    "Corfu": "#9467bd",
-    "Rhodes": "#8c564b",
+    "Alicante": "#FF6B35",  # Warm orange (Costa Blanca sun)
+    "Malaga": "#F7931E",  # Golden orange (Costa del Sol)
+    "Majorca": "#00BCD4",  # Cyan (Mediterranean waters)
+    "Faro": "#9C27B0",  # Deep purple (Portuguese tiles)
+    "Corfu": "#4CAF50",  # Fresh green (Ionian vegetation)
+    "Rhodes": "#2196F3",  # Bright blue (Aegean Sea)
+    "Benidorm": "#E91E63",  # Vibrant pink (Beach resort vibes)
 }
 
 

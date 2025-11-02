@@ -43,14 +43,14 @@ logging.basicConfig(
 
 logger = logging.getLogger(__name__)
 
-# Color palette for regions
+# Modern, accessible color palette for regions (travel-themed)
 REGION_COLORS = {
-    "Costa Blanca": "#1f77b4",  # Blue
-    "Costa del Sol": "#ff7f0e",  # Orange
-    "Balearic Islands": "#2ca02c",  # Green
-    "Algarve": "#d62728",  # Red
-    "Ionian Islands": "#9467bd",  # Purple
-    "Dodecanese": "#8c564b",  # Brown
+    "Costa Blanca": "#FF6B35",  # Warm orange (Spanish sun)
+    "Costa del Sol": "#F7931E",  # Golden orange (Golden coast)
+    "Balearic Islands": "#00BCD4",  # Cyan (Island waters)
+    "Algarve": "#9C27B0",  # Deep purple (Portuguese charm)
+    "Ionian Islands": "#4CAF50",  # Fresh green (Lush islands)
+    "Dodecanese": "#2196F3",  # Bright blue (Greek seas)
 }
 
 
