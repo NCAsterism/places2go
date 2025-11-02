@@ -35,6 +35,9 @@ The project includes comprehensive interactive HTML visualization pages for expl
 # Generate weather forecast dashboard
 python scripts/visualizations/weather_forecast.py
 
+# Generate enhanced version with user preferences (Phase 4C)
+python scripts/visualizations/weather_forecast_enhanced.py
+
 # Output: .build/visualizations/weather_forecast.html
 ```
 
@@ -45,6 +48,20 @@ Simply open the generated HTML files in any web browser. No server required!
 **📚 Full Documentation:** [.build/visualizations/README.md](.build/visualizations/README.md)
 
 For detailed usage, customization guides, and technical details, see the comprehensive visualization documentation.
+
+## 🎨 Phase 4C: User Preferences & Personalization (NEW!)
+
+The enhanced visualizations now include user customization features:
+
+- **⚙️ Preferences Panel**: Currency (GBP/USD/EUR), Temperature (°C/°F), Theme (Light/Dark), Date Format
+- **⭐ Favorites**: Save and manage favorite destinations with one-click access
+- **📤 URL Sharing**: Share your exact view including preferences and filters
+- **💾 localStorage**: All preferences persist across browser sessions
+- **🎯 Performance**: Loads instantly (< 10ms), no database required
+
+**Try it:** Open `.build/visualizations/weather_forecast_enhanced.html` and click the floating buttons (bottom-right)!
+
+**📖 Documentation:** See [docs/project/PHASE4C_README.md](docs/project/PHASE4C_README.md) for implementation guide.
 
 ## Repository structure
 
