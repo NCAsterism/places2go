@@ -38,7 +38,7 @@ class TestDataLoader:
 
         # Check data is loaded
         assert not df.empty
-        assert len(df) == 6  # We have 6 destinations
+        assert len(df) == 7  # We have 7 destinations
 
         # Check required columns
         required_cols = [
@@ -90,7 +90,7 @@ class TestDataLoader:
 
         # Check data is loaded
         assert not df.empty
-        assert len(df) == 6  # One record per destination
+        assert len(df) == 7  # One record per destination
 
         # Check required columns
         required_cols = [
@@ -194,7 +194,7 @@ class TestDataLoader:
 
         # Check data is loaded
         assert not df.empty
-        assert len(df) == 78  # 6 destinations × 13 days (Oct 5-17, 2025)
+        assert len(df) == 108  # 6 destinations × 13 days (78) + 1 dest (Benidorm) × 30 days (30) = 108
 
         # Check required columns
         required_cols = [
@@ -297,16 +297,17 @@ class TestDataLoader:
 
         assert not df.empty
 
-        # Check data sources where applicable
+        # Check data sources where applicable (excluding NaN for destinations without data)
         if "data_source" in df.columns:
-            assert (df["data_source"] == "demo1").all()
+            # Destinations without demo1 data will have NaN, which is expected
+            assert (df["data_source"].dropna() == "demo1").all()
 
     def test_get_aggregates(self, loader):
         """Test computing aggregate statistics."""
         df = loader.get_aggregates()
 
         assert not df.empty
-        assert len(df) == 6  # One row per destination
+        assert len(df) == 7  # One row per destination
 
         # Check required columns
         assert "destination_id" in df.columns
@@ -329,7 +330,7 @@ class TestDataLoader:
         df = loader.get_aggregates(data_source="demo1")
 
         assert not df.empty
-        assert len(df) == 6
+        assert len(df) == 7  # All 7 destinations included; demo1 aggregates computed where available
 
     def test_get_available_data_sources(self, loader):
         """Test getting list of available data sources."""
@@ -423,8 +424,10 @@ class TestDataIntegrity:
         # Departure should be after or equal to search date
         assert (flights["departure_date"] >= flights["search_date"]).all()
 
-        # Return should be after departure
-        assert (flights["return_date"] > flights["departure_date"]).all()
+        # Return should be after departure (only for round-trip flights)
+        round_trips = flights[flights["return_date"].notna()]
+        if not round_trips.empty:
+            assert (round_trips["return_date"] > round_trips["departure_date"]).all()
 
     def test_weather_dates_are_future(self, loader):
         """Test weather forecast dates are reasonable."""
