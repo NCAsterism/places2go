@@ -271,5 +271,5 @@ class TestWeatherForecastIntegration:
         )
         content = output_file.read_text()
 
-        # Check for data overview showing 108 records (6 dests × 13 days + Benidorm × 30 days)
+        # Check for data overview showing 108 records (6 dests × 13 days (78) + 1 dest (Benidorm) × 30 days (30) = 108)
         assert "108 total forecast records" in content

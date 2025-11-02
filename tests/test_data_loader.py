@@ -194,7 +194,7 @@ class TestDataLoader:
 
         # Check data is loaded
         assert not df.empty
-        assert len(df) == 108  # 6 destinations × 13 days (Oct 5-17) + Benidorm × 30 days (Nov)
+        assert len(df) == 108  # 6 destinations × 13 days (78) + 1 dest (Benidorm) × 30 days (30) = 108
 
         # Check required columns
         required_cols = [
@@ -330,7 +330,7 @@ class TestDataLoader:
         df = loader.get_aggregates(data_source="demo1")
 
         assert not df.empty
-        assert len(df) == 7  # All 7 destinations included; aggregates computed only from demo1 data where available (e.g., Benidorm will have no aggregated demo1 data)
+        assert len(df) == 7  # All 7 destinations included; demo1 aggregates computed where available
 
     def test_get_available_data_sources(self, loader):
         """Test getting list of available data sources."""
