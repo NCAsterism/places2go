@@ -8,8 +8,10 @@ and key metrics (weather, flights, costs) as rows.
 import logging
 from pathlib import Path
 from datetime import datetime
+import pandas as pd
 
 from scripts.core.data_loader import DataLoader
+from scripts.core.url_generator import generate_flight_search_url
 
 # Configure logging
 logging.basicConfig(
@@ -36,6 +38,8 @@ def create_tabular_dashboard(
         raise ValueError(f"Destination {destination_name} not found")
 
     dest_id = dest.iloc[0]["destination_id"]
+    dest_airport = dest.iloc[0]["airport_code"]
+    origin_airport = dest.iloc[0]["origin_airport"]
 
     # Load data
     weather_df = loader.load_weather()
@@ -199,6 +203,25 @@ def create_tabular_dashboard(
         .flight-very-expensive {{
             background-color: #d32f2f;
             color: #ffffff;
+        }}
+        /* Link styling for all flight price cells */
+        .flight-cheap a,
+        .flight-reasonable a,
+        .flight-moderate a,
+        .flight-expensive a,
+        .flight-very-expensive a {{
+            color: inherit;
+            text-decoration: none;
+            font-weight: 600;
+            border-bottom: 1px dashed currentColor;
+        }}
+        .flight-cheap a:hover,
+        .flight-reasonable a:hover,
+        .flight-moderate a:hover,
+        .flight-expensive a:hover,
+        .flight-very-expensive a:hover {{
+            opacity: 0.8;
+            border-bottom: 1px solid currentColor;
         }}
         .weekend {{
             background-color: #f0f0f0;
@@ -421,6 +444,25 @@ def create_tabular_dashboard(
             ]
             if not day_flights.empty:
                 min_price = day_flights["price"].min()
+                # Get the flight with the minimum price for URL generation
+                min_flight = day_flights[day_flights["price"] == min_price].iloc[0]
+
+                # Get return date, handling NaT (pandas datetime)
+                return_date = None
+                if "return_date" in min_flight and not pd.isna(
+                    min_flight["return_date"]
+                ):
+                    return_date = min_flight["return_date"]
+
+                # Generate search URL
+                flight_url = generate_flight_search_url(
+                    origin_airport=origin_airport,
+                    destination_airport=dest_airport,
+                    departure_date=min_flight["departure_date"],
+                    return_date=return_date,
+                    source=min_flight.get("data_source", "skyscanner"),
+                )
+
                 # Flight price gradient: <35 cheap, 35-45 reasonable, 45-55 moderate, 55-70 expensive, >70 very expensive
                 if min_price < 35:
                     price_class = "flight-cheap"
@@ -432,7 +474,12 @@ def create_tabular_dashboard(
                     price_class = "flight-expensive"
                 else:
                     price_class = "flight-very-expensive"
-                html += f'                    <td class="{price_class}">{min_price:.0f}</td>\n'
+
+                html += (
+                    f'                    <td class="{price_class}">'
+                    f'<a href="{flight_url}" target="_blank" '
+                    f'title="Search flights on Skyscanner">£{min_price:.0f}</a></td>\n'
+                )
             else:
                 html += "                    <td>-</td>\n"
         html += "                </tr>\n"
@@ -446,6 +493,25 @@ def create_tabular_dashboard(
             ]
             if not day_flights.empty:
                 min_price = day_flights["price"].min()
+                # Get the flight with the minimum price for URL generation
+                min_flight = day_flights[day_flights["price"] == min_price].iloc[0]
+
+                # Get return date, handling NaT (pandas datetime)
+                return_date = None
+                if "return_date" in min_flight and not pd.isna(
+                    min_flight["return_date"]
+                ):
+                    return_date = min_flight["return_date"]
+
+                # Generate search URL
+                flight_url = generate_flight_search_url(
+                    origin_airport="BRS",  # Bristol origin
+                    destination_airport=dest_airport,
+                    departure_date=min_flight["departure_date"],
+                    return_date=return_date,
+                    source=min_flight.get("data_source", "skyscanner"),
+                )
+
                 # Flight price gradient: <35 cheap, 35-45 reasonable, 45-55 moderate, 55-70 expensive, >70 very expensive
                 if min_price < 35:
                     price_class = "flight-cheap"
@@ -457,7 +523,12 @@ def create_tabular_dashboard(
                     price_class = "flight-expensive"
                 else:
                     price_class = "flight-very-expensive"
-                html += f'                    <td class="{price_class}">{min_price:.0f}</td>\n'
+
+                html += (
+                    f'                    <td class="{price_class}">'
+                    f'<a href="{flight_url}" target="_blank" '
+                    f'title="Search flights on Skyscanner">£{min_price:.0f}</a></td>\n'
+                )
             else:
                 html += "                    <td>-</td>\n"
         html += "                </tr>\n"
