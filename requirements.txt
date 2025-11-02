@@ -12,3 +12,6 @@ flake8>=6.0.0
 mypy>=1.0.0
 pre-commit>=3.0.0
 python-dotenv>=1.0.0
+
+# Type stubs
+types-PyYAML>=6.0.0

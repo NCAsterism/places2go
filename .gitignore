@@ -48,6 +48,14 @@ ENV/
 .build/
 !.build/.gitkeep
 
+# Deployment artifacts (generated during CI/CD)
+deployment/*.html
+deployment/*.css
+deployment/*.js
+!deployment/index.html
+!deployment/404.html
+!deployment/.gitkeep
+
 # Legacy paths (kept for compatibility during transition)
 htmlcov/
 output/
