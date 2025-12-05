@@ -183,6 +183,14 @@ def create_tabular_dashboard(
         .cost {{
             background-color: #fff9e6;
         }}
+        .flight-price a {{
+            color: #1a5276;
+            text-decoration: none;
+            font-weight: 600;
+        }}
+        .flight-price a:hover {{
+            text-decoration: underline;
+        }}
         /* Flight price gradient: cheap (green) to expensive (red) */
         .flight-cheap {{
             background-color: #c8e6c9;
@@ -430,9 +438,14 @@ def create_tabular_dashboard(
 
     # Flight Prices Section
     if not flights_df.empty and "departure_date" in flights_df.columns:
-        html += """                <!-- Flight Prices Section -->
+        origin_label_map = {"EXT": "EXETER", "BRS": "BRISTOL"}
+        section_origin = origin_label_map.get(
+            origin_airport.upper(), origin_airport.upper()
+        )
+
+        html += f"""                <!-- Flight Prices Section -->
                 <tr>
-                    <td class="section-header" colspan="999">FLIGHTS (£)</td>
+                    <td class="section-header" colspan="999">FLIGHTS FROM {section_origin} (£)</td>
                 </tr>
 """
         # Exeter flights
@@ -476,7 +489,7 @@ def create_tabular_dashboard(
                     price_class = "flight-very-expensive"
 
                 html += (
-                    f'                    <td class="{price_class}">'
+                    f'                    <td class="{price_class} flight-price">'
                     f'<a href="{flight_url}" target="_blank" '
                     f'title="Search flights on Skyscanner">£{min_price:.0f}</a></td>\n'
                 )
@@ -525,7 +538,7 @@ def create_tabular_dashboard(
                     price_class = "flight-very-expensive"
 
                 html += (
-                    f'                    <td class="{price_class}">'
+                    f'                    <td class="{price_class} flight-price">'
                     f'<a href="{flight_url}" target="_blank" '
                     f'title="Search flights on Skyscanner">£{min_price:.0f}</a></td>\n'
                 )
